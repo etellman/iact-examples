@@ -2,6 +2,7 @@ module Ch01.Join
   ( join,
     join2,
     disjoint,
+    connected,
   )
 where
 
@@ -27,3 +28,8 @@ join xs'@(x : xs)
       let (nonOverlapping, overlapping) = partition (\y -> null (intersect x y)) xs
           withX = if null overlapping then [x] else fmap (union x) overlapping
        in join (nonOverlapping ++ withX)
+
+connected :: Eq a => a -> a -> [[a]] -> Bool
+connected x y xs =
+  let find n = head $ filter (elem n) xs
+   in find x == find y

@@ -46,5 +46,13 @@ tests =
       testCase
         "exercise 1.2"
         $ join2 [[11, 12], [13], [21], [22, 23]] [[11], [21], [12, 22], [13, 23]]
-          @?= ([[11, 12, 13, 22, 23], [21]] :: [[Int]])
+          @?= ([[11, 12, 13, 22, 23], [21]] :: [[Int]]),
+      testCase
+        "example 1.1.1"
+        $ do
+          let g1 = [[1, 2], [3]] :: [[Int]]
+              g2 = ([[1], [2, 3]] :: [[Int]])
+          assertBool "group 1 is not connected" $ not $ connected 1 3 g1
+          assertBool "group 2 is not connected" $ not $ connected 1 3 g2
+          assertBool "group 1 and 2 joined is connected" $ connected 1 3 (join2 g1 g2)
     ]
