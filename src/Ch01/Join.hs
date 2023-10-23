@@ -4,6 +4,8 @@ module Ch01.Join
     disjoint,
     connected,
     System (..),
+    sets,
+    elements,
   )
 where
 
@@ -17,33 +19,39 @@ import Data.List
 
 newtype System a = System [[a]] deriving (Eq, Show)
 
+sets :: System a -> [[a]]
+sets (System xss) = xss
+
+elements :: Ord a => System a -> [a]
+elements (System xss) = (sort . nub . concat) xss
+
 instance Eq a => Ord (System a) where
-  (System xss) <= (System yss) =
+  sx@(System xss) <= sy =
     let elems = (nub . concat) xss
         pairs = (,) <$> elems <*> elems
-        connectionMatches (x, y) = not (connected x y xss) || connected x y yss
+        connectionMatches (x, y) = not (connected x y sx) || connected x y sy
      in all connectionMatches pairs
 
 -- determines whether all the groups contain different elements
-disjoint :: Eq a => [[a]] -> Bool
-disjoint xs =
-  let elems = concat xs
+disjoint :: Eq a => System a -> Bool
+disjoint (System (xss)) =
+  let elems = concat xss
    in (length . nub) elems == length elems
 
-join2 :: Ord a => [[a]] -> [[a]] -> [[a]]
-join2 xs ys = join $ xs ++ ys
+join2 :: Ord a => System a -> System a -> System a
+join2 (System xss) (System yss) = join $ System (xss ++ yss)
 
-join :: Ord a => [[a]] -> [[a]]
-join [] = []
-join xs'@(x : xs)
-  | disjoint xs' = sort $ fmap sort xs'
+join :: Ord a => System a -> System a
+join (System []) = (System [])
+join s@(System (x : xss))
+  | disjoint s = System $ sort $ fmap sort (x : xss)
   | otherwise =
-      let (nonOverlapping, overlapping) = partition (\y -> null (intersect x y)) xs
+      let (nonOverlapping, overlapping) = partition (\y -> null (intersect x y)) xss
           withX = if null overlapping then [x] else fmap (union x) overlapping
-       in join (nonOverlapping ++ withX)
+       in join (System $ nonOverlapping ++ withX)
 
--- determines whether two numbers are in the same group
-connected :: Eq a => a -> a -> [[a]] -> Bool
-connected x y xs =
-  let groupFor n = head $ filter (elem n) xs
+-- determines whether two numbers are in the same set
+connected :: Eq a => a -> a -> System a -> Bool
+connected x y (System xss) =
+  let groupFor n = head $ filter (elem n) xss
    in groupFor x == groupFor y
