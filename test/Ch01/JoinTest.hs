@@ -9,14 +9,6 @@ import Test.Tasty
 import Test.Tasty.HUnit as HU
 import Test.Tasty.Hedgehog
 
--- verifies all the connections in the first group are present in the second group
-connectionsPreserved :: [[Int]] -> [[Int]] -> Bool
-connectionsPreserved xss yss =
-  let elems = (nub . concat) xss
-      pairs = (,) <$> elems <*> elems
-      connectionMatches (x, y) = not (connected x y xss) || connected x y yss
-   in all connectionMatches pairs
-
 prop_join :: Property
 prop_join =
   property $ do
@@ -36,7 +28,7 @@ prop_join =
     -- verify
     (sort . concat) joined === sort elems
     H.assert $ disjoint joined
-    H.assert $ connectionsPreserved xss joined
+    H.assert $ (System xss) <= (System joined)
 
 tests :: TestTree
 tests =
