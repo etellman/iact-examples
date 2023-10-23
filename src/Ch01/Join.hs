@@ -11,11 +11,14 @@ import Data.List
     partition,
     sort,
     union,
+    nub,
   )
 
+-- determines whether all the groups contain different elements
 disjoint :: Eq a => [[a]] -> Bool
-disjoint [] = True
-disjoint (x : xs) = all null (fmap (intersect x) xs) && disjoint xs
+disjoint xs =
+  let elems = concat xs
+    in (length . nub) elems == length elems
 
 join2 :: Ord a => [[a]] -> [[a]] -> [[a]]
 join2 xs ys = join $ xs ++ ys
@@ -29,7 +32,8 @@ join xs'@(x : xs)
           withX = if null overlapping then [x] else fmap (union x) overlapping
        in join (nonOverlapping ++ withX)
 
+-- determines whether two numbers are in the same group
 connected :: Eq a => a -> a -> [[a]] -> Bool
 connected x y xs =
-  let find n = head $ filter (elem n) xs
-   in find x == find y
+  let groupFor n = head $ filter (elem n) xs
+   in groupFor x == groupFor y
