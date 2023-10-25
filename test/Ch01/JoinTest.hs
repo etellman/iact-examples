@@ -8,18 +8,21 @@ import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.HUnit as HU
 import Test.Tasty.Hedgehog
+import TestLib.Assertions
+
+genSystem :: Gen (System Int)
+genSystem =
+  System
+    <$> (fmap nub)
+    <$> Gen.list
+      (Range.constant 0 20)
+      (Gen.list (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
 
 prop_simplify :: Property
 prop_simplify =
   property $ do
     -- set up
-    s <-
-      forAll $
-        System
-          <$> (fmap nub)
-          <$> Gen.list
-            (Range.constant 0 50)
-            (Gen.list (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
+    s <- forAll genSystem
 
     -- exercise
     let js = simplify s
@@ -33,21 +36,8 @@ prop_join :: Property
 prop_join =
   property $ do
     -- set up
-    s1 <-
-      forAll $
-        System
-          <$> (fmap nub)
-          <$> Gen.list
-            (Range.constant 0 50)
-            (Gen.list (Range.constant 1 10) (Gen.int $ Range.constant 1 20))
-    s2 <-
-      forAll $
-        System
-          <$> (fmap nub)
-          <$> Gen.list
-            (Range.constant 0 50)
-            (Gen.list (Range.constant 1 10) (Gen.int $ Range.constant 1 20))
-
+    s1 <- forAll genSystem
+    s2 <- forAll genSystem
     let combined = ((sort . nub) $ (elements s1) ++ (elements s2))
 
     -- exercise
@@ -57,6 +47,25 @@ prop_join =
     elements js === combined
     H.assert $ disjoint js
     H.assert $ System (sets s1 ++ sets s2) <= js
+
+prop_exercise1_3 :: Property
+prop_exercise1_3 =
+  property $ do
+    -- set up
+    let ss = partitions ['a' .. 'e']
+    a <- forAll $ Gen.element ss
+    b <- forAll $ Gen.element ss
+    x <- forAll $ Gen.element ss
+
+    -- exercise
+    let c = join a b
+
+    -- verify
+    H.assert $ a <= c
+    H.assert $ b <= c
+
+    -- c is the least system greater than or equal to both a and b
+    a <= x && b <= x ==> c <= x
 
 tests :: TestTree
 tests =
@@ -93,5 +102,6 @@ tests =
           testCase "bind" $
             ([["bc", "e"], ["d"]] >>= distribute 'a')
               @?= [["abc", "e"], ["bc", "ae"], ["bc", "e", "a"], ["ad"], ["d", "a"]]
-        ]
+        ],
+      testProperty "exercise 1.3" prop_exercise1_3
     ]

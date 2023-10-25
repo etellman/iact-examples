@@ -47,18 +47,21 @@ distribute x (xs : xss) =
       prependXs = map (xs :) restWithX -- [[bc, "ade"], [bc, "afg"]]
    in firstWithX : prependXs -- [["abc", "de", "fg"], [[bc, "ade"], [bc, "afg"]]]
 
-partitions :: [a] -> [[[a]]]
-partitions [] = [[]]
-partitions (x : xs) = do
-  yss <- partitions xs
+partitions :: [a] -> [System a]
+partitions xs = fmap System (partitions' xs)
+
+partitions' :: [a] -> [[[a]]]
+partitions' [] = [[]]
+partitions' (x : xs) = do
+  yss <- partitions' xs
   ys <- distribute x yss
   return ys
 
 -- or
--- partitions (x : xs) = [ys | yss <- partitions xs, ys <- distribute x yss]
+-- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
 
 -- or
--- partitions = foldr (\x r -> r >>= distribute x) [[]]
+-- partitions' = foldr (\x r -> r >>= distribute x) [[]]
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => System a -> Bool
