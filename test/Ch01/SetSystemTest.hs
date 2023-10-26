@@ -1,6 +1,7 @@
-module Ch01.JoinTest (tests) where
+module Ch01.SetSystemTest (tests) where
 
-import Ch01.Join
+import Ch01.Joinable
+import Ch01.SetSystem
 import Data.List (nub, sort)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -10,9 +11,9 @@ import Test.Tasty.HUnit as HU
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-genSystem :: Gen (System Int)
+genSystem :: Gen (SetSystem Int)
 genSystem =
-  System
+  SetSystem
     <$> (fmap nub)
     <$> Gen.list
       (Range.constant 0 20)
@@ -46,7 +47,7 @@ prop_join =
     -- verify
     elements js === combined
     H.assert $ disjoint js
-    H.assert $ System (sets s1 ++ sets s2) <= js
+    H.assert $ SetSystem (sets s1 ++ sets s2) <= js
 
 prop_exercise1_3 :: Property
 prop_exercise1_3 =
@@ -70,23 +71,23 @@ prop_exercise1_3 =
 tests :: TestTree
 tests =
   testGroup
-    "Ch01.JoinTest"
+    "Ch01.SetSystemTest"
     [ testCase "disjoint" $ do
-        assertBool "no overlap" $ disjoint $ System [['a', 'b'], ['c', 'd']]
-        assertBool "overlap" $ not . disjoint $ System [['a', 'b'], ['b', 'c']]
-        assertBool "singleton" $ disjoint $ System [['a']]
-        assertBool "empty" $ disjoint $ (System [[]] :: System Char),
+        assertBool "no overlap" $ disjoint $ SetSystem [['a', 'b'], ['c', 'd']]
+        assertBool "overlap" $ not . disjoint $ SetSystem [['a', 'b'], ['b', 'c']]
+        assertBool "singleton" $ disjoint $ SetSystem [['a']]
+        assertBool "empty" $ disjoint $ (SetSystem [[]] :: SetSystem Char),
       testProperty "simplify" prop_simplify,
       testProperty "join" prop_join,
       testCase "exercise 1.2" $ do
-        let s1 = System [[11, 12], [13], [21], [22, 23]] :: System Int
-            s2 = System [[11], [21], [12, 22], [13, 23]]
-        join s1 s2 @?= System [[11, 12, 13, 22, 23], [21]],
+        let s1 = SetSystem [[11, 12], [13], [21], [22, 23]] :: SetSystem Int
+            s2 = SetSystem [[11], [21], [12, 22], [13, 23]]
+        join s1 s2 @?= SetSystem [[11, 12, 13, 22, 23], [21]],
       testCase
         "example 1.1.1"
         $ do
-          let s1 = System [['a', 'b'], ['c']]
-              s2 = System [['a'], ['b', 'c']]
+          let s1 = SetSystem [['a', 'b'], ['c']]
+              s2 = SetSystem [['a'], ['b', 'c']]
           assertBool "s1" $ not $ connected 'a' 'c' $ s1
           assertBool "s2" $ not $ connected 'a' 'c' $ s2
           assertBool "s1 v s2" $ connected 'a' 'c' $ join s1 s2,

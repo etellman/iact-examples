@@ -1,16 +1,16 @@
-module Ch01.Join
-  ( simplify,
+module Ch01.SetSystem
+  ( SetSystem (..),
+    simplify,
     partitions,
-    join,
     disjoint,
     connected,
-    System (..),
     sets,
     elements,
     distribute,
   )
 where
 
+import Ch01.Joinable
 import Data.List
   ( intersect,
     nub,
@@ -19,24 +19,24 @@ import Data.List
     union,
   )
 
-newtype System a = System [[a]] deriving (Eq, Show)
+newtype SetSystem a = SetSystem [[a]] deriving (Eq, Show)
 
-sets :: System a -> [[a]]
-sets (System xss) = xss
+sets :: SetSystem a -> [[a]]
+sets (SetSystem xss) = xss
 
-elements :: Ord a => System a -> [a]
-elements (System xss) = (sort . nub . concat) xss
+elements :: Ord a => SetSystem a -> [a]
+elements (SetSystem xss) = (sort . nub . concat) xss
 
-instance Eq a => Ord (System a) where
-  sx@(System xss) <= sy =
+instance Eq a => Ord (SetSystem a) where
+  sx@(SetSystem xss) <= sy =
     let elems = (nub . concat) xss
         pairs = (,) <$> elems <*> elems
         connectionMatches (x, y) = not (connected x y sx) || connected x y sy
      in all connectionMatches pairs
 
-instance Functor System where
-  fmap :: (a -> b) -> System a -> System b
-  fmap f (System xss) = System ((fmap . fmap) f xss)
+instance Functor SetSystem where
+  fmap :: (a -> b) -> SetSystem a -> SetSystem b
+  fmap f (SetSystem xss) = SetSystem ((fmap . fmap) f xss)
 
 distribute :: a -> [[a]] -> [[[a]]]
 distribute x [] = [[[x]]]
@@ -47,8 +47,8 @@ distribute x (xs : xss) =
       prependXs = map (xs :) restWithX -- [[bc, "ade"], [bc, "afg"]]
    in firstWithX : prependXs -- [["abc", "de", "fg"], [[bc, "ade"], [bc, "afg"]]]
 
-partitions :: [a] -> [System a]
-partitions xs = fmap System (partitions' xs)
+partitions :: [a] -> [SetSystem a]
+partitions xs = fmap SetSystem (partitions' xs)
 
 partitions' :: [a] -> [[[a]]]
 partitions' = foldr (\x r -> r >>= distribute x) [[]]
@@ -57,25 +57,25 @@ partitions' = foldr (\x r -> r >>= distribute x) [[]]
 -- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
 
 -- determines whether all the groups contain different elements
-disjoint :: Eq a => System a -> Bool
-disjoint (System (xss)) =
+disjoint :: Eq a => SetSystem a -> Bool
+disjoint (SetSystem (xss)) =
   let elems = concat xss
    in (length . nub) elems == length elems
 
-join :: Ord a => System a -> System a -> System a
-join (System xss) (System yss) = simplify $ System (xss ++ yss)
+instance Ord a => Joinable (SetSystem a) where
+  join (SetSystem xss) (SetSystem yss) = simplify $ SetSystem (xss ++ yss)
 
-simplify :: Ord a => System a -> System a
-simplify (System []) = (System [])
-simplify s@(System (x : xss))
-  | disjoint s = System $ sort $ fmap sort (x : xss)
+simplify :: Ord a => SetSystem a -> SetSystem a
+simplify (SetSystem []) = (SetSystem [])
+simplify s@(SetSystem (x : xss))
+  | disjoint s = SetSystem $ sort $ fmap sort (x : xss)
   | otherwise =
       let (nonOverlapping, overlapping) = partition (\y -> null (intersect x y)) xss
           withX = if null overlapping then [x] else fmap (union x) overlapping
-       in simplify (System $ nonOverlapping ++ withX)
+       in simplify (SetSystem $ nonOverlapping ++ withX)
 
 -- determines whether two numbers are in the same set
-connected :: Eq a => a -> a -> System a -> Bool
-connected x y (System xss) =
+connected :: Eq a => a -> a -> SetSystem a -> Bool
+connected x y (SetSystem xss) =
   let groupFor n = head $ filter (elem n) xss
    in groupFor x == groupFor y
