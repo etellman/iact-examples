@@ -51,17 +51,10 @@ partitions :: [a] -> [System a]
 partitions xs = fmap System (partitions' xs)
 
 partitions' :: [a] -> [[[a]]]
-partitions' [] = [[]]
-partitions' (x : xs) = do
-  yss <- partitions' xs
-  ys <- distribute x yss
-  return ys
+partitions' = foldr (\x r -> r >>= distribute x) [[]]
 
 -- or
 -- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
-
--- or
--- partitions' = foldr (\x r -> r >>= distribute x) [[]]
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => System a -> Bool
