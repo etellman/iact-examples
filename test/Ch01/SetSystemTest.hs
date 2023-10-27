@@ -1,8 +1,10 @@
 module Ch01.SetSystemTest (tests) where
 
+import Ch01.BooleanSystem
 import Ch01.Joinable
 import Ch01.SetSystem
 import Data.List (nub, sort)
+import qualified Data.PartialOrd as PO
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -31,7 +33,7 @@ prop_simplify =
     -- verify
     elements js === elements s
     H.assert $ disjoint js
-    H.assert $ s <= js
+    H.assert $ s PO.<= js
 
 prop_join :: Property
 prop_join =
@@ -47,7 +49,7 @@ prop_join =
     -- verify
     elements js === combined
     H.assert $ disjoint js
-    H.assert $ SetSystem (sets s1 ++ sets s2) <= js
+    H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= js
 
 prop_exercise1_3 :: Property
 prop_exercise1_3 =
@@ -62,11 +64,11 @@ prop_exercise1_3 =
     let c = join a b
 
     -- verify
-    H.assert $ a <= c
-    H.assert $ b <= c
+    H.assert $ a PO.<= c
+    H.assert $ b PO.<= c
 
     -- c is the least system greater than or equal to both a and b
-    a <= x && b <= x ==> c <= x
+    a PO.<= x && b PO.<= x ==> c PO.<= x
 
 tests :: TestTree
 tests =
@@ -83,14 +85,36 @@ tests =
         let s1 = SetSystem [[11, 12], [13], [21], [22, 23]] :: SetSystem Int
             s2 = SetSystem [[11], [21], [12, 22], [13, 23]]
         join s1 s2 @?= SetSystem [[11, 12, 13, 22, 23], [21]],
-      testCase
-        "example 1.1.1"
-        $ do
-          let s1 = SetSystem [['a', 'b'], ['c']]
-              s2 = SetSystem [['a'], ['b', 'c']]
-          assertBool "s1" $ not $ connected 'a' 'c' $ s1
-          assertBool "s2" $ not $ connected 'a' 'c' $ s2
-          assertBool "s1 v s2" $ connected 'a' 'c' $ join s1 s2,
+      testGroup
+        "generative properties"
+        [ testCase
+            "phi doesn't preserve join"
+            $ do
+              -- set up
+              let s1 = SetSystem [['a', 'b'], ['c']]
+                  s2 = SetSystem [['a'], ['b', 'c']]
+                  phi = connected 'a' 'c'
+
+              -- phi is false for both of the original systems
+              assertBool "s1" $ not (phi s1)
+              assertBool "s2" $ not (phi s2)
+
+              -- but true for the joined system
+              assertBool "s1 v s2" $ phi (join s1 s2),
+          testCase
+            "phi preserves partial order"
+            $ do
+              -- set up
+              let sA = SetSystem [['a', 'b'], ['c']]
+                  sB = SetSystem [['a'], ['b', 'c']]
+                  phi = connected 'a' 'c'
+
+                  phiA = BooleanSystem $ phi sA
+                  phiB = BooleanSystem $ phi sB
+
+              assertBool "preserve order" $
+                join phiA phiB PO.<= BooleanSystem (phi $ join sA sB)
+        ],
       testCase "partition" $ do
         let xs = [1 .. 4] :: [Int]
         (length $ partitions xs) @?= 15,

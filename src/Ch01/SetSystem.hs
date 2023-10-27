@@ -18,6 +18,7 @@ import Data.List
     sort,
     union,
   )
+import qualified Data.PartialOrd as PO
 
 newtype SetSystem a = SetSystem [[a]] deriving (Eq, Show)
 
@@ -27,7 +28,7 @@ sets (SetSystem xss) = xss
 elements :: Ord a => SetSystem a -> [a]
 elements (SetSystem xss) = (sort . nub . concat) xss
 
-instance Eq a => Ord (SetSystem a) where
+instance Eq a => PO.PartialOrd (SetSystem a) where
   sx@(SetSystem xss) <= sy =
     let elems = (nub . concat) xss
         pairs = (,) <$> elems <*> elems
@@ -53,7 +54,6 @@ partitions xs = fmap SetSystem (partitions' xs)
 partitions' :: [a] -> [[[a]]]
 partitions' = foldr (\x r -> r >>= distribute x) [[]]
 
--- or
 -- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
 
 -- determines whether all the groups contain different elements
