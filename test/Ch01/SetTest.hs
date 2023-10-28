@@ -1,7 +1,7 @@
 module Ch01.SetTest (tests) where
 
 import Ch01.Set
-import Data.List (nub)
+import Data.List (nub, partition)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -35,10 +35,27 @@ prop_cartesianProduct = property $ do
   H.assert $ all (\x -> elem x xs) (fmap fst pairs)
   H.assert $ all (\y -> elem y ys) (fmap snd pairs)
 
+prop_disjointUnion :: Property
+prop_disjointUnion = property $ do
+  -- set up
+  xs <- forAll $ nub <$> Gen.list (Range.constant 0 20) Gen.alpha
+  ys <- forAll $ nub <$> Gen.list (Range.constant 0 20) Gen.alpha
+
+  -- exercise
+  let pairs = disjointUnion xs ys
+
+  -- verify
+  length pairs === length xs + length ys
+
+  let (xs', ys') = partition (\p -> fst p == 1) pairs
+  fmap snd xs' === xs
+  fmap snd ys' === ys
+
 tests :: TestTree
 tests =
   testGroup
     "Ch01.SetTest"
     [ testProperty "power set" prop_powerSet,
-      testProperty "Cartesian product" prop_cartesianProduct
+      testProperty "Cartesian product" prop_cartesianProduct,
+      testProperty "disjoint union" prop_disjointUnion
     ]
