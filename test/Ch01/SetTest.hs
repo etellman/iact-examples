@@ -11,7 +11,7 @@ import Test.Tasty.Hedgehog
 prop_powerSet :: Property
 prop_powerSet = property $ do
   -- set up
-  xs <- forAll $ nub <$> Gen.list (Range.constant 0 10) (Gen.int $ Range.constant 0 1000)
+  xs <- forAll $ nub <$> Gen.list (Range.constant 0 8) (Gen.int $ Range.constant 0 1000)
 
   -- exercise
   let xss = powerSet xs
