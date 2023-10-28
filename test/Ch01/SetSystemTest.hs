@@ -22,53 +22,50 @@ genSystem =
       (Gen.list (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
 
 prop_simplify :: Property
-prop_simplify =
-  property $ do
-    -- set up
-    s <- forAll genSystem
+prop_simplify = property $ do
+  -- set up
+  s <- forAll genSystem
 
-    -- exercise
-    let js = simplify s
+  -- exercise
+  let js = simplify s
 
-    -- verify
-    elements js === elements s
-    H.assert $ disjoint js
-    H.assert $ s PO.<= js
+  -- verify
+  elements js === elements s
+  H.assert $ disjoint js
+  H.assert $ s PO.<= js
 
 prop_join :: Property
-prop_join =
-  property $ do
-    -- set up
-    s1 <- forAll genSystem
-    s2 <- forAll genSystem
-    let combined = ((sort . nub) $ (elements s1) ++ (elements s2))
+prop_join = property $ do
+  -- set up
+  s1 <- forAll genSystem
+  s2 <- forAll genSystem
+  let combined = ((sort . nub) $ (elements s1) ++ (elements s2))
 
-    -- exercise
-    let js = join s1 s2
+  -- exercise
+  let js = join s1 s2
 
-    -- verify
-    elements js === combined
-    H.assert $ disjoint js
-    H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= js
+  -- verify
+  elements js === combined
+  H.assert $ disjoint js
+  H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= js
 
 prop_exercise1_3 :: Property
-prop_exercise1_3 =
-  property $ do
-    -- set up
-    let ss = partitions ['a' .. 'e']
-    a <- forAll $ Gen.element ss
-    b <- forAll $ Gen.element ss
-    x <- forAll $ Gen.element ss
+prop_exercise1_3 = property $ do
+  -- set up
+  let ss = partitions ['a' .. 'e']
+  a <- forAll $ Gen.element ss
+  b <- forAll $ Gen.element ss
+  x <- forAll $ Gen.element ss
 
-    -- exercise
-    let c = join a b
+  -- exercise
+  let c = join a b
 
-    -- verify
-    H.assert $ a PO.<= c
-    H.assert $ b PO.<= c
+  -- verify
+  H.assert $ a PO.<= c
+  H.assert $ b PO.<= c
 
-    -- c is the least system greater than or equal to both a and b
-    a PO.<= x && b PO.<= x ==> c PO.<= x
+  -- c is the least system greater than or equal to both a and b
+  a PO.<= x && b PO.<= x ==> c PO.<= x
 
 tests :: TestTree
 tests =
