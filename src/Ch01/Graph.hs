@@ -29,7 +29,8 @@ connections graph v1 v2 = filter (\a -> s graph a == v1 && t graph a == v2) (arr
 path :: Eq v => Graph v a -> v -> v -> Bool
 path g = path' g []
 
--- determine if there is at least one path between two vertices
+-- determine if there is at least one path between two vertices, keeping track of already visited
+-- vertices
 path' :: Eq v => Graph v a -> [v] -> v -> v -> Bool
 path' graph visited from to =
   let children v = fmap (t graph) $ filter (\a -> s graph a == v) (arrows graph)
