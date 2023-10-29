@@ -18,7 +18,7 @@ data Graph v a = Graph
 -- the target of two composed arrows, if possible
 compose :: Eq v => Graph v a -> a -> a -> Maybe v
 compose graph f g
-  | ((t graph) f) == ((s graph) g) = Just $ (t graph) g
+  | t graph f == s graph g = Just $ t graph g
   | otherwise = Nothing
 
 -- direct connections between two vertices
@@ -32,7 +32,7 @@ path g = path' g []
 -- determine if there is at least one path between two vertices
 path' :: Eq v => Graph v a -> [v] -> v -> v -> Bool
 path' graph visited from to =
-  let children v = fmap (t graph) $ filter (\a -> (s graph) a == v) (arrows graph)
+  let children v = fmap (t graph) $ filter (\a -> s graph a == v) (arrows graph)
    in from == to
         || (not . null) (connections graph from to)
         || any
