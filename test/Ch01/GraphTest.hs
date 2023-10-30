@@ -10,20 +10,23 @@ import TestLib.Assertions
 
 g32 :: Graph Int Char
 g32 =
-  let source 'a' = 1 :: Int
-      source 'b' = 1
-      source 'c' = 1
-      source 'e' = 2
-      source 'd' = 2
-      source _ = undefined
+  let s 'a' = 1 :: Int
+      s 'b' = 1
+      s 'c' = 1
+      s 'e' = 2
+      s 'd' = 2
+      s _ = undefined
 
-      target 'a' = 2
-      target 'b' = 3
-      target 'c' = 3
-      target 'd' = 2
-      target 'e' = 3
-      target _ = undefined
-   in Graph [1, 2, 3] ['a' .. 'e'] source target
+      t 'a' = 2
+      t 'b' = 3
+      t 'c' = 3
+      t 'd' = 2
+      t 'e' = 3
+      t _ = undefined
+   in Graph [1, 2, 3] ['a' .. 'e'] s t
+
+genGraph :: Gen (Graph Int Int)
+genGraph = undefined
 
 prop_reflexive :: Property
 prop_reflexive = property $ do
