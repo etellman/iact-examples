@@ -15,6 +15,9 @@ data Graph v a = Graph
     target :: (a -> v)
   }
 
+instance (Show v) => Show (Graph v a) where
+  show g = show (vertices g)
+
 -- the target of two composed arrows, if possible
 compose :: Eq v => Graph v a -> a -> a -> Maybe v
 compose graph f g
