@@ -2,6 +2,7 @@ module Ch01.SetSystemTest (tests) where
 
 import Ch01.BooleanSystem
 import Ch01.Joinable
+import Ch01.Set (cartesianProduct)
 import Ch01.SetSystem
 import Data.List (nub, sort)
 import qualified Data.PartialOrd as PO
@@ -125,5 +126,12 @@ tests =
             ([["bc", "e"], ["d"]] >>= distribute 'a')
               @?= [["abc", "e"], ["bc", "ae"], ["bc", "e", "a"], ["ad"], ["d", "a"]]
         ],
-      testProperty "exercise 1.3" prop_exercise1_3
+      testProperty "exercise 1.3" prop_exercise1_3,
+      testCase "exercise 1.37" $ do
+        -- set up
+        let xs = partitions ['a', 'b', 'c']
+            pairs = cartesianProduct xs xs
+
+        -- verify
+        length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12
     ]

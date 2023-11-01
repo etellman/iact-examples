@@ -26,6 +26,7 @@ g32 =
       t _ = undefined
    in Graph [1, 2, 3] ['a' .. 'e'] s t
 
+-- generate a graph with the indicated number of vertices and arrows
 genGraph :: Int -> Int -> Gen (Graph Int Int)
 genGraph nv na = do
   let vs = [0 .. nv - 1]
