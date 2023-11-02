@@ -88,6 +88,28 @@ prop_example47 = property $ do
   -- exercise and verify
   system1 PO.<= system2 ==> (p1To2 . p1) c == p2 c
 
+-- the coarsest partition maps everything to 0
+prop_example48Coarse :: Property
+prop_example48Coarse = property $ do
+  -- set up
+  let xs = ['a' .. 'z']
+      coarse = SetSystem [xs]
+
+  -- exercise and verify
+  c <- forAll $ Gen.element xs
+  partitionFor coarse c === const 0 c
+
+-- the finest partition is the identity function, if the elements are used as the partition labels
+prop_example48Fine :: Property
+prop_example48Fine = property $ do
+  -- set up
+  let xs = [0 .. 20] :: [Int]
+      fine = SetSystem $ fmap (\c -> [c]) xs
+
+  -- exercise and verify
+  i <- forAll $ Gen.int (Range.constant 0 (length xs - 1))
+  partitionFor fine (xs !! i) === id i
+
 tests :: TestTree
 tests =
   testGroup
@@ -154,5 +176,10 @@ tests =
 
         -- verify
         length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12,
-      testProperty "example 1.47" prop_example47
+      testProperty "example 1.47" prop_example47,
+      testGroup
+        "example 1.48"
+        [ testProperty "coarse" prop_example48Coarse,
+          testProperty "fine" prop_example48Fine
+        ]
     ]
