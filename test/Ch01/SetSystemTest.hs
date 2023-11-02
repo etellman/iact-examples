@@ -28,12 +28,12 @@ prop_simplify = property $ do
   s <- forAll genSystem
 
   -- exercise
-  let js = simplify s
+  let simplified = simplify s
 
   -- verify
-  elements js === elements s
-  H.assert $ disjoint js
-  H.assert $ s PO.<= js
+  elements simplified === elements s
+  H.assert $ disjoint simplified
+  H.assert $ s PO.<= simplified
 
 prop_join :: Property
 prop_join = property $ do
@@ -43,30 +43,50 @@ prop_join = property $ do
   let combined = ((sort . nub) $ (elements s1) ++ (elements s2))
 
   -- exercise
-  let js = join s1 s2
+  let joined = join s1 s2
 
   -- verify
-  elements js === combined
-  H.assert $ disjoint js
-  H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= js
+  elements joined === combined
+  H.assert $ disjoint joined
+  H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= joined
 
-prop_exercise1_3 :: Property
-prop_exercise1_3 = property $ do
+prop_exercise3 :: Property
+prop_exercise3 = property $ do
   -- set up
-  let ss = partitions ['a' .. 'e']
-  a <- forAll $ Gen.element ss
-  b <- forAll $ Gen.element ss
-  x <- forAll $ Gen.element ss
+  let systems = partitions ['a' .. 'e']
+  system1 <- forAll $ Gen.element systems
+  system2 <- forAll $ Gen.element systems
 
   -- exercise
-  let c = join a b
+  let joined = join system1 system2
 
   -- verify
-  H.assert $ a PO.<= c
-  H.assert $ b PO.<= c
+  H.assert $ system1 PO.<= joined
+  H.assert $ system2 PO.<= joined
 
-  -- c is the least system greater than or equal to both a and b
-  a PO.<= x && b PO.<= x ==> c PO.<= x
+  system3 <- forAll $ Gen.element systems
+  system1 PO.<= system3 && system2 PO.<= system3 ==> joined PO.<= system3
+
+convertIndex :: Eq a => SetSystem a -> SetSystem a -> Int -> Int
+convertIndex (SetSystem xs) ySystem i =
+  let x = head $ xs !! i
+   in partitionFor ySystem x
+
+prop_example47 :: Property
+prop_example47 = property $ do
+  -- set up
+  let systems = partitions ['a' .. 'e']
+  system1 <- forAll $ Gen.element systems
+  system2 <- forAll $ Gen.element systems
+
+  c <- forAll $ Gen.element ['a' .. 'e']
+
+  let p1 = partitionFor system1
+      p2 = partitionFor system2
+      p1To2 = convertIndex system1 system2
+
+  -- exercise and verify
+  system1 PO.<= system2 ==> (p1To2 . p1) c == p2 c
 
 tests :: TestTree
 tests =
@@ -126,12 +146,13 @@ tests =
             ([["bc", "e"], ["d"]] >>= distribute 'a')
               @?= [["abc", "e"], ["bc", "ae"], ["bc", "e", "a"], ["ad"], ["d", "a"]]
         ],
-      testProperty "exercise 1.3" prop_exercise1_3,
+      testProperty "exercise 1.3" prop_exercise3,
       testCase "exercise 1.37" $ do
         -- set up
         let xs = partitions ['a', 'b', 'c']
             pairs = cartesianProduct xs xs
 
         -- verify
-        length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12
+        length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12,
+      testProperty "example 1.47" prop_example47
     ]

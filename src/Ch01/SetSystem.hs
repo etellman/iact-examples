@@ -7,12 +7,14 @@ module Ch01.SetSystem
     sets,
     elements,
     distribute,
+    partitionFor,
   )
 where
 
 import Ch01.Joinable
 import Data.List
-  ( intersect,
+  ( findIndex,
+    intersect,
     nub,
     partition,
     sort,
@@ -55,6 +57,12 @@ partitions' :: [a] -> [[[a]]]
 partitions' = foldr (\x r -> r >>= distribute x) [[]]
 
 -- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
+
+partitionFor :: Eq a => SetSystem a -> a -> Int
+partitionFor (SetSystem xss) x =
+  case (findIndex (elem x) xss) of
+    Just i -> i
+    Nothing -> undefined
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => SetSystem a -> Bool
