@@ -20,6 +20,7 @@ import Data.List
     sort,
     union,
   )
+import Data.Maybe (fromJust)
 import qualified Data.PartialOrd as PO
 
 newtype SetSystem a = SetSystem [[a]] deriving (Eq, Show)
@@ -59,10 +60,7 @@ partitions' = foldr (\x r -> r >>= distribute x) [[]]
 -- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
 
 partitionFor :: Eq a => SetSystem a -> a -> Int
-partitionFor (SetSystem xss) x =
-  case (findIndex (elem x) xss) of
-    Just i -> i
-    Nothing -> undefined
+partitionFor (SetSystem xss) x = fromJust . findIndex (elem x) $ xss
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => SetSystem a -> Bool
@@ -85,5 +83,5 @@ simplify s@(SetSystem (x : xss))
 -- determines whether two numbers are in the same set
 connected :: Eq a => a -> a -> SetSystem a -> Bool
 connected x y (SetSystem xss) =
-  let groupFor n = head $ filter (elem n) xss
+  let groupFor z = head $ filter (elem z) xss
    in groupFor x == groupFor y
