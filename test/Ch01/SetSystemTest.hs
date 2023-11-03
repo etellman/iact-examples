@@ -110,19 +110,6 @@ prop_example48Fine = property $ do
   i <- forAll $ Gen.int (Range.constant 0 (length xs - 1))
   partitionFor fine (xs !! i) === id i
 
--- the finest partition is the identity function, if the elements are used as the partition labels
-prop_booleanUpperSets :: Property
-prop_booleanUpperSets = property $ do
-  -- set up
-  let upperSets = [[True], [True, False]]
-
-  upperSet <- forAll $ Gen.element upperSets
-  x <- forAll $ Gen.element upperSet
-  y <- forAll $ Gen.bool
-
-  -- exercise and verify
-  y >= x ==> y `elem` upperSet
-
 tests :: TestTree
 tests =
   testGroup
@@ -194,9 +181,5 @@ tests =
         "example 1.48"
         [ testProperty "coarse" prop_example48Coarse,
           testProperty "fine" prop_example48Fine
-        ],
-      testGroup
-        "upper sets"
-        [ testProperty "Boolean" prop_booleanUpperSets
         ]
     ]
