@@ -8,7 +8,7 @@ where
 import Control.Monad (filterM)
 
 powerSet :: [a] -> [[a]]
-powerSet = filterM (const [True, False])
+powerSet = filterM (const [False, True])
 
 cartesianProduct :: [a] -> [b] -> [(a, b)]
 cartesianProduct xs ys = do

@@ -1,8 +1,8 @@
 module Ch01.UpperSetTest (tests) where
 
 import Ch01.Preorder
+import Ch01.Set (powerSet)
 import Ch01.UpperSet
-import Control.Monad (filterM)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
@@ -28,22 +28,26 @@ tests =
     [ testGroup
         "Binary preorder"
         [ testProperty "all upper sets" $ do
-            let xss = [[True], [False, True]]
-            prop_upperSets (Preorder (>=) [False, True]) xss,
+            let xss = [[], [True], [False, True]]
+            prop_upperSets (Preorder (<=) [False, True]) xss,
           testCase "filter upper sets" $ do
-            let elements = [False, True]
-                xss = filterM (const [False, True]) elements
-            upperSets (Preorder (>=) elements) xss @?= [[], [True], [False, True]]
+            let xs = [False, True]
+            upperSets (Preorder (<=) xs) @?= [[], [True], [False, True]]
         ],
       testGroup
         "discrete preorder"
         [ testProperty "all upper sets" $ do
-            let elements = [1 .. 10] :: [Int]
-                xss = filterM (const [False, True]) elements
-            prop_upperSets (Preorder (\_ _ -> False) elements) xss,
+            let xs = [1 .. 10] :: [Int]
+            prop_upperSets (Preorder (==) xs) (powerSet xs),
           testCase "filter upper sets" $ do
-            let elements = [1 .. 10] :: [Int]
-                xss = filterM (const [False, True]) elements
-            upperSets (Preorder (\_ _ -> False) elements) xss @?= xss
+            let xs = [1 .. 3] :: [Int]
+            upperSets (Preorder (==) xs) @?= powerSet xs
+        ],
+      testGroup
+        "upper set preorder"
+        [ testCase "1..3" $ do
+            let xs = [1 .. 3] :: [Int]
+                uspo = upperSetPreorder (Preorder (<=) xs)
+            po_elements uspo @?= [[], [3], [2, 3], [1, 2, 3]]
         ]
     ]
