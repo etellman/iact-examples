@@ -1,6 +1,6 @@
 module Ch01.MonotoneMapTest (tests) where
 
-import Data.Set
+import qualified Data.Set as Set
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -24,15 +24,15 @@ prop_example57 = property $ do
   -- set up
   xss <-
     forAll $
-      powerSet
-        <$> fromList
+      Set.powerSet
+        <$> Set.fromList
         <$> Gen.list (Range.constant 1 15) Gen.alpha
 
-  x <- forAll $ Gen.element (elems xss)
-  y <- forAll $ Gen.element (elems xss)
+  x <- forAll $ Gen.element (Set.elems xss)
+  y <- forAll $ Gen.element (Set.elems xss)
 
   -- exercise and verify
-  (x `isSubsetOf` y) ==> (size x <= size y)
+  (x `Set.isSubsetOf` y) ==> (Set.size x <= Set.size y)
 
 tests :: TestTree
 tests =
