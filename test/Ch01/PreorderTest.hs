@@ -8,7 +8,6 @@ import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
-import TestLib.Assertions
 
 prop_product :: Property
 prop_product = property $ do
@@ -23,7 +22,7 @@ prop_product = property $ do
   (x1, y1) <- forAll $ Gen.element xys
   (x2, y2) <- forAll $ Gen.element xys
 
-  x1 <= x2 && y1 <= y2 ==> h (x1, y1) (x2, y2)
+  (x1 <= x2 && y1 <= y2) === h (x1, y1) (x2, y2)
 
 lte :: Char -> Char -> Bool
 lte 'a' 'c' = True

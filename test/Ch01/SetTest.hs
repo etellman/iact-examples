@@ -1,7 +1,7 @@
 module Ch01.SetTest (tests) where
 
 import Ch01.Set
-import Data.List (nub, partition)
+import Data.List (nub, partition, sort)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -19,7 +19,7 @@ prop_powerSet = property $ do
   -- verify
   length xss === 2 ^ (length xs)
   nub xss === xss
-  (nub . concat) xss === xs
+  (sort . nub . concat) xss === sort xs
 
 prop_cartesianProduct :: Property
 prop_cartesianProduct = property $ do
@@ -62,7 +62,7 @@ prop_example1_21 = property $ do
       f 22 = 'd'
       f 23 = 'd'
       f _ = undefined
-  x <- forAll $ Gen.element ( concat $ fmap snd ss )
+  x <- forAll $ Gen.element (concat $ fmap snd ss)
 
   -- exercise
   let xs = lookup (f x) ss
