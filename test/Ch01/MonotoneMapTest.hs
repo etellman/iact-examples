@@ -1,5 +1,7 @@
 module Ch01.MonotoneMapTest (tests) where
 
+import Ch01.MonotoneMap
+import Ch01.UpperSet (isUpperSet)
 import qualified Data.Set as Set
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -34,10 +36,26 @@ prop_example57 = property $ do
   -- exercise and verify
   (x `Set.isSubsetOf` y) ==> (Set.size x <= Set.size y)
 
+prop_exercise61_1 :: Property
+prop_exercise61_1 = property $ do
+  -- set up
+  xss <- forAll $ Set.fromList <$> Gen.list (Range.constant 1 100) Gen.alpha
+  p <- forAll $ Gen.element (Set.elems xss)
+
+  -- exercise
+  let ap = arrow (<=) p xss
+
+  -- exercise and verify
+  assert $ isUpperSet (>=) (Set.elems ap) (Set.elems xss)
+
 tests :: TestTree
 tests =
   testGroup
     "Ch01.MonotoneMapTest"
     [ testProperty "example 1.55" prop_example55,
-      testProperty "example 1.57" prop_example57
+      testProperty "example 1.57" prop_example57,
+      testGroup
+        "exercise 61"
+        [ testProperty "part 1" prop_exercise61_1
+        ]
     ]

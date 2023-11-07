@@ -1,6 +1,7 @@
 module Ch01.UpperSet
   ( upperSets,
     upperSetPreorder,
+    isUpperSet,
   )
 where
 
