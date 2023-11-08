@@ -47,7 +47,7 @@ tests =
         "upper set preorder"
         [ testCase "1..3" $ do
             let xs = [1 .. 3] :: [Int]
-                uspo = upperSetPreorder (Preorder (<=) xs)
-            po_elements uspo @?= [[], [3], [2, 3], [1, 2, 3]]
+                (Preorder _ usxs) = upperSetPreorder (Preorder (<=) xs)
+            usxs @?= [[], [3], [2, 3], [1, 2, 3]]
         ]
     ]

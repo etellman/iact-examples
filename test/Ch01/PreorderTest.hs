@@ -2,6 +2,7 @@ module Ch01.PreorderTest (tests) where
 
 import Ch01.Preorder
 import Ch01.UpperSet
+import Data.List (nub)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -24,10 +25,21 @@ prop_product = property $ do
 
   (x1 <= x2 && y1 <= y2) === h (x1, y1) (x2, y2)
 
-lte :: Char -> Char -> Bool
-lte 'a' 'c' = True
-lte 'a' 'b' = True
-lte x y = x == y
+prop_opposite :: Property
+prop_opposite = property $ do
+  -- set up
+  xs <- forAll $ nub <$> Gen.list (Range.constant 1 10) Gen.alpha
+  let po = Preorder (<=) xs
+
+  -- exercise
+  let (Preorder oplte opelements) = oppositePreorder po
+
+  -- verify
+  x <- forAll $ Gen.element (xs)
+  y <- forAll $ Gen.element (xs)
+
+  (x <= y) === (oplte y x)
+  opelements === xs
 
 tests :: TestTree
 tests =
@@ -38,7 +50,11 @@ tests =
         let xs = [1, 2] :: [Int]
             ys = ['a', 'b', 'c']
             po = productPreorder (Preorder lte ys) (Preorder (<=) xs)
-            uspo = upperSetPreorder po
+
+            lte 'a' 'c' = True
+            lte 'a' 'b' = True
+            lte x y = x == y
+
         preorderConnections po
           @?= [ (('a', 1), ('a', 2)),
                 (('a', 1), ('b', 1)),
@@ -50,7 +66,8 @@ tests =
                 (('b', 1), ('b', 2)),
                 (('c', 1), ('c', 2))
               ]
-        po_elements uspo
+        let (Preorder _ usxs) = upperSetPreorder po
+        usxs
           @?= [ [],
                 [('c', 2)],
                 [('c', 1), ('c', 2)],
@@ -65,5 +82,6 @@ tests =
                 [('a', 2), ('b', 1), ('b', 2), ('c', 2)],
                 [('a', 2), ('b', 1), ('b', 2), ('c', 1), ('c', 2)],
                 [('a', 1), ('a', 2), ('b', 1), ('b', 2), ('c', 1), ('c', 2)]
-              ]
+              ],
+      testProperty "opposite" prop_opposite
     ]
