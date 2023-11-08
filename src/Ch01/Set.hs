@@ -1,5 +1,6 @@
 module Ch01.Set
   ( powerSet,
+    isSubsetOf,
     cartesianProduct,
     disjointUnion,
   )
@@ -18,3 +19,6 @@ cartesianProduct xs ys = do
 
 disjointUnion :: [a] -> [a] -> [(Int, a)]
 disjointUnion xs ys = fmap ((,) 1) xs ++ fmap ((,) 2) ys
+
+isSubsetOf :: Eq a => [a] -> [a] -> Bool
+isSubsetOf xs ys = all (flip elem ys) xs
