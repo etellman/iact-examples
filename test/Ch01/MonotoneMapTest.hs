@@ -46,8 +46,8 @@ prop_exercise61_1 = property $ do
   -- verify
   assert $ isUpperSet (>=) ap xss
 
-prop_exercise61_2 :: Property
-prop_exercise61_2 = property $ do
+prop_exercise61_23 :: Property
+prop_exercise61_23 = property $ do
   -- set up
   xs <- forAll $ nub <$> Gen.list (Range.linear 1 20) Gen.alpha
   let po = P.Preorder (<=) xs
@@ -56,13 +56,12 @@ prop_exercise61_2 = property $ do
   let arrowPreorder = arrowMonotoneMap po
 
   -- verify
-  assert $ (P.elements arrowPreorder) `isSubsetOf` upperSets po
-
   p <- forAll $ Gen.element xs
   q <- forAll $ Gen.element xs
   let arrow' x = arrow (<=) x xs
 
   P.isLte (P.opposite po) p q ==> P.isLte arrowPreorder (arrow' p) (arrow' q)
+  (p <= q) === ((arrow' q) `isSubsetOf` (arrow' p))
 
 tests :: TestTree
 tests =
@@ -73,6 +72,6 @@ tests =
       testGroup
         "exercise 61"
         [ testProperty "part 1" prop_exercise61_1,
-          testProperty "part 2" prop_exercise61_2
+          testProperty "parts 2 and 3" prop_exercise61_23
         ]
     ]
