@@ -1,6 +1,6 @@
 module Ch01.UpperSetTest (tests) where
 
-import Ch01.Preorder
+import Ch01.Preorder (Preorder (..))
 import Ch01.Set (powerSet)
 import Ch01.UpperSet
 import Hedgehog as H

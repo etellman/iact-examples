@@ -5,7 +5,7 @@ module Ch01.UpperSet
   )
 where
 
-import Ch01.Preorder
+import Ch01.Preorder (Preorder (..))
 import Ch01.Set (powerSet)
 
 isUpperSet :: Eq a => (a -> a -> Bool) -> [a] -> [a] -> Bool

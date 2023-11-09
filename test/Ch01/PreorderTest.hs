@@ -1,6 +1,6 @@
 module Ch01.PreorderTest (tests) where
 
-import Ch01.Preorder
+import qualified Ch01.Preorder as P
 import Ch01.UpperSet
 import Data.List (nub)
 import Hedgehog as H
@@ -17,7 +17,7 @@ prop_product = property $ do
   ys <- forAll $ Gen.list (Range.constant 1 5) Gen.alpha
 
   -- exercise
-  let (Preorder h xys) = productPreorder (Preorder (<=) xs) (Preorder (<=) ys)
+  let (P.Preorder h xys) = P.productPreorder (P.Preorder (<=) xs) (P.Preorder (<=) ys)
 
   -- verify
   (x1, y1) <- forAll $ Gen.element xys
@@ -29,10 +29,10 @@ prop_opposite :: Property
 prop_opposite = property $ do
   -- set up
   xs <- forAll $ nub <$> Gen.list (Range.constant 1 10) Gen.alpha
-  let po = Preorder (<=) xs
+  let po = P.Preorder (<=) xs
 
   -- exercise
-  let (Preorder oplte opelements) = oppositePreorder po
+  let (P.Preorder oplte opelements) = P.opposite po
 
   -- verify
   x <- forAll $ Gen.element (xs)
@@ -49,13 +49,13 @@ tests =
       testCase "exercise 1.52" $ do
         let xs = [1, 2] :: [Int]
             ys = ['a', 'b', 'c']
-            po = productPreorder (Preorder lte ys) (Preorder (<=) xs)
+            po = P.productPreorder (P.Preorder lte ys) (P.Preorder (<=) xs)
 
             lte 'a' 'c' = True
             lte 'a' 'b' = True
             lte x y = x == y
 
-        preorderConnections po
+        P.connections po
           @?= [ (('a', 1), ('a', 2)),
                 (('a', 1), ('b', 1)),
                 (('a', 1), ('b', 2)),
@@ -66,7 +66,7 @@ tests =
                 (('b', 1), ('b', 2)),
                 (('c', 1), ('c', 2))
               ]
-        let (Preorder _ usxs) = upperSetPreorder po
+        let (P.Preorder _ usxs) = upperSetPreorder po
         usxs
           @?= [ [],
                 [('c', 2)],

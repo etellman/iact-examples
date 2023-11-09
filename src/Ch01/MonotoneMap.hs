@@ -4,7 +4,7 @@ module Ch01.MonotoneMap
   )
 where
 
-import Ch01.Preorder
+import Ch01.Preorder (Preorder (..))
 import Ch01.Set (isSubsetOf)
 
 -- from exercise 61

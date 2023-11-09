@@ -1,7 +1,7 @@
 module Ch01.MonotoneMapTest (tests) where
 
 import Ch01.MonotoneMap
-import Ch01.Preorder
+import qualified Ch01.Preorder as P
 import Ch01.Set
 import Ch01.UpperSet
 import Data.List (nub)
@@ -50,19 +50,19 @@ prop_exercise61_2 :: Property
 prop_exercise61_2 = property $ do
   -- set up
   xs <- forAll $ nub <$> Gen.list (Range.linear 1 20) Gen.alpha
-  let po = Preorder (<=) xs
+  let po = P.Preorder (<=) xs
 
   -- exercise
   let arrowPreorder = arrowMonotoneMap po
 
   -- verify
-  assert $ (preorderElements arrowPreorder) `isSubsetOf` upperSets po
+  assert $ (P.elements arrowPreorder) `isSubsetOf` upperSets po
 
   p <- forAll $ Gen.element xs
   q <- forAll $ Gen.element xs
   let arrow' x = arrow (<=) x xs
 
-  isLte (oppositePreorder po) p q ==> isLte arrowPreorder (arrow' p) (arrow' q)
+  P.isLte (P.opposite po) p q ==> P.isLte arrowPreorder (arrow' p) (arrow' q)
 
 tests :: TestTree
 tests =
