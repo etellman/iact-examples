@@ -86,13 +86,25 @@ tests =
           testCase "part 4" $ do
             -- set up
             let xs = ['a' .. 'c']
-                pairs = fmap (\x -> (x, arrow lte61 x xs)) xs
+
+            -- exercise
+            let pairs = fmap (\x -> (x, arrow lte61 x xs)) xs
+                po = P.Preorder lte61 xs
+                upo = upperSetPreorder po
 
             -- exercise and verify
-            pairs
-              @=? [ ('a', "abc"),
-                    ('b', "b"),
-                    ('c', "c")
+            pairs @?= [('a', "abc"), ('b', "b"), ('c', "c")]
+            P.connections (P.opposite po) @?= [('b', 'a'), ('c', 'a')]
+            P.connections upo
+              @?= [ ("", "c"),
+                    ("", "b"),
+                    ("", "bc"),
+                    ("", "abc"),
+                    ("c", "bc"),
+                    ("c", "abc"),
+                    ("b", "bc"),
+                    ("b", "abc"),
+                    ("bc", "abc")
                   ]
         ]
     ]
