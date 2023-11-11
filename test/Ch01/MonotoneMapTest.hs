@@ -12,6 +12,7 @@ import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
+import TestLib.Labeled
 
 -- comparison function for exercise 61 part 4
 lte61 :: Char -> Char -> Bool
@@ -70,6 +71,43 @@ prop_exercise61_2_3 lte generator = property $ do
   P.isLte (P.opposite po) p q ==> P.isLte arrowPreorder (arrow' p) (arrow' q)
   (p `lte` q) === ((arrow' q) `isSubsetOf` (arrow' p))
 
+prop_exercise_62 :: Property
+prop_exercise_62 = property $ do
+  -- set up
+  n <- forAll $ Gen.int (Range.constant (-10) 10)
+  (Labeled _ f) <-
+    forAll $
+      Gen.element
+        [ Labeled "+" (+ n),
+          Labeled "*" (* n),
+          Labeled "-" ((-) n)
+        ]
+  (Labeled _ lte) <-
+    forAll $
+      Gen.element
+        [ Labeled "<=" (<=),
+          Labeled ">=" (>=),
+          Labeled "==" (==)
+        ]
+
+  let xs = [-10 .. 10]
+      ys = [-100 .. 100]
+
+  let dpo = P.Preorder (==) xs
+      po = P.Preorder lte ys
+
+  x <- forAll $ Gen.int (Range.constant (-10) 10)
+  y <- forAll $ Gen.int (Range.constant (-10) 10)
+
+  -- from the exercise:
+  P.isLte dpo x y ==> P.isLte po (f x) (f y)
+
+  -- since:
+  (P.isLte dpo x y) === (x == y)
+
+  -- this is just saying that every preorder is reflexive:
+  H.assert $ P.isLte po (f x) (f x)
+
 tests :: TestTree
 tests =
   testGroup
@@ -105,6 +143,7 @@ tests =
                     ("b", "bc"),
                     ("b", "abc"),
                     ("bc", "abc")
-                  ]
+                  ],
+          testProperty "exercise 62" $ prop_exercise_62
         ]
     ]
