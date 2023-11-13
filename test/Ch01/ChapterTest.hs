@@ -1,8 +1,10 @@
 module Ch01.ChapterTest (chapterTests) where
 
 import Ch01.BooleanSystemTest
+import Ch01.Exercise64Test
 import Ch01.GraphTest
 import Ch01.MonotoneMapTest
+import Ch01.PartitionTest
 import Ch01.PreorderTest
 import Ch01.PreservingTest
 import Ch01.SetSystemTest
@@ -21,5 +23,7 @@ chapterTests =
       Ch01.GraphTest.tests,
       Ch01.UpperSetTest.tests,
       Ch01.PreorderTest.tests,
-      Ch01.MonotoneMapTest.tests
+      Ch01.MonotoneMapTest.tests,
+      Ch01.Exercise64Test.tests,
+      Ch01.PartitionTest.tests
     ]

@@ -76,19 +76,9 @@ prop_exercise_62 = property $ do
   -- set up
   n <- forAll $ Gen.int (Range.constant (-10) 10)
   (Labeled _ f) <-
-    forAll $
-      Gen.element
-        [ Labeled "+" (+ n),
-          Labeled "*" (* n),
-          Labeled "-" ((-) n)
-        ]
+    forAll $ Gen.element [Labeled "+" (+ n), Labeled "*" (* n), Labeled "-" ((-) n)]
   (Labeled _ lte) <-
-    forAll $
-      Gen.element
-        [ Labeled "<=" (<=),
-          Labeled ">=" (>=),
-          Labeled "==" (==)
-        ]
+    forAll $ Gen.element [Labeled "<=" (<=), Labeled ">=" (>=), Labeled "==" (==)]
 
   let xs = [-10 .. 10]
       ys = [-100 .. 100]
@@ -107,6 +97,29 @@ prop_exercise_62 = property $ do
 
   -- this is just saying that every preorder is reflexive:
   H.assert $ P.isLte po (f x) (f x)
+
+prop_exercise_64 :: Property
+prop_exercise_64 = property $ do
+  -- set up
+  let xs = [1, 2, 3] :: [Int]
+      ys = [2, 4, 6]
+      f = (2 *)
+      p = [[2], [4, 6]]
+      q = [[2, 4], [6]]
+
+      -- sp :: x -> p
+      -- s . f ::
+      sp 2 = 0
+      sp 4 = 1
+      sp 6 = 1
+
+
+  let fstar p = sp p
+
+  x <- forAll $ Gen.element xs
+
+  f x === 2 * x
+
 
 tests :: TestTree
 tests =
@@ -144,6 +157,7 @@ tests =
                     ("b", "abc"),
                     ("bc", "abc")
                   ],
-          testProperty "exercise 62" $ prop_exercise_62
+          testProperty "exercise 62" $ prop_exercise_62,
+          testProperty "exercise 64" $ prop_exercise_64
         ]
     ]

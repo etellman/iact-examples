@@ -155,19 +155,6 @@ tests =
               assertBool "preserve order" $
                 join phiA phiB PO.<= BooleanSystem (phi $ join sA sB)
         ],
-      testCase "partition" $ do
-        let xs = [1 .. 4] :: [Int]
-        (length $ partitions xs) @?= 15,
-      testGroup
-        "distribute"
-        [ testCase "non-empty" $
-            distribute 'a' ["b", "c", "de"]
-              @=? [["ab", "c", "de"], ["b", "ac", "de"], ["b", "c", "ade"], ["b", "c", "de", "a"]],
-          testCase "empty" $ distribute 'a' [] @=? [["a"]],
-          testCase "bind" $
-            ([["bc", "e"], ["d"]] >>= distribute 'a')
-              @?= [["abc", "e"], ["bc", "ae"], ["bc", "e", "a"], ["ad"], ["d", "a"]]
-        ],
       testProperty "exercise 1.3" prop_exercise3,
       testCase "exercise 1.37" $ do
         -- set up

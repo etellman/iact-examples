@@ -6,21 +6,19 @@ module Ch01.SetSystem
     connected,
     sets,
     elements,
-    distribute,
     partitionFor,
   )
 where
 
 import Ch01.Joinable
+import qualified Ch01.Partition as P
 import Data.List
-  ( findIndex,
-    intersect,
+  ( intersect,
     nub,
     partition,
     sort,
     union,
   )
-import Data.Maybe (fromJust)
 import qualified Data.PartialOrd as PO
 
 newtype SetSystem a = SetSystem [[a]] deriving (Eq, Show)
@@ -42,25 +40,11 @@ instance Functor SetSystem where
   fmap :: (a -> b) -> SetSystem a -> SetSystem b
   fmap f (SetSystem xss) = SetSystem ((fmap . fmap) f xss)
 
-distribute :: a -> [[a]] -> [[[a]]]
-distribute x [] = [[[x]]]
-distribute x (xs : xss) =
-  -- 'a' ("bc" : ["de", "fg"])
-  let firstWithX = ((x : xs) : xss) -- ["abc", "de", "fg"]
-      restWithX = distribute x xss -- [["ade"], ["afg"]]
-      prependXs = map (xs :) restWithX -- [[bc, "ade"], [bc, "afg"]]
-   in firstWithX : prependXs -- [["abc", "de", "fg"], [[bc, "ade"], [bc, "afg"]]]
-
 partitions :: [a] -> [SetSystem a]
-partitions xs = fmap SetSystem (partitions' xs)
-
-partitions' :: [a] -> [[[a]]]
-partitions' = foldr (\x r -> r >>= distribute x) [[]]
-
--- partitions' (x : xs) = [ys | yss <- partitions' xs, ys <- distribute x yss]
+partitions xs = fmap SetSystem (P.partitions xs)
 
 partitionFor :: Eq a => SetSystem a -> a -> Int
-partitionFor (SetSystem xss) x = fromJust . findIndex (elem x) $ xss
+partitionFor (SetSystem xss) x = P.partitionFor xss x
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => SetSystem a -> Bool
