@@ -70,7 +70,7 @@ prop_exercise3 = property $ do
 convertIndex :: Eq a => SetSystem a -> SetSystem a -> Int -> Int
 convertIndex (SetSystem xs) ySystem i =
   let x = head $ xs !! i
-   in partitionFor ySystem x
+   in labelFor ySystem x
 
 prop_example47 :: Property
 prop_example47 = property $ do
@@ -81,8 +81,8 @@ prop_example47 = property $ do
 
   c <- forAll $ Gen.element ['a' .. 'e']
 
-  let p1 = partitionFor system1
-      p2 = partitionFor system2
+  let p1 = labelFor system1
+      p2 = labelFor system2
       p1To2 = convertIndex system1 system2
 
   -- exercise and verify
@@ -97,7 +97,7 @@ prop_example48Coarse = property $ do
 
   -- exercise and verify
   c <- forAll $ Gen.element xs
-  partitionFor coarse c === const 0 c
+  labelFor coarse c === const 0 c
 
 -- the finest partition is the identity function, if the elements are used as the partition labels
 prop_example48Fine :: Property
@@ -108,7 +108,7 @@ prop_example48Fine = property $ do
 
   -- exercise and verify
   i <- forAll $ Gen.int (Range.constant 0 (length xs - 1))
-  partitionFor fine (xs !! i) === id i
+  labelFor fine (xs !! i) === id i
 
 tests :: TestTree
 tests =

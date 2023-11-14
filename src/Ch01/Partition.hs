@@ -3,7 +3,8 @@ module Ch01.Partition
     partitions,
     distribute,
     partitionFor,
-    toPartition,
+    labelFor,
+    functionToPartition,
   )
 where
 
@@ -29,13 +30,17 @@ distribute x (xs : xss) =
       prependXs = map (xs :) restWithX -- [[bc, "ade"], [bc, "afg"]]
    in firstWithX : prependXs -- [["abc", "de", "fg"], [[bc, "ade"], [bc, "afg"]]]
 
--- | converts a a list of lists to a partition function
-partitionFor :: Eq a => [[a]] -> a -> Int
-partitionFor xss x = fromJust . findIndex (elem x) $ xss
+-- | finds the index of a partition
+labelFor :: Eq a => [[a]] -> a -> Int
+labelFor xss x = fromJust . findIndex (elem x) $ xss
+
+-- | converts a list of lists to a partition function
+partitionFor :: Eq a => [[a]] -> a -> [a]
+partitionFor xss x = xss !! labelFor xss x
 
 -- | converts a partition function to a list of lists
-toPartition :: Eq b => (a -> b) -> [a] -> [[a]]
-toPartition _ [] = []
-toPartition f (x : xs) =
+functionToPartition :: Eq b => (a -> b) -> [a] -> [[a]]
+functionToPartition _ [] = []
+functionToPartition f (x : xs) =
   let (p1, rest) = partition (\y -> f x == f y) xs
-   in (x : p1) : toPartition f rest
+   in (x : p1) : functionToPartition f rest

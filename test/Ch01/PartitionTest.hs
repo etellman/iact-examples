@@ -27,11 +27,11 @@ tests =
           assertBool "finer 2" $ ["a", "bc"] `isFiner` ["abc"]
           assertBool "not finer" $ not $ ["a", "bc"] `isFiner` ["ab", "c"],
       testGroup
-        "toPartition"
-        [ testCase "empty" $ assertBool "[]" $ null $ toPartition odd ([] :: [Int]),
+        "function to partitions"
+        [ testCase "empty" $ assertBool "[]" $ null $ functionToPartition odd ([] :: [Int]),
           testCase "non-empty" $ do
             let xs = [1 .. 5] :: [Int]
-            toPartition odd xs @?= [[1, 3, 5], [2, 4]]
-            toPartition (`rem` 3) xs @?= [[1, 4], [2, 5], [3]]
+            functionToPartition odd xs @?= [[1, 3, 5], [2, 4]]
+            functionToPartition (`rem` 3) xs @?= [[1, 4], [2, 5], [3]]
         ]
     ]

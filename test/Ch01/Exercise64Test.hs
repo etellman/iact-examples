@@ -1,27 +1,44 @@
 module Ch01.Exercise64Test (tests) where
 
-import Ch01.Exercise64
+import qualified Ch01.Partition as P
+import Data.List (nub)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.Hedgehog
+import TestLib.Assertions
+
+data X = X Int deriving (Show, Eq)
+
+data Y = Y Int deriving (Show, Eq)
 
 prop_exercise_64 :: Property
 prop_exercise_64 = property $ do
   -- set up
-  x <- forAll $ Gen.element xs
+  xs <-
+    forAll $
+      fmap X
+        <$> nub
+        <$> Gen.list
+          (Range.constant 2 100)
+          (Gen.int $ Range.constant 1 100)
 
-  let f (X n) = Y (2 * n)
-      s (Y 2) = P 1
-      s (Y 4) = P 2
-      s (Y 6) = P 2
-      s _ = undefined
+  m <- forAll $ Gen.int (Range.constant 2 10)
+  let f (X n) = Y (m * n)
+      ys = (fmap f xs) :: [Y]
 
-  -- fs is a way of partitioning x
-      fs = fstar f s
+  n1 <- forAll $ Gen.int (Range.constant 2 10)
+  let s1 (Y n) = n `rem` n1
+      py1 = P.functionToPartition s1 ys
+      px1 = P.functionToPartition (s1 . f) xs
 
-  'a' === 'a'
+  n2 <- forAll $ Gen.int (Range.constant 2 10)
+  let s2 (Y n) = n `rem` n2
+      py2 = P.functionToPartition s2 ys
+      px2 = P.functionToPartition (s2 . f) xs
+
+  py1 `P.isFiner` py2 ==> px1 `P.isFiner` px2
 
 tests :: TestTree
 tests =

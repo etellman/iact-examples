@@ -6,7 +6,7 @@ module Ch01.SetSystem
     connected,
     sets,
     elements,
-    partitionFor,
+    labelFor,
   )
 where
 
@@ -43,8 +43,8 @@ instance Functor SetSystem where
 partitions :: [a] -> [SetSystem a]
 partitions xs = fmap SetSystem (P.partitions xs)
 
-partitionFor :: Eq a => SetSystem a -> a -> Int
-partitionFor (SetSystem xss) x = P.partitionFor xss x
+labelFor :: Eq a => SetSystem a -> a -> Int
+labelFor (SetSystem xss) x = P.labelFor xss x
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => SetSystem a -> Bool
