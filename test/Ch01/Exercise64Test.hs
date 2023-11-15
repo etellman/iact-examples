@@ -9,34 +9,44 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-data X = X Int deriving (Show, Eq)
+newtype X = X Int deriving (Show, Eq, Ord)
 
-data Y = Y Int deriving (Show, Eq)
+newtype Y = Y Int deriving (Show, Eq, Ord)
+
+genXs :: Gen [X]
+genXs =
+  fmap X
+    <$> nub
+    <$> Gen.list
+      (Range.constant 2 100)
+      (Gen.int $ Range.constant 1 500)
+
+partitionPair :: [X] -> [Y] -> (X -> Y) -> Int -> ([[X]], [[Y]])
+partitionPair xs ys f n =
+  let s (Y y) = y `rem` n
+      px = P.functionToPartition (s . f) xs
+      py = P.functionToPartition s ys
+   in (px, py)
 
 prop_exercise_64 :: Property
 prop_exercise_64 = property $ do
   -- set up
-  xs <-
-    forAll $
-      fmap X
-        <$> nub
-        <$> Gen.list
-          (Range.constant 2 100)
-          (Gen.int $ Range.constant 1 100)
+  xs <- forAll genXs
+  m <- forAll $ Gen.int (Range.constant 1 7)
+  n1 <- forAll $ Gen.int (Range.constant 1 7)
+  n2 <- forAll $ Gen.int (Range.constant 1 7)
 
-  m <- forAll $ Gen.int (Range.constant 2 10)
-  let f (X n) = Y (m * n)
-      ys = (fmap f xs) :: [Y]
+  let f (X x) = Y (m * x)
+      ys = (fmap f xs)
+      pp = partitionPair xs ys f
 
-  n1 <- forAll $ Gen.int (Range.constant 2 10)
-  let s1 (Y n) = n `rem` n1
-      py1 = P.functionToPartition s1 ys
-      px1 = P.functionToPartition (s1 . f) xs
+  -- exercise
+  let (px1, py1) = pp n1
+      (px2, py2) = pp n2
 
-  n2 <- forAll $ Gen.int (Range.constant 2 10)
-  let s2 (Y n) = n `rem` n2
-      py2 = P.functionToPartition s2 ys
-      px2 = P.functionToPartition (s2 . f) xs
+  -- verify
+  cover 20 "finer" $ py1 `P.isFiner` py2
+  cover 20 "not finer" $ not (py1 `P.isFiner` py2)
 
   py1 `P.isFiner` py2 ==> px1 `P.isFiner` px2
 

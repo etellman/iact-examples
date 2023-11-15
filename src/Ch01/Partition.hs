@@ -1,6 +1,7 @@
 module Ch01.Partition
   ( isFiner,
     partitions,
+    isPartition,
     distribute,
     partitionFor,
     labelFor,
@@ -12,6 +13,7 @@ import Ch01.Set (isSubsetOf)
 import Data.List
   ( findIndex,
     partition,
+    sort,
   )
 import Data.Maybe (fromJust)
 
@@ -44,3 +46,6 @@ functionToPartition _ [] = []
 functionToPartition f (x : xs) =
   let (p1, rest) = partition (\y -> f x == f y) xs
    in (x : p1) : functionToPartition f rest
+
+isPartition :: Ord a => [a] -> [[a]] -> Bool
+isPartition xs xss = (sort . concat) xss == sort xs
