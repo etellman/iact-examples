@@ -6,6 +6,7 @@ module Ch01.Partition
     partitionFor,
     labelFor,
     functionToPartition,
+    samePartition,
   )
 where
 
@@ -49,3 +50,8 @@ functionToPartition f (x : xs) =
 
 isPartition :: Ord a => [a] -> [[a]] -> Bool
 isPartition xs xss = (sort . concat) xss == sort xs
+
+samePartition :: Eq a => a -> a -> [[a]] -> Bool
+samePartition x y xss =
+  let groupFor z = head $ filter (elem z) xss
+   in groupFor x == groupFor y
