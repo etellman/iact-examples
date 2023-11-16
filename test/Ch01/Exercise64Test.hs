@@ -51,8 +51,4 @@ prop_exercise_64 = property $ do
   py1 `P.isFiner` py2 ==> px1 `P.isFiner` px2
 
 tests :: TestTree
-tests =
-  testGroup
-    "Ch01.Exercise64Test"
-    [ testProperty "exercise 64" $ prop_exercise_64
-    ]
+tests = testProperty "Ch01.Exercise64Test" prop_exercise_64

@@ -27,10 +27,5 @@ prop_exercise_72 = property $ do
   -- exercise and verify
   isLte connectedPreorder p1 p2 ==> isLte boolPreorder (phi p1) (phi p2)
 
-
 tests :: TestTree
-tests =
-  testGroup
-    "Ch01.Exercise72Test"
-    [ testProperty "exercise 72" $ prop_exercise_72
-    ]
+tests = testProperty "Ch01.Exercise72Test" prop_exercise_72
