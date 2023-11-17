@@ -10,6 +10,7 @@ import Ch01.MonotoneMapTest
 import Ch01.PartitionTest
 import Ch01.PreorderTest
 import Ch01.PreservingTest
+import Ch01.Proposition73Test
 import Ch01.SetSystemTest
 import Ch01.SetTest
 import Ch01.UpperSetTest
@@ -31,5 +32,6 @@ chapterTests =
       Ch01.Exercise62Test.tests,
       Ch01.Exercise64Test.tests,
       Ch01.Exercise72Test.tests,
+      Ch01.Proposition73Test.tests,
       Ch01.PartitionTest.tests
     ]

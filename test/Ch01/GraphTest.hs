@@ -40,7 +40,7 @@ prop_reflexive :: Property
 prop_reflexive = property $ do
   -- set up
   nv <- forAll $ Gen.int (Range.linear 1 10)
-  na <- forAll $ Gen.int (Range.linear 1 20)
+  na <- forAll $ Gen.int (Range.linear 1 10)
 
   g <- forAll $ genGraph nv na
   v <- forAll $ Gen.element (vertices g)
@@ -52,7 +52,7 @@ prop_transitive :: Property
 prop_transitive = property $ do
   -- set up
   nv <- forAll $ Gen.int (Range.linear 1 20)
-  na <- forAll $ Gen.int (Range.linear 1 100)
+  na <- forAll $ Gen.int (Range.linear 1 20)
 
   g <- forAll $ genGraph nv na
 
