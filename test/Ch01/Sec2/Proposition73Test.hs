@@ -1,4 +1,4 @@
-module Ch01.Proposition73Test (tests) where
+module Ch01.Sec2.Proposition73Test (tests) where
 
 import Data.Set (toList)
 import Hedgehog as H
@@ -36,7 +36,7 @@ prop_reverse = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch01.Proposition73Test"
+    "Ch01.Sec2.Proposition73Test"
     [ testProperty "forward" prop_forward,
       testProperty "reverse" prop_reverse
     ]

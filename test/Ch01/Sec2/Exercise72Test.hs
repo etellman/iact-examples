@@ -1,4 +1,4 @@
-module Ch01.Exercise72Test (tests) where
+module Ch01.Sec2.Exercise72Test (tests) where
 
 import qualified Ch01.Partition as Prt
 import Ch01.Preorder
@@ -30,4 +30,4 @@ prop_exercise_72 = property $ do
   isLte connectedPreorder p1 p2 ==> isLte boolPreorder (phi p1) (phi p2)
 
 tests :: TestTree
-tests = testProperty "Ch01.Exercise72Test" prop_exercise_72
+tests = testProperty "Ch01.Sec2.Exercise72Test" prop_exercise_72

@@ -1,4 +1,4 @@
-module Ch01.Exercise62Test (tests) where
+module Ch01.Sec2.Exercise62Test (tests) where
 
 import Ch01.Preorder
 import Hedgehog as H
@@ -37,4 +37,4 @@ prop_exercise_62 = property $ do
   H.assert $ isLte po (f x) (f x)
 
 tests :: TestTree
-tests = testProperty "Ch01.Exercise62Test" prop_exercise_62
+tests = testProperty "Ch01.Sec2.Exercise62Test" prop_exercise_62

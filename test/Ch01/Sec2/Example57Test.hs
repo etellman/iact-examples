@@ -1,4 +1,4 @@
-module Ch01.MonotoneMapTest (tests) where
+module Ch01.Sec2.Example57Test (tests) where
 
 import Ch01.Set
 import Data.List (nub)
@@ -8,17 +8,6 @@ import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
-
-prop_example55 :: Property
-prop_example55 = property $ do
-  -- set up
-  x <- forAll $ Gen.bool
-  y <- forAll $ Gen.bool
-  let f False = 17 :: Int
-      f True = 24
-
-  -- exercise and verify
-  x <= y ==> f x <= f y
 
 prop_example57 :: Property
 prop_example57 = property $ do
@@ -32,9 +21,4 @@ prop_example57 = property $ do
   (xs `isSubsetOf` ys) ==> (length xs <= length ys)
 
 tests :: TestTree
-tests =
-  testGroup
-    "Ch01.MonotoneMapTest"
-    [ testProperty "example 1.55" prop_example55,
-      testProperty "example 1.57" prop_example57
-    ]
+tests = testProperty "Ch01.Sec2.Example57Test" prop_example57

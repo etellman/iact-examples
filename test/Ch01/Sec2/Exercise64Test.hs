@@ -1,4 +1,4 @@
-module Ch01.Exercise64Test (tests) where
+module Ch01.Sec2.Exercise64Test (tests) where
 
 import qualified Ch01.Partition as P
 import Data.List (nub)
@@ -51,4 +51,4 @@ prop_exercise_64 = property $ do
   py1 `P.isFiner` py2 ==> px1 `P.isFiner` px2
 
 tests :: TestTree
-tests = testProperty "Ch01.Exercise64Test" prop_exercise_64
+tests = testProperty "Ch01.Sec2.Exercise64Test" prop_exercise_64

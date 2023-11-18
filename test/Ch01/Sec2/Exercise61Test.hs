@@ -1,4 +1,4 @@
-module Ch01.Exercise61Test (tests) where
+module Ch01.Sec2.Exercise61Test (tests) where
 
 import Ch01.MonotoneMap
 import Ch01.Preorder
@@ -51,7 +51,7 @@ prop_part_2_and_3 lte generator = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch01.Exercise61Test"
+    "Ch01.Sec2.Exercise61Test"
     [ testProperty "part 1" prop_part_1,
       testProperty "parts 2 and 3" $
         prop_part_2_and_3 (<=) (Gen.list (Range.linear 1 20) Gen.alpha),
