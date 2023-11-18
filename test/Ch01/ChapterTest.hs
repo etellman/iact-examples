@@ -5,6 +5,7 @@ import Ch01.GraphTest
 import Ch01.PartitionTest
 import Ch01.PreorderTest
 import Ch01.PreservingTest
+import Ch01.Sec1.SectionTest
 import Ch01.Sec2.SectionTest
 import Ch01.SetSystemTest
 import Ch01.SetTest
@@ -15,7 +16,8 @@ chapterTests :: TestTree
 chapterTests =
   testGroup
     "Ch01.ChapterTest"
-    [ Ch01.Sec2.SectionTest.sectionTests,
+    [ Ch01.Sec1.SectionTest.sectionTests,
+      Ch01.Sec2.SectionTest.sectionTests,
       Ch01.PreservingTest.tests,
       Ch01.SetSystemTest.tests,
       Ch01.BooleanSystemTest.tests,

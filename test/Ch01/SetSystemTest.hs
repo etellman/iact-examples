@@ -2,25 +2,24 @@ module Ch01.SetSystemTest (tests) where
 
 import Ch01.BooleanSystem
 import Ch01.Joinable
-import Ch01.Set (cartesianProduct)
 import Ch01.SetSystem
 import Data.List (nub, sort)
 import qualified Data.PartialOrd as PO
+import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.HUnit as HU
 import Test.Tasty.Hedgehog
-import TestLib.Assertions
 
 genSystem :: Gen (SetSystem Int)
 genSystem =
   SetSystem
-    <$> (fmap nub)
+    <$> (fmap toList)
     <$> Gen.list
       (Range.constant 0 20)
-      (Gen.list (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
+      (Gen.set (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
 
 prop_simplify :: Property
 prop_simplify = property $ do
@@ -50,66 +49,7 @@ prop_join = property $ do
   H.assert $ disjoint joined
   H.assert $ SetSystem (sets s1 ++ sets s2) PO.<= joined
 
-prop_exercise3 :: Property
-prop_exercise3 = property $ do
-  -- set up
-  let systems = partitions ['a' .. 'e']
-  system1 <- forAll $ Gen.element systems
-  system2 <- forAll $ Gen.element systems
-
-  -- exercise
-  let joined = join system1 system2
-
-  -- verify
-  H.assert $ system1 PO.<= joined
-  H.assert $ system2 PO.<= joined
-
-  system3 <- forAll $ Gen.element systems
-  system1 PO.<= system3 && system2 PO.<= system3 ==> joined PO.<= system3
-
-convertIndex :: Eq a => SetSystem a -> SetSystem a -> Int -> Int
-convertIndex (SetSystem xs) ySystem i =
-  let x = head $ xs !! i
-   in labelFor ySystem x
-
-prop_example47 :: Property
-prop_example47 = property $ do
-  -- set up
-  let systems = partitions ['a' .. 'e']
-  system1 <- forAll $ Gen.element systems
-  system2 <- forAll $ Gen.element systems
-
-  c <- forAll $ Gen.element ['a' .. 'e']
-
-  let p1 = labelFor system1
-      p2 = labelFor system2
-      p1To2 = convertIndex system1 system2
-
-  -- exercise and verify
-  system1 PO.<= system2 ==> (p1To2 . p1) c == p2 c
-
 -- the coarsest partition maps everything to 0
-prop_example48Coarse :: Property
-prop_example48Coarse = property $ do
-  -- set up
-  let xs = ['a' .. 'z']
-      coarse = SetSystem [xs]
-
-  -- exercise and verify
-  c <- forAll $ Gen.element xs
-  labelFor coarse c === const 0 c
-
--- the finest partition is the identity function, if the elements are used as the partition labels
-prop_example48Fine :: Property
-prop_example48Fine = property $ do
-  -- set up
-  let xs = [0 .. 20] :: [Int]
-      fine = SetSystem $ fmap (\c -> [c]) xs
-
-  -- exercise and verify
-  i <- forAll $ Gen.int (Range.constant 0 (length xs - 1))
-  labelFor fine (xs !! i) === id i
-
 tests :: TestTree
 tests =
   testGroup
@@ -121,10 +61,6 @@ tests =
         assertBool "empty" $ disjoint $ (SetSystem [[]] :: SetSystem Char),
       testProperty "simplify" prop_simplify,
       testProperty "join" prop_join,
-      testCase "exercise 1.2" $ do
-        let s1 = SetSystem [[11, 12], [13], [21], [22, 23]] :: SetSystem Int
-            s2 = SetSystem [[11], [21], [12, 22], [13, 23]]
-        join s1 s2 @?= SetSystem [[11, 12, 13, 22, 23], [21]],
       testGroup
         "generative properties"
         [ testCase
@@ -154,19 +90,5 @@ tests =
 
               assertBool "preserve order" $
                 join phiA phiB PO.<= BooleanSystem (phi $ join sA sB)
-        ],
-      testProperty "exercise 1.3" prop_exercise3,
-      testCase "exercise 1.37" $ do
-        -- set up
-        let xs = partitions ['a', 'b', 'c']
-            pairs = cartesianProduct xs xs
-
-        -- verify
-        length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12,
-      testProperty "example 1.47" prop_example47,
-      testGroup
-        "example 1.48"
-        [ testProperty "coarse" prop_example48Coarse,
-          testProperty "fine" prop_example48Fine
         ]
     ]

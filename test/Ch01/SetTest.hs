@@ -51,31 +51,11 @@ prop_disjointUnion = property $ do
   fmap snd xs' === xs
   fmap snd ys' === ys
 
-prop_example1_21 :: Property
-prop_example1_21 = property $ do
-  -- set up
-  let ss = [('a', [11, 12]), ('b', [13]), ('c', [21]), ('d', [22, 23])] :: [(Char, [Int])]
-      f 11 = 'a'
-      f 12 = 'a'
-      f 13 = 'b'
-      f 21 = 'c'
-      f 22 = 'd'
-      f 23 = 'd'
-      f _ = undefined
-  x <- forAll $ Gen.element (concat $ fmap snd ss)
-
-  -- exercise
-  let xs = lookup (f x) ss
-
-  -- verify
-  H.assert $ fmap (elem x) xs == Just True
-
 tests :: TestTree
 tests =
   testGroup
     "Ch01.SetTest"
     [ testProperty "power set" prop_powerSet,
       testProperty "Cartesian product" prop_cartesianProduct,
-      testProperty "disjoint union" prop_disjointUnion,
-      testProperty "example 1.21" prop_example1_21
+      testProperty "disjoint union" prop_disjointUnion
     ]
