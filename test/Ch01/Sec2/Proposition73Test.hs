@@ -13,20 +13,19 @@ prop_forward = property $ do
   xs <- forAll $ toList <$> Gen.set (Range.constant 1 20) (Gen.int $ Range.constant 0 100)
 
   n <- forAll $ Gen.element xs
-  let u = filter (>= n) xs
+  let us = filter (>= n) xs
 
-  p <- forAll $ Gen.element u
+  p <- forAll $ Gen.element us
   q <- forAll $ Gen.element (filter (>= p) xs)
 
-  H.assert $ q `elem` u
+  H.assert $ q `elem` us
 
 prop_reverse :: Property
 prop_reverse = property $ do
   xs <- forAll $ toList <$> Gen.set (Range.constant 1 20) (Gen.int $ Range.constant 0 100)
 
   n <- forAll $ Gen.element xs
-  let u = filter (>= n) xs
-      fu = flip elem u
+  let fu x = x `elem` filter (>= n) xs
 
   p <- forAll $ Gen.element xs
   q <- forAll $ Gen.element xs

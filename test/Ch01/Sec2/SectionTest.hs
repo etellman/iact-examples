@@ -9,6 +9,7 @@ import Ch01.Sec2.Exercise61Test
 import Ch01.Sec2.Exercise62Test
 import Ch01.Sec2.Exercise64Test
 import Ch01.Sec2.Exercise72Test
+import Ch01.Sec2.Exercise74Test
 import Ch01.Sec2.Proposition73Test
 import Test.Tasty
 
@@ -25,5 +26,6 @@ sectionTests =
       Ch01.Sec2.Exercise62Test.tests,
       Ch01.Sec2.Exercise64Test.tests,
       Ch01.Sec2.Exercise72Test.tests,
-      Ch01.Sec2.Proposition73Test.tests
+      Ch01.Sec2.Proposition73Test.tests,
+      Ch01.Sec2.Exercise74Test.tests
     ]
