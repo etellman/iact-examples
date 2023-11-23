@@ -7,6 +7,7 @@ import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.Hedgehog
+import Test.Tasty.HUnit
 
 prop_powerSet :: Property
 prop_powerSet = property $ do
@@ -57,5 +58,11 @@ tests =
     "Ch01.SetTest"
     [ testProperty "power set" prop_powerSet,
       testProperty "Cartesian product" prop_cartesianProduct,
-      testProperty "disjoint union" prop_disjointUnion
+      testProperty
+        "disjoint union"
+        prop_disjointUnion,
+      testCase "subset" $ do
+        assertBool "subset" $ "a" `isSubsetOf` "ab"
+        assertBool "subset" $ "" `isSubsetOf` "ab"
+        assertBool "subset" $ "ab" `isSubsetOf` "acb"
     ]
