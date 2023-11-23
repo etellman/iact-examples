@@ -17,12 +17,12 @@ import qualified Hedgehog.Gen as Gen
 
 infixr 0 ==>
 
--- | verifies that f(x) == g(x) for a reasonable number of pairs
+-- | verifies that a values is a meet for a preorder and subset of elements
 assertMeet :: (Show a, Eq a) => Preorder a -> [a] -> a -> PropertyT IO ()
-assertMeet po as p = do
+assertMeet po xs p = do
   let lte = isLte po
 
-  a <- forAll $ Gen.element as
+  a <- forAll $ Gen.element xs
   assert $ p `lte` a
 
   q <- forAll $ Gen.element $ elements po

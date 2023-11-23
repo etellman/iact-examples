@@ -21,11 +21,7 @@ prop_definition76 = property $ do
   as <- forAll $ toList <$> Gen.set (Range.constant 1 20) (Gen.int $ (Range.linear from to))
   n <- forAll $ Gen.int (Range.constant 0 5)
 
-  -- select a meet
-  let p = max from (minimum as - n)
-
-  -- verify meet properties
-  assertMeet po as p
+  assertMeet po as (max from (minimum as - n))
 
 tests :: TestTree
 tests = testProperty "Ch01.Sec3.Definition76Test" prop_definition76
