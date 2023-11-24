@@ -1,10 +1,6 @@
 module Ch01.Sec2.Exercise74Test (tests) where
 
-import Ch01.Preorder
-  ( Preorder (..),
-    elements,
-    isLte,
-  )
+import Ch01.Preorder (Preorder (..))
 import Ch01.Set (isSubsetOf)
 import Ch01.UpperSet (upperSets)
 import Control.Monad (guard)
@@ -47,14 +43,14 @@ prop_ex74 fstarFor = property $ do
 
   let f (P p) = Q (m * p)
       fstar = fstarFor f ps
-      ppo = Preorder isSubsetOf (upperSets $ Preorder (<=) ps)
-      qpo = Preorder isSubsetOf (upperSets $ Preorder (<=) (fmap f ps))
+      Preorder plte pxs = Preorder isSubsetOf (upperSets $ Preorder (<=) ps)
+      Preorder qlte qxs = Preorder isSubsetOf (upperSets $ Preorder (<=) (fmap f ps))
 
-  us1 <- forAll $ Gen.element (elements qpo)
-  us2 <- forAll $ Gen.element (elements qpo)
+  us1 <- forAll $ Gen.element qxs
+  us2 <- forAll $ Gen.element qxs
 
-  fmap fstar (elements qpo) === elements ppo
-  isLte qpo us1 us2 ==> isLte ppo (fstar us1) (fstar us2)
+  fmap fstar qxs === pxs
+  qlte us1 us2 ==> plte (fstar us1) (fstar us2)
 
 tests :: TestTree
 tests =

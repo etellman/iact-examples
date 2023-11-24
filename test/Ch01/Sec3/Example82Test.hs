@@ -2,7 +2,7 @@ module Ch01.Sec3.Example82Test (tests) where
 
 import Ch01.Preorder (Preorder (..))
 import Ch01.Set (isSubsetOf, powerSet)
-import Data.List (intersect, union, sort)
+import Data.List (intersect, union)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -23,7 +23,7 @@ prop_powerSet combine assertion = property $ do
   xs2 <- forAll $ Gen.element xss
 
   let xss' = [xs1, xs2]
-  let x = sort $ foldr combine [] xss'
+  let x = foldr combine [] xss'
 
   assertion (Preorder isSubsetOf xss) xss' x
 

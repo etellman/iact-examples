@@ -3,8 +3,8 @@ module Ch01.Preorder
     productPreorder,
     connections,
     opposite,
-    elements,
     isLte,
+    isIsomorphic,
   )
 where
 
@@ -13,11 +13,13 @@ import Control.Monad (guard)
 
 data Preorder a = Preorder (a -> a -> Bool) [a]
 
-isLte :: Eq a => Preorder a -> a -> a -> Bool
-isLte (Preorder lte xs) x y = x `lte` y && x `elem` xs && y `elem` xs
+isIsomorphic :: Preorder a -> a -> a -> Bool
+isIsomorphic po x y = isLte po x y && isLte po y x
 
-elements :: Preorder a -> [a]
-elements (Preorder _ xs) = xs
+isLte :: Preorder a -> a -> a -> Bool
+isLte (Preorder lte xs) x y =
+  let isElem a = any (\b -> b `lte` a && a `lte` b) xs
+   in x `lte` y && isElem x && isElem y
 
 connections :: Eq a => Preorder a -> [(a, a)]
 connections (Preorder lte xs) = do
