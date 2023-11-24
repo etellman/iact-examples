@@ -5,6 +5,7 @@ module Ch01.Preorder
     opposite,
     isLte,
     isIsomorphic,
+    allElements,
   )
 where
 
@@ -15,6 +16,10 @@ data Preorder a = Preorder (a -> a -> Bool) [a]
 
 isIsomorphic :: Preorder a -> a -> a -> Bool
 isIsomorphic po x y = isLte po x y && isLte po y x
+
+-- | everything in the preorder is less than or equal to x
+allElements :: Preorder a -> (a -> Bool) -> Bool
+allElements (Preorder _ xs) f = all f xs
 
 isLte :: Preorder a -> a -> a -> Bool
 isLte (Preorder lte xs) x y =

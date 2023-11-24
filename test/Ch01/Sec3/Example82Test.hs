@@ -19,10 +19,7 @@ prop_powerSet combine assertion = property $ do
   xs <- forAll $ toList <$> Gen.set (Range.constant 4 10) Gen.alpha
   let xss = powerSet xs
 
-  xs1 <- forAll $ Gen.element xss
-  xs2 <- forAll $ Gen.element xss
-
-  let xss' = [xs1, xs2]
+  xss' <- forAll $ Gen.subsequence xss
   let x = foldr combine [] xss'
 
   assertion (Preorder isSubsetOf xss) xss' x
