@@ -1,24 +1,29 @@
 module Ch01.Sec3.Example83Test (tests) where
 
 import Ch01.Preorder (Preorder (..))
+import Data.Set (fromList, toList)
 import Hedgehog as H
+import qualified Hedgehog.Gen as Gen
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 prop_booleans ::
   (Bool -> Bool -> Bool) ->
+  Bool ->
   (Preorder Bool -> [Bool] -> Bool -> PropertyT IO ()) ->
   Property
-prop_booleans combine assertion = property $ do
+prop_booleans combine initial verify = property $ do
   let xs = [True, False]
-  assertion (Preorder (<=) xs) xs (foldr1 combine xs)
+  xs' <- forAll $ toList <$> Gen.subset (fromList xs)
+
+  verify (Preorder (<=) xs) xs' (foldr combine initial xs')
 
 prop_meet :: Property
-prop_meet = prop_booleans (&&) assertMeet
+prop_meet = prop_booleans (&&) True assertMeet
 
 prop_join :: Property
-prop_join = prop_booleans (||) assertJoin
+prop_join = prop_booleans (||) False assertJoin
 
 tests :: TestTree
 tests =
