@@ -7,7 +7,6 @@ where
 
 import Ch01.Preorder as PO
 import Hedgehog
-import qualified Hedgehog.Gen as Gen
 import TestLib.Generators (preorderElement)
 
 (==>) :: MonadTest m => Bool -> Bool -> m ()
@@ -19,18 +18,12 @@ infixr 0 ==>
 assertMeet :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
 assertMeet po xs' p = do
   let lte = isLte po
-  x <- forAll $ Gen.element xs'
-  assert $ p `lte` x
+
+  assert $ all (p `lte`) xs'
 
   q <- forAll $ preorderElement po
-  PO.allElements po (q `lte`) ==> p `lte` q
+  all (q `lte`) xs' ==> q `lte` p
 
 -- | verifies that a values is a join for a preorder and subset of elements
-assertJoin :: Show a => PO.Preorder [a] -> [[a]] -> [a] -> PropertyT IO ()
-assertJoin po xs' p = do
-  let lte = isLte po
-  x <- forAll $ Gen.element xs'
-  assert $ x `lte` p
-
-  q <- forAll $ preorderElement po
-  PO.allElements po (`lte` q) ==> q `lte` p
+assertJoin :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
+assertJoin (Preorder lte xs) xs' p = assertMeet (Preorder (flip lte) xs) xs' p

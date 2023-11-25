@@ -1,5 +1,6 @@
 module Ch01.Sec3.Definition76Test (tests) where
 
+import Ch01.Meet (meet)
 import Ch01.Preorder (Preorder (..))
 import Data.Set (toList)
 import Hedgehog as H
@@ -9,19 +10,37 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-prop_definition76 :: Property
-prop_definition76 = property $ do
+prop_nonEmpty :: Property
+prop_nonEmpty = property $ do
   -- set up
-  let from = 1
-      to = 1000
+  xs <-
+    forAll $
+      Gen.set
+        (Range.constant 1 100)
+        (Gen.int (Range.linearBounded :: Range Int))
+  xs' <- forAll $ toList <$> Gen.subset xs
 
-  let xs = [from .. to]
-      po = Preorder (<=) xs
+  let po = Preorder (<=) (toList xs)
 
-  as <- forAll $ toList <$> Gen.set (Range.constant 1 20) (Gen.int $ (Range.linear from to))
-  n <- forAll $ Gen.int (Range.constant 0 5)
+  -- exercise and verify
+  assertMeet po xs' (meet po xs')
 
-  assertMeet po as (max from (minimum as - n))
+prop_empty :: Property
+prop_empty = property $ do
+  -- set up
+  xs <-
+    forAll $
+      Gen.set
+        (Range.constant 1 100)
+        (Gen.int (Range.linearBounded :: Range Int))
+
+  -- exercise and verify
+  assertMeet (Preorder (<=) (toList xs)) [] (maximum xs)
 
 tests :: TestTree
-tests = testProperty "Ch01.Sec3.Definition76Test" prop_definition76
+tests =
+  testGroup
+    "Ch01.Sec3.Definition76Test"
+    [ testProperty "non-empty" prop_nonEmpty,
+      testProperty "empty" prop_empty
+    ]
