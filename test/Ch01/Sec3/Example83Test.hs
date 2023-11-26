@@ -26,16 +26,10 @@ prop_booleans fromBool toBool verify = property $ do
   -- verify
   verify (Preorder (<=) xs) xs' meet
 
-prop_meet :: Property
-prop_meet = prop_booleans All getAll assertMeet
-
-prop_join :: Property
-prop_join = prop_booleans Any getAny assertJoin
-
 tests :: TestTree
 tests =
   testGroup
     "Ch01.Sec3.Example83Test"
-    [ testProperty "meet" prop_meet,
-      testProperty "join" prop_join
+    [ testProperty "meet" $ prop_booleans All getAll assertMeet,
+      testProperty "join" $ prop_booleans Any getAny assertJoin
     ]

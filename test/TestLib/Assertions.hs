@@ -5,6 +5,7 @@ module TestLib.Assertions
   )
 where
 
+import Text.Printf (printf)
 import Ch01.Preorder as PO
 import Hedgehog
 import TestLib.Generators (preorderElement)
@@ -18,6 +19,10 @@ infixr 0 ==>
 assertMeet :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
 assertMeet po xs' p = do
   let lte = isLte po
+
+  footnote $ printf "p: %s; xs': %s" (show p) (show xs')
+  footnote $ show $ p `lte` (xs' !! 0)
+  footnote $ show $ (xs' !! 0) `lte` p
 
   assert $ all (p `lte`) xs'
 
