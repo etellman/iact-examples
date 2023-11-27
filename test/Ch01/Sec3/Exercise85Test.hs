@@ -9,8 +9,8 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-isDivisibleBy :: Int -> Int -> Bool
-isDivisibleBy m n = m `rem` n == 0
+divides :: Int -> Int -> Bool
+divides m n = n `rem` m == 0
 
 prop_exercise85 ::
   (Int -> Int -> Int) ->
@@ -27,12 +27,12 @@ prop_exercise85 f verify = property $ do
           (Gen.int $ (Range.linear 1 15))
 
   -- exercise and verify
-  verify (Preorder isDivisibleBy xs) xs' (foldr1 f xs')
+  verify (Preorder divides xs) xs' (foldr1 f xs')
 
 tests :: TestTree
 tests =
   testGroup
     "Ch01.Sec3.Exercise85Test"
-    [ testProperty "meet" $ prop_exercise85 lcm assertMeet,
-      testProperty "join" $ prop_exercise85 gcd assertJoin
+    [ testProperty "meet" $ prop_exercise85 gcd assertMeet,
+      testProperty "join" $ prop_exercise85 lcm assertJoin
     ]
