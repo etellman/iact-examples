@@ -16,11 +16,11 @@ prop_galois = property $ do
   let g = (n *)
       f = divide n
 
-  x <- forAll $ Gen.int (Range.linear 1 1000)
-  y <- forAll $ Gen.int (Range.linear 1 1000)
+  p <- forAll $ Gen.int (Range.linear 1 1000)
+  q <- forAll $ Gen.int (Range.linear 1 1000)
 
   -- exercise and verify
-  (f x <= y) === (x <= g y)
+  (f p <= q) === (p <= g q)
 
 tests :: TestTree
 tests =
