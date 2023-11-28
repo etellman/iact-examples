@@ -5,7 +5,7 @@ module TestLib.Assertions
   )
 where
 
-import Ch01.Preorder as PO
+import Ch1.Preorder as PO
 import Hedgehog
 import TestLib.Generators (preorderElement)
 

@@ -3,7 +3,7 @@ module TestLib.Generators
   )
 where
 
-import Ch01.Preorder
+import Ch1.Preorder
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
 
