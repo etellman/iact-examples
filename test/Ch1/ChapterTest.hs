@@ -8,6 +8,7 @@ import Ch1.PreservingTest
 import Ch1.Sec1.SectionTest
 import Ch1.Sec2.SectionTest
 import Ch1.Sec3.SectionTest
+import Ch1.Sec4.SectionTest
 import Ch1.SetSystemTest
 import Ch1.SetTest
 import Ch1.UpperSetTest
@@ -20,6 +21,7 @@ chapterTests =
     [ Ch1.Sec1.SectionTest.sectionTests,
       Ch1.Sec2.SectionTest.sectionTests,
       Ch1.Sec3.SectionTest.sectionTests,
+      Ch1.Sec4.SectionTest.sectionTests,
       Ch1.PreservingTest.tests,
       Ch1.SetSystemTest.tests,
       Ch1.BooleanSystemTest.tests,
