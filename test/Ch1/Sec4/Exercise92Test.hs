@@ -1,4 +1,4 @@
-module Ch1.Sec4.Example91Test (tests) where
+module Ch1.Sec4.Exercise92Test (tests) where
 
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -10,16 +10,16 @@ newtype X = X Int deriving (Show, Eq, Ord)
 
 newtype Y = Y Int deriving (Show, Eq, Ord)
 
-divide :: Int -> X -> Y
-divide n (X x) = Y . ceiling $ (fromIntegral x :: Double) / fromIntegral n
+divide :: Int -> Y -> X
+divide n (Y y) = X . floor $ (fromIntegral y :: Double) / fromIntegral n
 
 prop_galois :: Property
 prop_galois = property $ do
   -- set up
-  n <- forAll $ Gen.int (Range.linear 2 10)
+  n <- forAll $ Gen.int (Range.constant 2 10)
 
-  let f = divide n
-      g (Y y) = X (n * y)
+  let f (X x) = Y (n * x)
+      g = divide n
 
   x <- forAll $ X <$> Gen.int (Range.constant 1 20)
   y <- forAll $ Y <$> Gen.int (Range.constant 1 20)
@@ -28,4 +28,4 @@ prop_galois = property $ do
   (f x <= y) === (x <= g y)
 
 tests :: TestTree
-tests = testProperty "Ch1.Sec4.Example91Test" prop_galois
+tests = testProperty "Ch1.Sec4.Exercise92Test" prop_galois
