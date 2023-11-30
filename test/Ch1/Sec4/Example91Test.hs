@@ -6,12 +6,12 @@ import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
-newtype X = X Int deriving (Show, Eq, Ord)
+newtype P = P Int deriving (Show, Eq, Ord)
 
-newtype Y = Y Int deriving (Show, Eq, Ord)
+newtype Q = Q Int deriving (Show, Eq, Ord)
 
-divide :: Int -> X -> Y
-divide n (X x) = Y . ceiling $ (fromIntegral x :: Double) / fromIntegral n
+divide :: Int -> P -> Q
+divide n (P p) = Q . ceiling $ (fromIntegral p :: Double) / fromIntegral n
 
 prop_galois :: Property
 prop_galois = property $ do
@@ -19,13 +19,13 @@ prop_galois = property $ do
   n <- forAll $ Gen.int (Range.linear 2 10)
 
   let f = divide n
-      g (Y y) = X (n * y)
+      g (Q q) = P (n * q)
 
-  x <- forAll $ X <$> Gen.int (Range.constant 1 20)
-  y <- forAll $ Y <$> Gen.int (Range.constant 1 20)
+  p <- forAll $ P <$> Gen.int (Range.constant 1 20)
+  q <- forAll $ Q <$> Gen.int (Range.constant 1 20)
 
   -- exercise and verify
-  (f x <= y) === (x <= g y)
+  (f p <= q) === (p <= g q)
 
 tests :: TestTree
 tests = testProperty "Ch1.Sec4.Example91Test" prop_galois
