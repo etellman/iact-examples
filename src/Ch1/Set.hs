@@ -32,8 +32,8 @@ disjointUnion xs ys = fmap ((,) 1) xs ++ fmap ((,) 2) ys
 isSubsetOf :: Eq a => [a] -> [a] -> Bool
 isSubsetOf xs ys = all (flip elem ys) xs
 
-op :: Ord a => [a] -> [[a]] -> [[a]]
-op xs xss =
+closureOp :: Ord a => [a] -> [[a]] -> [[a]]
+closureOp xs xss =
   let (with, without) = partition (not . null . intersect xs) xss
       merged = foldr (\ys zs -> sort $ union ys zs) [] with
    in merged : without
@@ -42,8 +42,8 @@ closure :: Ord a => [[a]] -> [[a]]
 closure [] = []
 closure xss =
   let xss' = sort $ fmap sort $ nub xss
-      merged = foldr op xss' xss'
-   in if (merged `intersect` xss' == xss') then xss' else closure merged
+      merged = foldr closureOp xss' xss'
+   in if merged == xss' then xss' else closure merged
 
 -- | all the sets that share at least one element
 overlaps :: Eq a => [[a]] -> [[a]]
