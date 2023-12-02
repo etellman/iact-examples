@@ -2,12 +2,13 @@ module Ch1.SetTest (tests) where
 
 import Ch1.Set
 import Data.List (nub, partition, sort)
+import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Test.Tasty
-import Test.Tasty.Hedgehog
 import Test.Tasty.HUnit
+import Test.Tasty.Hedgehog
 
 prop_powerSet :: Property
 prop_powerSet = property $ do
@@ -52,15 +53,32 @@ prop_disjointUnion = property $ do
   fmap snd xs' === xs
   fmap snd ys' === ys
 
+-- | a non-empty set of characters
+genCharSet :: Gen [Char]
+genCharSet = toList <$> Gen.set (Range.constant 1 10) Gen.alpha
+
+prop_closure :: Property
+prop_closure = property $ do
+  -- set up
+  xss <- forAll $ toList <$> Gen.set (Range.constant 0 30) genCharSet
+  cover 50 "overlaps" $ not . null $ overlaps xss
+  let elements = sort . nub . concat
+
+  -- exercise
+  let yss = closure xss
+
+  -- verify
+  elements yss === elements xss
+  overlaps yss === []
+
 tests :: TestTree
 tests =
   testGroup
     "Ch1.SetTest"
     [ testProperty "power set" prop_powerSet,
       testProperty "Cartesian product" prop_cartesianProduct,
-      testProperty
-        "disjoint union"
-        prop_disjointUnion,
+      testProperty "closure" prop_closure,
+      testProperty "disjoint union" prop_disjointUnion,
       testCase "subset" $ do
         assertBool "subset" $ "a" `isSubsetOf` "ab"
         assertBool "subset" $ "" `isSubsetOf` "ab"
