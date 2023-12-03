@@ -4,15 +4,15 @@ module Ch1.Set
     cartesianProduct,
     disjointUnion,
     closureBy,
-    overlaps,
+    overlapsBy,
     sameElementsBy,
   )
 where
 
 import Control.Monad (filterM)
 import Data.List
-  ( intersect,
-    intersectBy,
+  ( intersectBy,
+    nubBy,
     partition,
     unionBy,
   )
@@ -34,11 +34,13 @@ isSubsetOf xs ys = all (flip elem ys) xs
 
 sameElementsBy :: (a -> a -> Bool) -> [a] -> [a] -> Bool
 sameElementsBy eq xs ys =
-  length xs == length ys && length xs == length (intersectBy eq xs ys)
+  let xs' = nubBy eq xs
+      ys' = nubBy eq ys
+   in length xs' == length ys' && length xs' == length (intersectBy eq xs' ys')
 
 closureOp :: (a -> a -> Bool) -> [a] -> [[a]] -> [[a]]
 closureOp eq xs xss =
-  let (with, without) = partition (not . null . intersectBy eq xs) xss
+  let (without, with) = partition (null . intersectBy eq xs) xss
       merged = foldr (\ys zs -> unionBy eq ys zs) [] with
    in merged : without
 
@@ -51,12 +53,12 @@ closureBy eq xss =
         else closureBy eq merged
 
 -- | all the sets that share at least one element
-overlaps :: Eq a => [[a]] -> [[a]]
-overlaps [] = []
-overlaps (xs : xss) =
-  let filtered = filter (not . null . intersect xs) xss
+overlapsBy :: (a -> a -> Bool) -> [[a]] -> [[a]]
+overlapsBy _ [] = []
+overlapsBy eq (xs : xss) =
+  let filtered = filter (not . null . intersectBy eq xs) xss
       with =
         if null $ filtered
           then []
           else xs : filtered
-   in with ++ overlaps xss
+   in with ++ overlapsBy eq xss

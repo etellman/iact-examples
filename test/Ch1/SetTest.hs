@@ -61,7 +61,7 @@ prop_closureBy :: Property
 prop_closureBy = property $ do
   -- set up
   xss <- forAll $ toList <$> Gen.set (Range.constant 0 30) genCharSet
-  cover 50 "overlaps" $ not . null $ overlaps xss
+  cover 50 "overlaps" $ not . null $ overlapsBy (==) xss
   let elements = sort . nub . concat
 
   -- exercise
@@ -69,7 +69,7 @@ prop_closureBy = property $ do
 
   -- verify
   elements yss === elements xss
-  overlaps yss === []
+  overlapsBy (==) yss === []
 
 prop_sameElementsBy :: Property
 prop_sameElementsBy = property $ do
