@@ -57,19 +57,29 @@ prop_disjointUnion = property $ do
 genCharSet :: Gen [Char]
 genCharSet = toList <$> Gen.set (Range.constant 1 10) Gen.alpha
 
-prop_closure :: Property
-prop_closure = property $ do
+prop_closureBy :: Property
+prop_closureBy = property $ do
   -- set up
   xss <- forAll $ toList <$> Gen.set (Range.constant 0 30) genCharSet
   cover 50 "overlaps" $ not . null $ overlaps xss
   let elements = sort . nub . concat
 
   -- exercise
-  let yss = closure xss
+  let yss = closureBy (==) xss
 
   -- verify
   elements yss === elements xss
   overlaps yss === []
+
+prop_sameElementsBy :: Property
+prop_sameElementsBy = property $ do
+  -- set up
+  characters <- forAll $ Gen.set (Range.constant 1 5) Gen.alpha
+  xs <- forAll $ toList <$> Gen.subset characters
+  ys <- forAll $ toList <$> Gen.subset characters
+
+  cover 2 "same" $ sort xs == sort ys
+  sameElementsBy (==) xs ys === (sort xs == sort ys)
 
 tests :: TestTree
 tests =
@@ -77,8 +87,9 @@ tests =
     "Ch1.SetTest"
     [ testProperty "power set" prop_powerSet,
       testProperty "Cartesian product" prop_cartesianProduct,
-      testProperty "closure" prop_closure,
+      testProperty "closure" prop_closureBy,
       testProperty "disjoint union" prop_disjointUnion,
+      testProperty "same elements" prop_sameElementsBy,
       testCase "subset" $ do
         assertBool "subset" $ "a" `isSubsetOf` "ab"
         assertBool "subset" $ "" `isSubsetOf` "ab"

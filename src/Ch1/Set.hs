@@ -3,18 +3,18 @@ module Ch1.Set
     isSubsetOf,
     cartesianProduct,
     disjointUnion,
-    closure,
+    closureBy,
     overlaps,
+    sameElementsBy,
   )
 where
 
 import Control.Monad (filterM)
 import Data.List
   ( intersect,
-    nub,
+    intersectBy,
     partition,
-    sort,
-    union,
+    unionBy,
   )
 
 powerSet :: [a] -> [[a]]
@@ -32,18 +32,23 @@ disjointUnion xs ys = fmap ((,) 1) xs ++ fmap ((,) 2) ys
 isSubsetOf :: Eq a => [a] -> [a] -> Bool
 isSubsetOf xs ys = all (flip elem ys) xs
 
-closureOp :: Ord a => [a] -> [[a]] -> [[a]]
-closureOp xs xss =
-  let (with, without) = partition (not . null . intersect xs) xss
-      merged = foldr (\ys zs -> sort $ union ys zs) [] with
+sameElementsBy :: (a -> a -> Bool) -> [a] -> [a] -> Bool
+sameElementsBy eq xs ys =
+  length xs == length ys && length xs == length (intersectBy eq xs ys)
+
+closureOp :: (a -> a -> Bool) -> [a] -> [[a]] -> [[a]]
+closureOp eq xs xss =
+  let (with, without) = partition (not . null . intersectBy eq xs) xss
+      merged = foldr (\ys zs -> unionBy eq ys zs) [] with
    in merged : without
 
-closure :: Ord a => [[a]] -> [[a]]
-closure [] = []
-closure xss =
-  let xss' = sort $ fmap sort $ nub xss
-      merged = foldr closureOp xss' xss'
-   in if merged == xss' then xss' else closure merged
+closureBy :: (a -> a -> Bool) -> [[a]] -> [[a]]
+closureBy _ [] = []
+closureBy eq xss =
+  let merged = foldr (closureOp eq) xss xss
+   in if sameElementsBy (sameElementsBy eq) merged xss
+        then xss
+        else closureBy eq merged
 
 -- | all the sets that share at least one element
 overlaps :: Eq a => [[a]] -> [[a]]
