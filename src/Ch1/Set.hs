@@ -48,8 +48,9 @@ closureBy :: (a -> a -> Bool) -> [[a]] -> [[a]]
 closureBy _ [] = []
 closureBy eq xss =
   let merged = foldr (closureOp eq) xss xss
-   in if sameElementsBy (sameElementsBy eq) merged xss
-        then xss
+      eq' = sameElementsBy eq
+   in if sameElementsBy eq' merged xss
+        then nubBy eq' xss
         else closureBy eq merged
 
 -- | all the sets that share at least one element
