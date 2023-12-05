@@ -1,6 +1,7 @@
 module Ch1.Sec4.SectionTest (sectionTests) where
 
 import Ch1.Sec4.Example91Test
+import Ch1.Sec4.Example96Test
 import Ch1.Sec4.Exercise92Test
 import Ch1.Sec4.Exercise93Test
 import Ch1.Sec4.Exercise97Test
@@ -14,6 +15,7 @@ sectionTests =
     [ Ch1.Sec4.Example91Test.tests,
       Ch1.Sec4.Exercise92Test.tests,
       Ch1.Sec4.Exercise93Test.tests,
+      Ch1.Sec4.Example96Test.tests,
       Ch1.Sec4.Exercise97Test.tests,
       Ch1.Sec4.Proposition101Test.tests
     ]
