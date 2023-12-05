@@ -21,8 +21,8 @@ genSs =
 g :: Int -> S -> T
 g n (S s) = T (s `rem` n)
 
-prop_exercise97Left :: Property
-prop_exercise97Left = property $ do
+prop_left :: Property
+prop_left = property $ do
   -- set up
   ss <- forAll genSs
   sss <- forAll $ Gen.element (partitions ss)
@@ -31,8 +31,8 @@ prop_exercise97Left = property $ do
   -- exercise
   checkLeftAdjunct sss (g n)
 
-prop_exercise97Right :: Property
-prop_exercise97Right = property $ do
+prop_right :: Property
+prop_right = property $ do
   -- set up
   ss <- forAll genSs
   n <- forAll $ Gen.int (Range.constant 2 20)
@@ -45,6 +45,6 @@ tests :: TestTree
 tests =
   testGroup
     "Ch1.Sec4.Exercise97Test"
-    [ testProperty "left" prop_exercise97Left,
-      testProperty "right" prop_exercise97Right
+    [ testProperty "left" prop_left,
+      testProperty "right" prop_right
     ]
