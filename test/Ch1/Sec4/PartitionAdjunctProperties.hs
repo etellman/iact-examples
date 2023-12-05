@@ -3,6 +3,8 @@ module Ch1.Sec4.PartitionAdjunctProperties
     T (..),
     checkRightAdjunct,
     checkLeftAdjunct,
+    tToSPartition,
+    sToTPartition,
   )
 where
 
@@ -20,34 +22,43 @@ newtype S = S Int deriving (Show, Eq, Ord)
 
 newtype T = T Int deriving (Show, Eq, Ord)
 
-checkRightAdjunct :: [S] -> [[T]] -> (S -> T) -> PropertyT IO ()
-checkRightAdjunct ss tss g = do
-  -- exercise
+tToSPartition :: [S] -> (S -> T) -> [[T]] -> [[S]]
+tToSPartition ss g tp =
   let ssFor t = filter (\s -> g s == t) ss
-      sss = concat $ (fmap . fmap) ssFor tss
+   in concat $ (fmap . fmap) ssFor tp
 
-  -- verify
-  H.assert $ sameElementsBy (==) (concat sss) ss
-  overlapsBy (==) sss === []
-
-  s1 <- forAll $ Gen.element ss
-  s2 <- forAll $ Gen.element ss
-  cover 20 "same S partition" (samePartition sss s1 s2)
-
-  (samePartition sss s1 s2) ==> samePartition tss (g s1) (g s2)
+sToTPartition :: (S -> T) -> [[S]] -> [[T]]
+sToTPartition g sp = closureBy (==) $ (fmap . fmap) g sp
 
 checkLeftAdjunct :: [[S]] -> (S -> T) -> PropertyT IO ()
-checkLeftAdjunct sss g = do
+checkLeftAdjunct sp g = do
+  -- set up
+  let ss = concat sp
+
   -- exercise
-  let tss = closureBy (==) $ (fmap . fmap) g sss
-      ss = concat sss
+  let tp = sToTPartition g sp
 
   -- verify
-  H.assert $ sameElementsBy (==) (concat tss) (fmap g ss)
-  overlapsBy (==) tss === []
+  H.assert $ sameElementsBy (==) (concat tp) (fmap g ss)
+  overlapsBy (==) tp === []
 
   s1 <- forAll $ Gen.element ss
   s2 <- forAll $ Gen.element ss
-  cover 20 "same S partition" (samePartition sss s1 s2)
+  cover 20 "same S partition" (samePartition sp s1 s2)
 
-  (samePartition sss s1 s2) ==> samePartition tss (g s1) (g s2)
+  (samePartition sp s1 s2) ==> samePartition tp (g s1) (g s2)
+
+checkRightAdjunct :: [S] -> [[T]] -> (S -> T) -> PropertyT IO ()
+checkRightAdjunct ss tp g = do
+  -- exercise
+  let sp = tToSPartition ss g tp
+
+  -- verify
+  H.assert $ sameElementsBy (==) (concat sp) ss
+  overlapsBy (==) sp === []
+
+  s1 <- forAll $ Gen.element ss
+  s2 <- forAll $ Gen.element ss
+  cover 20 "same S partition" (samePartition sp s1 s2)
+
+  (samePartition sp s1 s2) ==> samePartition tp (g s1) (g s2)
