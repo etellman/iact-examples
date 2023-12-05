@@ -1,6 +1,9 @@
 module Ch1.Sec4.Exercise97Test (tests) where
 
-import Ch1.Partition (partitionFor, partitions)
+import Ch1.Partition
+  ( partitions,
+    samePartition,
+  )
 import Ch1.Set
   ( closureBy,
     overlapsBy,
@@ -18,9 +21,6 @@ import TestLib.Assertions ((==>))
 newtype S = S Int deriving (Show, Eq, Ord)
 
 newtype T = T Int deriving (Show, Eq, Ord)
-
-samePartition :: Eq a => [[a]] -> a -> a -> Bool
-samePartition xss x1 x2 = partitionFor xss x1 == partitionFor xss x2
 
 checkRightAdjunct :: [S] -> [[T]] -> (S -> T) -> PropertyT IO ()
 checkRightAdjunct ss tss g = do

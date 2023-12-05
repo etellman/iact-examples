@@ -4,9 +4,9 @@ module Ch1.Partition
     isPartition,
     distribute,
     partitionFor,
+    samePartition,
     labelFor,
     functionToPartition,
-    samePartition,
   )
 where
 
@@ -41,6 +41,9 @@ labelFor xss x = fromJust . findIndex (elem x) $ xss
 partitionFor :: Eq a => [[a]] -> a -> [a]
 partitionFor xss x = xss !! labelFor xss x
 
+samePartition :: Eq a => [[a]] -> a -> a -> Bool
+samePartition xss x1 x2 = partitionFor xss x1 == partitionFor xss x2
+
 -- | converts a partition function to a list of lists
 functionToPartition :: Eq b => (a -> b) -> [a] -> [[a]]
 functionToPartition _ [] = []
@@ -50,8 +53,3 @@ functionToPartition f (x : xs) =
 
 isPartition :: Ord a => [a] -> [[a]] -> Bool
 isPartition xs xss = (sort . concat) xss == sort xs
-
-samePartition :: Eq a => a -> a -> [[a]] -> Bool
-samePartition x y xss =
-  let groupFor z = head $ filter (elem z) xss
-   in groupFor x == groupFor y

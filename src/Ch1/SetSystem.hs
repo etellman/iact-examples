@@ -66,4 +66,4 @@ simplify s@(SetSystem (x : xss))
 
 -- determines whether two numbers are in the same set
 connected :: Eq a => a -> a -> SetSystem a -> Bool
-connected x y (SetSystem xss) = P.samePartition x y xss
+connected x y (SetSystem xss) = P.samePartition xss x y
