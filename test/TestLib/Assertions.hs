@@ -2,6 +2,7 @@ module TestLib.Assertions
   ( (==>),
     assertMeet,
     assertJoin,
+    assertGalois,
   )
 where
 
@@ -26,3 +27,22 @@ assertMeet po xs' p = do
 -- | verifies that a values is a join for a preorder and subset of elements
 assertJoin :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
 assertJoin (Preorder lte xs) xs' p = assertMeet (Preorder (flip lte) xs) xs' p
+
+-- | asserts that f and g form a Galois connection
+assertGalois ::
+  (Show p, Show q) =>
+  (p -> p -> Bool) ->
+  (q -> q -> Bool) ->
+  Gen p ->
+  Gen q ->
+  (p -> q) ->
+  (q -> p) ->
+  PropertyT IO ()
+assertGalois lteP lteQ genP genQ f g = do
+  p <- forAll genP
+  q <- forAll genQ
+
+  assert $ p `lteP` (g . f $ p)
+  assert $ (f . g $ q) `lteQ` q
+  f p `lteQ` q === p `lteP` g q
+
