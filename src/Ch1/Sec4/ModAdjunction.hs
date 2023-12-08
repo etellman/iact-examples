@@ -5,6 +5,7 @@ module Ch1.Sec4.ModAdjunction
     fstar,
     anyA,
     allAs,
+    bsFor,
   )
 where
 
@@ -15,6 +16,9 @@ import Control.Monad (guard)
 newtype A = A Int deriving (Show, Eq, Ord)
 
 newtype B = B Int deriving (Show, Eq, Ord)
+
+bsFor :: Int -> [B]
+bsFor n = fmap B [0 .. (n - 1)]
 
 fn :: Int -> A -> B
 fn n (A a) = B $ a `mod` n

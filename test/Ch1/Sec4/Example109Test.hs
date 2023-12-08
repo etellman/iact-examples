@@ -17,9 +17,6 @@ genAs =
       (Range.linear 1 20)
       (Gen.int $ Range.linear 1 1000)
 
-bsFor :: Int -> [B]
-bsFor n = fmap B [0 .. (n - 1)]
-
 genSubset :: Ord a => [a] -> Gen [a]
 genSubset as = toList <$> (Gen.subset $ fromList as)
 
