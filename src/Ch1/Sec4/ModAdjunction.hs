@@ -1,4 +1,4 @@
-module Ch1.Sec4.Example109
+module Ch1.Sec4.ModAdjunction
   ( A (..),
     B (..),
     fn,
@@ -7,6 +7,8 @@ module Ch1.Sec4.Example109
     allAs,
   )
 where
+
+-- from example 1.109
 
 import Control.Monad (guard)
 

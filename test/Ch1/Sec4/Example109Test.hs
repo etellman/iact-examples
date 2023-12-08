@@ -1,6 +1,6 @@
 module Ch1.Sec4.Example109Test (tests) where
 
-import Ch1.Sec4.Example109
+import Ch1.Sec4.ModAdjunction
 import Ch1.Set (isSubsetOf)
 import Data.Set (fromList, toList)
 import Hedgehog as H
