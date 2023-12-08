@@ -42,7 +42,10 @@ assertGalois lteP lteQ genP genQ f g = do
   p <- forAll genP
   q <- forAll genQ
 
+  cover 10 "f p <= q" $ f p `lteQ` q
+  cover 10 "g q <= p" $ g q `lteP` p
+
   assert $ p `lteP` (g . f $ p)
   assert $ (f . g $ q) `lteQ` q
-  f p `lteQ` q === p `lteP` g q
 
+  f p `lteQ` q === p `lteP` g q

@@ -47,7 +47,7 @@ prop_fstar = property $ do
 prop_anyA :: Property
 prop_anyA = property $ do
   -- set up
-  n <- forAll $ Gen.int (Range.linear 3 20)
+  n <- forAll $ Gen.int (Range.linear 2 10)
   as <- forAll genAs
   let bs = bsFor n
 
@@ -60,7 +60,7 @@ prop_anyA = property $ do
 prop_raAll :: Property
 prop_raAll = property $ do
   -- set up
-  n <- forAll $ Gen.int (Range.linear 3 20)
+  n <- forAll $ Gen.int (Range.linear 2 10)
   as <- forAll genAs
   let bs = bsFor n
 
