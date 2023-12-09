@@ -5,6 +5,7 @@ import Ch1.Sec4.Example91Test
 import Ch1.Sec4.Example96Test
 import Ch1.Sec4.Exercise100Test
 import Ch1.Sec4.Exercise111Test
+import Ch1.Sec4.Exercise117Test
 import Ch1.Sec4.Exercise92Test
 import Ch1.Sec4.Exercise93Test
 import Ch1.Sec4.Exercise97Test
@@ -23,5 +24,6 @@ sectionTests =
       Ch1.Sec4.Exercise100Test.tests,
       Ch1.Sec4.Proposition101Test.tests,
       Ch1.Sec4.Example109Test.tests,
-      Ch1.Sec4.Exercise111Test.tests
+      Ch1.Sec4.Exercise111Test.tests,
+      Ch1.Sec4.Exercise117Test.tests
     ]
