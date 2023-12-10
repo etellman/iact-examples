@@ -41,17 +41,6 @@ ghc-options:
 library:
   source-dirs: src
 
-executables:
-  iact-examples-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - iact-examples
-
 tests:
   iact-examples-test:
     main:                test.hs
