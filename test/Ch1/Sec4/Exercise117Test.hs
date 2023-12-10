@@ -1,15 +1,7 @@
 module Ch1.Sec4.Exercise117Test (tests) where
 
-import Ch1.Set
-  ( cartesianProduct,
-    isSubsetOf,
-    powerSet,
-  )
-import Data.List
-  ( nub,
-    partition,
-    sort,
-  )
+import Ch1.Set (cartesianProduct, isSubsetOf)
+import Data.List (nub, partition, sort)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -17,16 +9,15 @@ import qualified Hedgehog.Range as Range
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
-selectRelation ::
-  (((Int, Int) -> Bool) -> [(Int, Int)] -> Bool) ->
-  ((Int, Int) -> Bool) ->
-  [[(Int, Int)]] ->
-  Gen [(Int, Int)]
-selectRelation select f relations =
-  Gen.element $ filter (\r -> select f r) relations
-
 sameElements :: Ord a => [(a, a)] -> [(a, a)] -> Bool
 sameElements xs ys = (nub . sort $ xs) == (nub . sort) ys
+
+genPair :: [Int] -> Gen (Int, Int)
+genPair xs = do
+  x <- Gen.element xs
+  y <- Gen.element xs
+
+  return (x, y)
 
 closureOp :: Ord a => (a, a) -> [(a, a)] -> [(a, a)]
 closureOp (_, y) pairs =
@@ -45,41 +36,23 @@ genInts :: Gen [Int]
 genInts =
   toList
     <$> Gen.set
-      (Range.constant 4 8)
+      (Range.constant 2 20)
       (Gen.int $ (Range.constantBounded :: Range Int))
 
-prop_part1 :: Property
-prop_part1 = property $ do
+prop_exercise117 :: Property
+prop_exercise117 = property $ do
   -- set up
   ss <- forAll genInts
-  let sxs = (cartesianProduct ss ss)
-      us = filter (\(a, b) -> a <= b) sxs
-      relations = take 5000 $ (filter (not . null) (powerSet sxs))
+  let us = filter (\(a, b) -> a <= b) (cartesianProduct ss ss)
 
-  q <- forAll $ selectRelation all (\(a, b) -> a <= b) relations
-  cover 10 "interesting q" $ closure q /= q
+  q <- forAll $ toList <$> Gen.set (Range.constant 1 8) (genPair ss)
 
-  -- verify
-  H.assert $ closure q `isSubsetOf` us
-
-prop_part2 :: Property
-prop_part2 = property $ do
-  -- set up
-  ss <- forAll genInts
-  let sxs = (cartesianProduct ss ss)
-      us = filter (\(a, b) -> a <= b) sxs
-      relations = take 5000 $ (filter (not . null) (powerSet sxs))
-
-  q' <- forAll $ selectRelation any (\(a, b) -> a > b) relations
-  cover 50 "interesting q'" $ closure q' /= q'
+  cover 50 "interesting q" $ closure q /= q
+  cover 2 "subset" $ q `isSubsetOf` us
+  cover 50 "not subset" $ not $ q `isSubsetOf` us
 
   -- verify
-  H.assert $ not $ closure q' `isSubsetOf` us
+  q `isSubsetOf` us === closure q `isSubsetOf` us
 
 tests :: TestTree
-tests =
-  testGroup
-    "Ch1.Sec4.Exercise117Test"
-    [ testProperty "part 1" prop_part1,
-      testProperty "part 2" prop_part2
-    ]
+tests = testProperty "Ch1.Sec4.Exercise117Test" prop_exercise117
