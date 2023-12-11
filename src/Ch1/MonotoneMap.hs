@@ -4,14 +4,11 @@ module Ch1.MonotoneMap
   )
 where
 
-import Ch1.Preorder (Preorder (..))
-import Ch1.Set (isSubsetOf)
+import Lib.Preorder
 
 -- from exercise 61
-arrow :: (a -> a -> Bool) -> a -> [a] -> [a]
-arrow lte p = filter (\p' -> p `lte` p')
+arrow :: Preorder a => a -> [a] -> [a]
+arrow p xs = filter (lte p) xs
 
-arrowMonotoneMap :: Eq a => Preorder a -> Preorder [a]
-arrowMonotoneMap (Preorder lte xs) =
-  let xss = fmap (\p -> arrow lte p xs) xs
-   in Preorder isSubsetOf xss
+arrowMonotoneMap :: Preorder a => [a] -> [[a]]
+arrowMonotoneMap xs = fmap (\p -> arrow p xs) xs

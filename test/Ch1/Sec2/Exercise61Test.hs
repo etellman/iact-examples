@@ -1,84 +1,146 @@
 module Ch1.Sec2.Exercise61Test (tests) where
 
 import Ch1.MonotoneMap
-import Ch1.Preorder
+import Ch1.Sec2.Exercise61
 import Ch1.Set
 import Ch1.UpperSet
-import Data.List (nub)
+import Data.Bifunctor (bimap)
+import Data.List (sort)
+import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+import Lib.Preorder
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
--- comparison function for exercise 61 part 4
-lte61 :: Char -> Char -> Bool
-lte61 'a' 'b' = True
-lte61 'a' 'c' = True
-lte61 x y = x == y
+genChars :: (Char -> a) -> Gen [a]
+genChars f =
+  fmap f
+    <$> toList
+    <$> Gen.set
+      (Range.constant 1 50)
+      Gen.alpha
 
 prop_part_1 :: Property
 prop_part_1 = property $ do
   -- set up
-  xss <- forAll $ nub <$> Gen.list (Range.constant 1 100) Gen.alpha
+  xss <- forAll $ genChars Ex61
   p <- forAll $ Gen.element xss
 
   -- exercise
-  let ap = arrow (<=) p xss
+  let ap = arrow p xss
 
   -- verify
-  H.assert $ isUpperSet (>=) ap xss
+  H.assert $ isUpperSet ap xss
 
-prop_part_2_and_3 :: (Show a, Eq a) => (a -> a -> Bool) -> Gen [a] -> Property
-prop_part_2_and_3 lte generator = property $ do
+prop_part_2_and_3 ::
+  (Show a, Eq a, Preorder a, Preorder b) =>
+  Gen [a] ->
+  ([a] -> b) ->
+  Property
+prop_part_2_and_3 generator toSetPO = property $ do
   -- set up
-  xs <- forAll $ nub <$> generator
-  let po = Preorder lte xs
+  xs <- forAll $ generator
 
-  -- exercise
-  let arrowPreorder = arrowMonotoneMap po
-
-  -- verify
+  -- exercise and verify
   p <- forAll $ Gen.element xs
   q <- forAll $ Gen.element xs
-  let arrow' x = arrow lte x xs
+  let arrow' x = arrow x xs
 
-  isLte (opposite po) p q ==> isLte arrowPreorder (arrow' p) (arrow' q)
-  (p `lte` q) === ((arrow' q) `isSubsetOf` (arrow' p))
+  q `lte` p ==> (toSetPO $ arrow' p) `lte` (toSetPO $ arrow' q)
+  p `lte` q === arrow' q `isSubsetOf` arrow' p
 
 tests :: TestTree
 tests =
   testGroup
     "Ch1.Sec2.Exercise61Test"
     [ testProperty "part 1" prop_part_1,
-      testProperty "parts 2 and 3" $
-        prop_part_2_and_3 (<=) (Gen.list (Range.linear 1 20) Gen.alpha),
-      testProperty "parts 4 with part 2 and 3 properties" $ do
-        prop_part_2_and_3 lte61 (Gen.constant ['a' .. 'c']),
-      testCase "part 4" $ do
-        -- set up
-        let xs = ['a' .. 'c']
+      testProperty "parts 2 and 3" $ prop_part_2_and_3 (genChars CharPO) CharSetPO,
+      testProperty "part 4 with part 2 and 3 properties" $ do
+        prop_part_2_and_3 (Gen.constant $ fmap Ex61 ['a' .. 'c']) Ex61Set,
+      testGroup
+        "part 4"
+        [ testCase "pairs" $ do
+            -- set up
+            let xs = fmap Ex61 ['a' .. 'c']
+                fromPairs = fmap (bimap Ex61 (fmap Ex61))
 
-        'a' @?= 'a'
-        -- exercise
-        -- let pairs = fmap (\x -> (x, arrow lte61 x xs)) xs
-        --     po = Preorder lte61 xs
-        --     upo = upperSetPreorder po
+            -- exercise
+            let arrowPairs = fmap (\x -> (x, arrow x xs)) xs
 
-        -- -- exercise and verify
-        -- pairs @?= [('a', "abc"), ('b', "b"), ('c', "c")]
-        -- connections (opposite po) @?= [('b', 'a'), ('c', 'a')]
-        -- connections upo
-        --   @?= [ ("", "c"),
-        --         ("", "b"),
-        --         ("", "bc"),
-        --         ("", "abc"),
-        --         ("c", "bc"),
-        --         ("c", "abc"),
-        --         ("b", "bc"),
-        --         ("b", "abc"),
-        --         ("bc", "abc")
-        --       ]
+            -- exercise and verify
+            arrowPairs @?= fromPairs [('a', "abc"), ('b', "b"), ('c', "c")],
+          --
+          testCase "upper set" $
+            do
+              -- set up
+              let xs = fmap Ex61 ['a' .. 'c']
+                  toSet = Ex61Set . fmap Ex61
+                  fromPairs = sort . fmap (bimap toSet toSet)
+
+              -- exercise
+              let us = fmap Ex61Set (upperSets xs)
+
+              --  verify
+              (sort . connections) us
+                @?= fromPairs
+                  [ ("", ""),
+                    ("", "abc"),
+                    ("", "b"),
+                    ("", "bc"),
+                    ("", "c"),
+                    ("abc", "abc"),
+                    ("b", "abc"),
+                    ("b", "b"),
+                    ("b", "bc"),
+                    ("bc", "abc"),
+                    ("bc", "bc"),
+                    ("c", "abc"),
+                    ("c", "bc"),
+                    ("c", "c")
+                  ],
+          testCase "opposite" $ do
+            -- set up
+            let xs = fmap Ex61 ['a' .. 'c']
+                fromPairs = sort . fmap (bimap (Ex61Op . Ex61) (Ex61Op . Ex61))
+
+            -- exercise
+            let opposite = fmap Ex61Op xs
+
+            --  verify
+            (sort . connections) opposite
+              @?= fromPairs [('b', 'a'), ('c', 'a'), ('a', 'a'), ('b', 'b'), ('c', 'c')],
+          --
+          testCase "opposite upper set" $
+            do
+              -- set up
+              let xs = fmap Ex61 ['a' .. 'c']
+                  toOpSet = Ex61OpSet . (fmap (Ex61Op . Ex61))
+                  fromPairs = sort . fmap (bimap toOpSet toOpSet)
+
+              -- exercise
+              let upo = upperSets $ fmap Ex61Op xs
+
+              --  verify
+              (sort . connections) (fmap Ex61OpSet upo)
+                @?= fromPairs
+                  [ ("", ""),
+                    ("", "a"),
+                    ("", "ab"),
+                    ("", "abc"),
+                    ("", "ac"),
+                    ("a", "a"),
+                    ("a", "ab"),
+                    ("a", "abc"),
+                    ("a", "ac"),
+                    ("ab", "ab"),
+                    ("ab", "abc"),
+                    ("abc", "abc"),
+                    ("ac", "abc"),
+                    ("ac", "ac")
+                  ]
+        ]
     ]

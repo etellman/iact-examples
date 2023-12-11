@@ -1,7 +1,10 @@
 module Lib.Preorder
   ( Preorder (..),
     BoolPO (..),
+    CharPO (..),
+    CharSetPO (..),
     IntPO (..),
+    IntSetPO (..),
     connections,
     (=~),
   )
@@ -30,6 +33,11 @@ newtype IntPO = IntPO Int deriving (Show, Eq, Ord)
 instance Preorder IntPO where
   lte = (<=)
 
+newtype CharPO = CharPO Char deriving (Show, Eq, Ord)
+
+instance Preorder CharPO where
+  lte = (<=)
+
 newtype BoolPO = BoolPO Bool deriving (Show, Eq, Ord)
 
 instance Preorder BoolPO where
@@ -38,4 +46,9 @@ instance Preorder BoolPO where
 newtype IntSetPO = IntSetPO [Int] deriving (Show, Eq, Ord)
 
 instance Preorder IntSetPO where
-  lte (IntSetPO x) (IntSetPO y)= x `isSubsetOf` y
+  lte (IntSetPO x) (IntSetPO y) = x `isSubsetOf` y
+
+newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
+
+instance Preorder CharSetPO where
+  lte (CharSetPO x) (CharSetPO y) = x `isSubsetOf` y
