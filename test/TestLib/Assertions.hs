@@ -6,9 +6,9 @@ module TestLib.Assertions
   )
 where
 
-import Ch1.Preorder as PO
 import Hedgehog
-import TestLib.Generators (preorderElement)
+import qualified Hedgehog.Gen as Gen
+import Lib.Preorder
 
 (==>) :: MonadTest m => Bool -> Bool -> m ()
 (==>) a b = assert $ not a || b
@@ -16,17 +16,27 @@ import TestLib.Generators (preorderElement)
 infixr 0 ==>
 
 -- | verifies that a values is a meet for a preorder and subset of elements
-assertMeet :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
-assertMeet po xs' p = do
-  let lte = isLte po
-  assert $ all (p `lte`) xs'
+assertMeet' :: Show a => (a -> a -> Bool) -> [a] -> [a] -> a -> PropertyT IO ()
+assertMeet' cmp xs xs' m = do
+  footnote $ show m
 
-  q <- forAll $ preorderElement po
-  all (q `lte`) xs' ==> q `lte` p
+  x <- forAll $ Gen.element xs
+
+  if null xs'
+    then assert $ x `cmp` m
+    else do
+      x' <- forAll $ Gen.element xs'
+      assert $ m `cmp` x'
+
+      all (x `cmp`) xs' ==> x `cmp` m
+
+-- | verifies that a values is a meet for a preorder and subset of elements
+assertMeet :: (Show a, Preorder a) => [a] -> [a] -> a -> PropertyT IO ()
+assertMeet = assertMeet' lte
 
 -- | verifies that a values is a join for a preorder and subset of elements
-assertJoin :: Show a => PO.Preorder a -> [a] -> a -> PropertyT IO ()
-assertJoin (Preorder lte xs) xs' p = assertMeet (Preorder (flip lte) xs) xs' p
+assertJoin :: (Show a, Preorder a) => [a] -> [a] -> a -> PropertyT IO ()
+assertJoin = assertMeet' (flip lte)
 
 -- | asserts that f and g form a Galois connection
 assertGalois ::

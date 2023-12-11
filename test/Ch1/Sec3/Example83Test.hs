@@ -1,10 +1,10 @@
 module Ch1.Sec3.Example83Test (tests) where
 
-import Ch1.Preorder (Preorder (..))
 import Data.Monoid (All (..), Any (..))
 import Data.Set (fromList, toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Lib.Preorder (BoolPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
@@ -13,7 +13,7 @@ prop_booleans ::
   Monoid a =>
   (Bool -> a) ->
   (a -> Bool) ->
-  (Preorder Bool -> [Bool] -> Bool -> PropertyT IO ()) ->
+  ([BoolPO] -> [BoolPO] -> BoolPO -> PropertyT IO ()) ->
   Property
 prop_booleans fromBool toBool verify = property $ do
   -- set up
@@ -24,7 +24,7 @@ prop_booleans fromBool toBool verify = property $ do
   let meet = toBool $ mconcat (fmap fromBool xs')
 
   -- verify
-  verify (Preorder (<=) xs) xs' meet
+  verify (fmap BoolPO xs) (fmap BoolPO xs') (BoolPO meet)
 
 tests :: TestTree
 tests =

@@ -1,17 +1,34 @@
 module Ch1.Meet
   ( meet,
-  join,
+    join,
   )
 where
 
-import Ch1.Preorder
+import Lib.Preorder
+
+meet' :: (a -> a -> Bool) -> [a] -> [a] -> a
+meet' f xs xs' =
+  let lessThanAll = filter (\x -> all (\y -> f x y) xs') xs
+   in foldr1 (\x a -> if f a x then x else a) lessThanAll
 
 -- | finds the meet of a set within a preorder
-meet :: Preorder a -> [a] -> a
-meet (Preorder lte xs) xs' =
-  let lessThanAll = filter (\x -> all (x `lte`) xs') xs
-   in foldr1 (\x a -> if x `lte` a then a else x) lessThanAll
+meet ::
+  Preorder a =>
+  -- | all the elements in the preorder
+  [a] ->
+  -- | the subset for the meet
+  [a] ->
+  -- | the meet
+  a
+meet = meet' lte
 
 -- | finds the join of a set within a preorder
-join :: Preorder a -> [a] -> a
-join (Preorder lte xs) = meet (Preorder (flip lte) xs)
+join ::
+  Preorder a =>
+  -- | all the elements in the preorder
+  [a] ->
+  -- | the subset for the join
+  [a] ->
+  -- | the join
+  a
+join = meet' (flip lte)
