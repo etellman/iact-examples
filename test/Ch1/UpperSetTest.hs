@@ -10,6 +10,11 @@ import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
+newtype DiscreteIntPO = DiscreteIntPO Int deriving (Show, Eq, Ord)
+
+instance Preorder DiscreteIntPO where
+  lte = (==)
+
 prop_upperSets :: (Preorder a, Show a, Eq a) => [a] -> [[a]] -> Property
 prop_upperSets elements xss = property $ do
   -- set up
@@ -33,21 +38,20 @@ tests =
           testCase "filter upper sets" $ do
             let xs = fmap BoolPO [False, True]
             upperSets xs @?= (fmap . fmap) BoolPO [[], [True], [False, True]]
+        ],
+      testGroup
+        "discrete preorder"
+        [ testProperty "all upper sets" $ do
+            let xs = fmap DiscreteIntPO [1 .. 10]
+            prop_upperSets xs (powerSet xs),
+          testCase "filter upper sets" $ do
+            let xs = fmap DiscreteIntPO [1 .. 3]
+            upperSets xs @?= powerSet xs
+        ],
+      testGroup
+        "upper set preorder"
+        [ testCase "1..3" $ do
+            let xs = fmap IntPO [1 .. 3]
+            upperSets xs @?= (fmap . fmap) IntPO [[], [3], [2, 3], [1, 2, 3]]
         ]
-        -- testGroup
-        --   "discrete preorder"
-        --   [ testProperty "all upper sets" $ do
-        --       let xs = [1 .. 10] :: [Int]
-        --       prop_upperSets (Preorder (==) xs) (powerSet xs),
-        --     testCase "filter upper sets" $ do
-        --       let xs = [1 .. 3] :: [Int]
-        --       upperSets (Preorder (==) xs) @?= powerSet xs
-        --   ]
-        -- testGroup
-        --   "upper set preorder"
-        --   [ testCase "1..3" $ do
-        --       let xs = [1 .. 3] :: [Int]
-        --           usxs = upperSetPreorder (Preorder (<=) xs)
-        --       usxs @?= [[], [3], [2, 3], [1, 2, 3]]
-        --   ]
     ]
