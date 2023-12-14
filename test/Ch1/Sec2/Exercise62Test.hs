@@ -1,40 +1,35 @@
 module Ch1.Sec2.Exercise62Test (tests) where
 
-import Ch1.Preorder
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+import Lib.Preorder
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 import TestLib.Labeled
 
+newtype DiscretePO = DiscretePO Int deriving (Show, Eq, Ord)
+
+instance Preorder DiscretePO where
+  lte = (==)
+
+genDiscrete :: Gen DiscretePO
+genDiscrete = DiscretePO <$> Gen.int (Range.constantBounded :: Range Int)
+
 prop_exercise_62 :: Property
 prop_exercise_62 = property $ do
   -- set up
-  n <- forAll $ Gen.int (Range.constant (-10) 10)
+  n <- forAll $ Gen.int (Range.constant 2 10)
   (Labeled _ f) <-
     forAll $ Gen.element [Labeled "+" (+ n), Labeled "*" (* n), Labeled "-" ((-) n)]
-  (Labeled _ lte) <-
-    forAll $ Gen.element [Labeled "<=" (<=), Labeled ">=" (>=), Labeled "==" (==)]
+  let g (DiscretePO x) = f x
 
-  let xs = [-10 .. 10]
-      ys = [-100 .. 100]
+  x <- forAll genDiscrete
+  y <- forAll genDiscrete
 
-  let dpo = Preorder (==) xs
-      po = Preorder lte ys
-
-  x <- forAll $ Gen.int (Range.constant (-10) 10)
-  y <- forAll $ Gen.int (Range.constant (-10) 10)
-
-  -- from the exercise:
-  isLte dpo x y ==> isLte po (f x) (f y)
-
-  -- since:
-  (isLte dpo x y) === (x == y)
-
-  -- this is just saying that every preorder is reflexive:
-  H.assert $ isLte po (f x) (f x)
+  -- exercise and verify
+  x `lte` y ==> g x <= g y
 
 tests :: TestTree
 tests = testProperty "Ch1.Sec2.Exercise62Test" prop_exercise_62
