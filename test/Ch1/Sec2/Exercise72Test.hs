@@ -1,33 +1,36 @@
 module Ch1.Sec2.Exercise72Test (tests) where
 
-import qualified Ch1.Partition as Prt
-import Ch1.Preorder
+import Ch1.Partition
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+import Lib.Preorder
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
+
+newtype PartitionPO = PartitionPO [[Char]] deriving (Show, Eq, Ord)
+
+instance Preorder PartitionPO where
+  lte (PartitionPO xss) (PartitionPO yss) = isFiner xss yss
 
 prop_exercise72 :: Property
 prop_exercise72 = property $ do
   -- set up
   xs <- forAll $ toList <$> Gen.set (Range.linear 4 10) Gen.alpha
-  let xss = Prt.partitions xs
+  let xss = partitions xs
 
   c1 <- forAll $ Gen.element xs
   c2 <- forAll $ Gen.element xs
 
-  p1 <- forAll $ Gen.element xss
-  p2 <- forAll $ Gen.element xss
+  p1 <- forAll $ PartitionPO <$> Gen.element xss
+  p2 <- forAll $ PartitionPO <$> Gen.element xss
 
-  let phi zss = Prt.samePartition zss c1 c2
-      connectedPreorder = Preorder Prt.isFiner xss
-      boolPreorder = Preorder (<=) [False, True]
+  let phi (PartitionPO zss) = BoolPO $ samePartition zss c1 c2
 
   -- exercise and verify
-  isLte connectedPreorder p1 p2 ==> isLte boolPreorder (phi p1) (phi p2)
+  p1 `lte` p2 ==> (phi p1) `lte` (phi p2)
 
 tests :: TestTree
 tests = testProperty "Ch1.Sec2.Exercise72Test" prop_exercise72
