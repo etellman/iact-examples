@@ -1,6 +1,7 @@
 module Ch1.Sec2.Exercise61
   ( Ex61 (..),
     Ex61Set (..),
+    CharSetPO (..),
     Ex61Op (..),
     Ex61OpSet (..),
   )
@@ -30,3 +31,8 @@ newtype Ex61OpSet = Ex61OpSet [Ex61Op] deriving (Show, Eq, Ord)
 
 instance Preorder Ex61OpSet where
   lte (Ex61OpSet xs) (Ex61OpSet ys) = xs `isSubsetOf` ys
+
+newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
+
+instance Preorder CharSetPO where
+  lte (CharSetPO x) (CharSetPO y) = x `isSubsetOf` y

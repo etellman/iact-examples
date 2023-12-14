@@ -2,15 +2,12 @@ module Lib.Preorder
   ( Preorder (..),
     BoolPO (..),
     CharPO (..),
-    CharSetPO (..),
     IntPO (..),
-    IntSetPO (..),
     connections,
     (=~),
   )
 where
 
-import Ch1.Set (isSubsetOf)
 import Control.Monad (guard)
 
 class Preorder a where
@@ -42,13 +39,3 @@ newtype BoolPO = BoolPO Bool deriving (Show, Eq, Ord)
 
 instance Preorder BoolPO where
   lte x y = x <= y
-
-newtype IntSetPO = IntSetPO [Int] deriving (Show, Eq, Ord)
-
-instance Preorder IntSetPO where
-  lte (IntSetPO x) (IntSetPO y) = x `isSubsetOf` y
-
-newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
-
-instance Preorder CharSetPO where
-  lte (CharSetPO x) (CharSetPO y) = x `isSubsetOf` y

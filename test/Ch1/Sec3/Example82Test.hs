@@ -1,6 +1,6 @@
 module Ch1.Sec3.Example82Test (tests) where
 
-import Ch1.Set (powerSet)
+import Ch1.Set (isSubsetOf, powerSet)
 import Data.List (intersect, union)
 import Data.Set (fromList, toList)
 import Hedgehog as H
@@ -10,6 +10,11 @@ import Lib.Preorder
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
+
+newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
+
+instance Preorder CharSetPO where
+  lte (CharSetPO x) (CharSetPO y) = x `isSubsetOf` y
 
 prop_powerSet ::
   ([CharPO] -> [CharPO] -> [CharPO]) ->
