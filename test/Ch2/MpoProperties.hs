@@ -1,8 +1,7 @@
 module Ch2.MpoProperties
-  ( monoidalPreorder,
-    symmetricMonoid,
-    symmetricMonoidalPreorder,
-    monoid,
+  ( monoid,
+    prop_monotonicity,
+    prop_symmetry,
   )
 where
 
@@ -51,14 +50,6 @@ prop_symmetry gen = property $ do
   -- exercise and verify
   x <> y === y <> x
 
-monoidalPreorder :: (Eq a, Show a, Monoid a, Preorder a) => String -> Gen a -> TestTree
-monoidalPreorder name gen =
-  testGroup
-    name
-    [ testProperty "monotonicity" $ prop_monotonicity gen,
-      monoid "monoid" gen
-    ]
-
 monoid :: (Eq a, Show a, Monoid a) => String -> Gen a -> TestTree
 monoid name gen =
   testGroup
@@ -66,18 +57,3 @@ monoid name gen =
     [ testProperty "unitality" $ prop_unitality gen,
       testProperty "associativity" $ prop_associativity gen
     ]
-
-symmetricMonoidalPreorder ::
-  (Eq a, Show a, Monoid a, Preorder a) =>
-  String ->
-  Gen a ->
-  TestTree
-symmetricMonoidalPreorder name gen =
-  testGroup
-    name
-    [ monoidalPreorder "monoidal preorder" gen,
-      symmetricMonoid gen
-    ]
-
-symmetricMonoid :: (Eq a, Show a, Monoid a) => Gen a -> TestTree
-symmetricMonoid gen = testProperty "symmetry" $ prop_symmetry gen
