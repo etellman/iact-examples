@@ -19,6 +19,8 @@ prop_monotonicity gen = property $ do
   y1 <- forAll gen
   y2 <- forAll gen
 
+  cover 10 "all lte" $ x1 `lte` y1 && x2 `lte` y2
+
   -- exercise and verify
   x1 `lte` y1 && x2 `lte` y2 ==> (x1 <> x2) `lte` (y1 <> y2)
 
