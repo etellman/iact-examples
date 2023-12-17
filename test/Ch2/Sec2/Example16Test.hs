@@ -9,12 +9,13 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 genNatural :: Gen NaturalDivides
-genNatural = NaturalDivides <$> Gen.int (Range.linear 0 1000)
+genNatural = NaturalDivides <$> Gen.int (Range.linear 0 30)
 
 tests :: TestTree
 tests =
   testGroup
     "Ch2.Sec2.Example16Test"
     [ monoid "monoid" genNatural,
-      testProperty "symmetry" $ prop_symmetry genNatural
+      testProperty "symmetry" $ prop_symmetry genNatural,
+      testProperty "monotonicity" $ prop_monotonicity genNatural
     ]

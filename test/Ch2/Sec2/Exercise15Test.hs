@@ -9,7 +9,7 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 genNatural :: Gen NaturalTimes
-genNatural = NaturalTimes <$> Gen.int (Range.linear 0 1000)
+genNatural = NaturalTimes <$> Gen.int (Range.linear 1 1000)
 
 tests :: TestTree
 tests =

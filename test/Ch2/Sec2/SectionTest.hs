@@ -5,9 +5,10 @@ import Ch2.Sec2.Example16Test
 import Ch2.Sec2.Example3Test
 import Ch2.Sec2.Exercise10Test
 import Ch2.Sec2.Exercise13Test
+import Ch2.Sec2.Exercise15Test
+import Ch2.Sec2.Exercise17Test
 import Ch2.Sec2.Exercise4Test
 import Ch2.Sec2.Exercise6Test
-import Ch2.Sec2.Exercise15Test
 import Test.Tasty
 
 sectionTests :: TestTree
@@ -21,5 +22,6 @@ sectionTests =
       Ch2.Sec2.Example12Test.tests,
       Ch2.Sec2.Exercise13Test.tests,
       Ch2.Sec2.Exercise15Test.tests,
-      Ch2.Sec2.Example16Test.tests
+      Ch2.Sec2.Example16Test.tests,
+      Ch2.Sec2.Exercise17Test.tests
     ]
