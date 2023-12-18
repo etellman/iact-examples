@@ -20,8 +20,6 @@ prop_exercise10 = property $ do
       p3 = v + x <= y
       p4 = t + u <= y + z
 
-  cover 2 "all true" $ p1 && p2 && p3
-
   -- exercise and verify
   p1 && p2 && p3 ==> p4
 
