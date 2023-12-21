@@ -39,6 +39,7 @@ ghc-options:
 - -XOverloadedStrings
 - -XInstanceSigs
 - -XNumericUnderscores
+- -XGeneralizedNewtypeDeriving
 
 library:
   source-dirs: src

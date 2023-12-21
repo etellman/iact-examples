@@ -3,6 +3,7 @@ module Ch2.Sec2.SectionTest (sectionTests) where
 import Ch2.Sec2.Example12Test
 import Ch2.Sec2.Example16Test
 import Ch2.Sec2.Example21Test
+import Ch2.Sec2.Exercise24Test
 import Ch2.Sec2.Example3Test
 import Ch2.Sec2.Exercise10Test
 import Ch2.Sec2.Exercise13Test
@@ -29,5 +30,6 @@ sectionTests =
       Ch2.Sec2.Exercise17Test.tests,
       Ch2.Sec2.Exercise18Test.tests,
       Ch2.Sec2.Exercise19Test.tests,
-      Ch2.Sec2.Example21Test.tests
+      Ch2.Sec2.Example21Test.tests,
+      Ch2.Sec2.Exercise24Test.tests
     ]
