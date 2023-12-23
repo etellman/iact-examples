@@ -6,6 +6,7 @@ import Ch2.Sec2.Example21Test
 import Ch2.Sec2.Example26Test
 import Ch2.Sec2.Example3Test
 import Ch2.Sec2.Exercise10Test
+import Ch2.Sec2.Exercise27Test
 import Ch2.Sec2.Exercise13Test
 import Ch2.Sec2.Exercise15Test
 import Ch2.Sec2.Exercise17Test
@@ -33,5 +34,6 @@ sectionTests =
       Ch2.Sec2.Exercise19Test.tests,
       Ch2.Sec2.Example21Test.tests,
       Ch2.Sec2.Exercise24Test.tests,
-      Ch2.Sec2.Example26Test.tests
+      Ch2.Sec2.Example26Test.tests,
+      Ch2.Sec2.Exercise27Test.tests
     ]
