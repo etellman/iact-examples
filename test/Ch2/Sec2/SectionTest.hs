@@ -6,14 +6,15 @@ import Ch2.Sec2.Example21Test
 import Ch2.Sec2.Example26Test
 import Ch2.Sec2.Example3Test
 import Ch2.Sec2.Exercise10Test
-import Ch2.Sec2.Exercise27Test
-import Ch2.Sec2.Exercise28Test
 import Ch2.Sec2.Exercise13Test
 import Ch2.Sec2.Exercise15Test
 import Ch2.Sec2.Exercise17Test
 import Ch2.Sec2.Exercise18Test
 import Ch2.Sec2.Exercise19Test
 import Ch2.Sec2.Exercise24Test
+import Ch2.Sec2.Exercise27Test
+import Ch2.Sec2.Exercise28Test
+import Ch2.Sec2.Exercise29Test
 import Ch2.Sec2.Exercise4Test
 import Ch2.Sec2.Exercise6Test
 import Test.Tasty
@@ -37,5 +38,6 @@ sectionTests =
       Ch2.Sec2.Exercise24Test.tests,
       Ch2.Sec2.Example26Test.tests,
       Ch2.Sec2.Exercise27Test.tests,
-      Ch2.Sec2.Exercise28Test.tests
+      Ch2.Sec2.Exercise28Test.tests,
+      Ch2.Sec2.Exercise29Test.tests
     ]
