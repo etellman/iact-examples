@@ -7,9 +7,6 @@ import Hedgehog as H
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
-genCostPreorder :: Gen CostPreorder
-genCostPreorder = fmap CostPreorder genCost
-
 tests :: TestTree
 tests =
   testGroup

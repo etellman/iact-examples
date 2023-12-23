@@ -1,4 +1,9 @@
-module Ch2.Sec2.GenCost (genCost) where
+module Ch2.Sec2.GenCost
+  ( genCost,
+    genCostPreorder,
+    genCostOpposite,
+  )
+where
 
 import Ch2.Sec2.CostMonoid
 import Hedgehog as H
@@ -13,3 +18,9 @@ genCost = do
         (Range.singleton 5)
         (Gen.realFloat (Range.exponentialFloat 0 1e6))
   Gen.element (Infinity : cs)
+
+genCostPreorder :: Gen CostPreorder
+genCostPreorder = fmap CostPreorder genCost
+
+genCostOpposite :: Gen CostOpPreorder
+genCostOpposite = fmap CostOpPreorder genCost
