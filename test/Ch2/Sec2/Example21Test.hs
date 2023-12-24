@@ -1,9 +1,7 @@
 module Ch2.Sec2.Example21Test (tests) where
 
-import Ch2.MpoProperties
-import Ch2.Sec2.CostMonoid
 import Ch2.Sec2.GenCost
-import Hedgehog as H
+import Ch2.Sec2.MonoidalPreorderProperties
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

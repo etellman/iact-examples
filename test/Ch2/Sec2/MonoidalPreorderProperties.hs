@@ -1,4 +1,4 @@
-module Ch2.MpoProperties
+module Ch2.Sec2.MonoidalPreorderProperties
   ( monoid,
     prop_monotonicity,
     prop_symmetry,

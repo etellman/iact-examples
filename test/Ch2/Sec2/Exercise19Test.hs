@@ -1,6 +1,6 @@
 module Ch2.Sec2.Exercise19Test (tests) where
 
-import Ch2.MpoProperties
+import Ch2.Sec2.MonoidalPreorderProperties
 import Ch2.Sec2.CharSetMonoid
 import Data.Set (toList, fromList)
 import Hedgehog as H
