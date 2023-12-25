@@ -6,8 +6,6 @@ module Ch1.Graph
   )
 where
 
--- import Data.List (elem)
-
 data Graph v a = Graph
   { vertices :: [v],
     arrows :: [a],
