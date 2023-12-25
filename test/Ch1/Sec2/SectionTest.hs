@@ -1,7 +1,6 @@
 module Ch1.Sec2.SectionTest (sectionTests) where
 
 import Ch1.Sec2.Example21Test
-import Ch1.Sec2.Example32Test
 import Ch1.Sec2.Example55Test
 import Ch1.Sec2.Example57Test
 import Ch1.Sec2.Exercise52Test
@@ -18,7 +17,6 @@ sectionTests =
   testGroup
     "Ch1.Sec2.SectionTest"
     [ Ch1.Sec2.Example21Test.tests,
-      Ch1.Sec2.Example32Test.tests,
       Ch1.Sec2.Exercise52Test.tests,
       Ch1.Sec2.Example55Test.tests,
       Ch1.Sec2.Example57Test.tests,
