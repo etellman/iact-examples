@@ -6,13 +6,6 @@ module Ch1.Graph
   )
 where
 
--- data Graph v a = Graph
---   { vertices :: [v],
---     arrows :: [a],
---     source :: (a -> v),
---     target :: (a -> v)
---   }
-
 class Graph v where
   vertices :: [v]
   arrows :: [(v, v)]
