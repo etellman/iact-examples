@@ -12,7 +12,7 @@ import TestLib.Assertions
 newtype DividesPO = DividesPO Int deriving (Show, Eq, Ord)
 
 instance Preorder DividesPO where
-  lte (DividesPO m) (DividesPO n) = n `rem` m == 0
+  (DividesPO m) <= (DividesPO n) = n `rem` m == 0
 
 prop_exercise85 ::
   (Int -> Int -> Int) ->

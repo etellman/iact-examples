@@ -6,7 +6,7 @@ where
 
 import Ch1.Graph
 import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
-import Lib.Preorder
+import Lib.Preorder as PO
 
 data Ex31 = P | Q | R | S | T deriving (Eq, Show)
 
@@ -21,7 +21,7 @@ instance Graph Ex31 where
     ]
 
 instance Preorder Ex31 where
-  lte = path
+  (<=) = path
 
 ex31ToBool :: Ex31 -> Ex31 -> BooleanAnd
-ex31ToBool x y = BooleanAnd $ x `lte` y
+ex31ToBool x y = BooleanAnd $ x PO.<= y

@@ -16,7 +16,7 @@ type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
 newtype RealPlus = RealPlus ApproximateDouble deriving (Show, Eq, Ord)
 
 instance Preorder RealPlus where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid RealPlus where
   mempty = RealPlus 0
@@ -28,7 +28,7 @@ instance Semigroup RealPlus where
 newtype RealTimes = RealTimes ApproximateDouble deriving (Show, Eq, Ord)
 
 instance Preorder RealTimes where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid RealTimes where
   mempty = RealTimes 1
@@ -40,7 +40,7 @@ instance Semigroup RealTimes where
 newtype RealDiscrete = RealDiscrete ApproximateDouble deriving (Show, Eq, Ord)
 
 instance Preorder RealDiscrete where
-  lte = (==)
+  (<=) = (==)
 
 instance Monoid RealDiscrete where
   mempty = RealDiscrete 0

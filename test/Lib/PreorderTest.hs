@@ -5,7 +5,7 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
@@ -36,11 +36,11 @@ prop_connections = property $ do
 
   -- verify
   (x, y) <- forAll $ Gen.element pairs
-  H.assert $ x <= y
+  H.assert $ x Prelude.<= y
 
   m <- forAll $ Gen.element xs
   n <- forAll $ Gen.element xs
-  m <= n ==> (m, n) `elem` pairs
+  m PO.<= n ==> (m, n) `elem` pairs
 
   (sort . nub $ fmap fst pairs) === sort xs
   (sort . nub $ fmap snd pairs) === sort xs

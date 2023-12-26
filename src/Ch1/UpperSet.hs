@@ -5,14 +5,14 @@ module Ch1.UpperSet
 where
 
 import Ch1.Set (powerSet)
-import Lib.Preorder
+import Lib.Preorder as PO
 
 isUpperSet :: (Preorder a, Eq a) => [a] -> [a] -> Bool
 isUpperSet elements usCandidate =
   all
     ( \p ->
         ( all
-            (\q -> q `elem` usCandidate || (not $ p `lte` q))
+            (\q -> q `elem` usCandidate || (not $ p PO.<= q))
             elements
         )
     )

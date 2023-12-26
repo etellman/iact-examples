@@ -12,7 +12,7 @@ import Lib.Preorder
 newtype NaturalPlus = NaturalPlus Int deriving (Show, Eq, Ord)
 
 instance Preorder NaturalPlus where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid NaturalPlus where
   mempty = NaturalPlus 0
@@ -24,7 +24,7 @@ instance Semigroup NaturalPlus where
 newtype NaturalTimes = NaturalTimes Int deriving (Show, Eq, Ord)
 
 instance Preorder NaturalTimes where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid NaturalTimes where
   mempty = NaturalTimes 1
@@ -36,7 +36,7 @@ instance Semigroup NaturalTimes where
 newtype NaturalDivides = NaturalDivides Int deriving (Show, Eq, Ord)
 
 instance Preorder NaturalDivides where
-  lte (NaturalDivides m) (NaturalDivides n) = m == 0 || n `mod` m == 0
+  (NaturalDivides m) <= (NaturalDivides n) = m == 0 || n `mod` m == 0
 
 instance Monoid NaturalDivides where
   mempty = NaturalDivides 1
@@ -48,7 +48,7 @@ instance Semigroup NaturalDivides where
 newtype NaturalPlusDivides = NaturalPlusDivides Int deriving (Show, Eq, Ord)
 
 instance Preorder NaturalPlusDivides where
-  lte (NaturalPlusDivides m) (NaturalPlusDivides n) = m == 0 || n `mod` m == 0
+  (NaturalPlusDivides m) <= (NaturalPlusDivides n) = m == 0 || n `mod` m == 0
 
 instance Monoid NaturalPlusDivides where
   mempty = NaturalPlusDivides 0

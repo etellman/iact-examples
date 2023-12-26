@@ -4,13 +4,13 @@ module Ch2.Sec2.BooleanMonoids
   )
 where
 
-import Lib.Preorder
+import Lib.Preorder as PO
 
 -- and
 newtype BooleanAnd = BooleanAnd Bool deriving (Show, Eq, Ord)
 
 instance Preorder BooleanAnd where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid BooleanAnd where
   mempty = BooleanAnd True
@@ -22,7 +22,7 @@ instance Semigroup BooleanAnd where
 newtype BooleanOr = BooleanOr Bool deriving (Show, Eq, Ord)
 
 instance Preorder BooleanOr where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid BooleanOr where
   mempty = BooleanOr False

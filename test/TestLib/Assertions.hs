@@ -8,7 +8,7 @@ where
 
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
-import Lib.Preorder
+import Lib.Preorder as PO
 
 (==>) :: MonadTest m => Bool -> Bool -> m ()
 (==>) a b = assert $ not a || b
@@ -32,11 +32,11 @@ assertMeet' cmp xs xs' m = do
 
 -- | verifies that a values is a meet for a preorder and subset of elements
 assertMeet :: (Show a, Preorder a) => [a] -> [a] -> a -> PropertyT IO ()
-assertMeet = assertMeet' lte
+assertMeet = assertMeet' (PO.<=)
 
 -- | verifies that a values is a join for a preorder and subset of elements
 assertJoin :: (Show a, Preorder a) => [a] -> [a] -> a -> PropertyT IO ()
-assertJoin = assertMeet' (flip lte)
+assertJoin = assertMeet' (flip (PO.<=))
 
 -- | asserts that f and g form a Galois connection
 assertGalois ::

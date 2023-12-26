@@ -6,7 +6,7 @@ module Ch2.Sec2.MonoidalPreorderProperties
 where
 
 import Hedgehog as H
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
@@ -19,10 +19,10 @@ prop_monotonicity gen = property $ do
   y1 <- forAll gen
   y2 <- forAll gen
 
-  cover 4 "all lte" $ x1 `lte` y1 && x2 `lte` y2
+  cover 4 "all lte" $ x1 PO.<= y1 && x2 PO.<= y2
 
   -- exercise and verify
-  x1 `lte` y1 && x2 `lte` y2 ==> (x1 <> x2) `lte` (y1 <> y2)
+  x1 PO.<= y1 && x2 PO.<= y2 ==> (x1 <> x2) PO.<= (y1 <> y2)
 
 prop_unitality :: (Eq a, Show a, Monoid a) => Gen a -> Property
 prop_unitality gen = property $ do

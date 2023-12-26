@@ -5,7 +5,7 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
@@ -13,7 +13,7 @@ import TestLib.Assertions
 newtype PartitionPO = PartitionPO [[Char]] deriving (Show, Eq, Ord)
 
 instance Preorder PartitionPO where
-  lte (PartitionPO xss) (PartitionPO yss) = isFiner xss yss
+  (PartitionPO xss) <= (PartitionPO yss) = isFiner xss yss
 
 prop_exercise72 :: Property
 prop_exercise72 = property $ do
@@ -30,7 +30,7 @@ prop_exercise72 = property $ do
   let phi (PartitionPO zss) = BoolPO $ samePartition zss c1 c2
 
   -- exercise and verify
-  p1 `lte` p2 ==> (phi p1) `lte` (phi p2)
+  p1 PO.<= p2 ==> (phi p1) PO.<= (phi p2)
 
 tests :: TestTree
 tests = testProperty "Ch1.Sec2.Exercise72Test" prop_exercise72

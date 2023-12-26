@@ -3,7 +3,7 @@ module Ch2.Sec3.Example31Test (tests) where
 import Ch2.Sec3.Example31
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
@@ -20,7 +20,7 @@ prop_identity gen hom = property $ do
   x <- forAll gen
 
   -- exercise and verify
-  H.assert $ (hom x x) `lte` mempty
+  H.assert $ (hom x x) PO.<= mempty
 
 prop_mplus ::
   (Show p, Monoid q, Preorder q) =>
@@ -34,7 +34,7 @@ prop_mplus gen hom = property $ do
   z <- forAll gen
 
   -- exercise and verify
-  H.assert $ ((hom x y) <> (hom y z)) `lte` (hom x z)
+  H.assert $ ((hom x y) <> (hom y z)) PO.<= (hom x z)
 
 tests :: TestTree
 tests =

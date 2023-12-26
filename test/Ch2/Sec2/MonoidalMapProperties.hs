@@ -6,7 +6,7 @@ module Ch2.Sec2.MonoidalMapProperties
 where
 
 import Hedgehog as H
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
@@ -44,7 +44,7 @@ laxMonotoneMap ::
   Gen p ->
   (p -> q) ->
   TestTree
-laxMonotoneMap gen f = monoidalMap "lax" gen f lte
+laxMonotoneMap gen f = monoidalMap "lax" gen f (PO.<=)
 
 strongMonotoneMap ::
   (Show p, Monoid p, Monoid q, Preorder q) =>

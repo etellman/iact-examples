@@ -27,7 +27,7 @@ prop_meet = property $ do
   let meetFor subXs = meet (toList xs) (toList subXs)
 
   -- exercise and verify
-  H.assert $ meetFor ys <= meetFor zs
+  H.assert $ meetFor ys Prelude.<= meetFor zs
 
 prop_join :: Property
 prop_join = property $ do
@@ -38,7 +38,7 @@ prop_join = property $ do
   let joinFor subXs = join (toList xs) (toList subXs)
 
   -- exercise and verify
-  H.assert $ joinFor zs <= joinFor ys
+  H.assert $ joinFor zs Prelude.<= joinFor ys
 
 tests :: TestTree
 tests =

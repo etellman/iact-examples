@@ -14,7 +14,7 @@ import TestLib.Assertions
 newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
 
 instance Preorder CharSetPO where
-  lte (CharSetPO x) (CharSetPO y) = x `isSubsetOf` y
+  (CharSetPO x) <= (CharSetPO y) = x `isSubsetOf` y
 
 prop_powerSet ::
   ([CharPO] -> [CharPO] -> [CharPO]) ->

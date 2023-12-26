@@ -4,7 +4,7 @@ module Ch1.Meet
   )
 where
 
-import Lib.Preorder
+import Lib.Preorder as PO
 
 meet' :: (a -> a -> Bool) -> [a] -> [a] -> a
 meet' f xs xs' =
@@ -20,7 +20,7 @@ meet ::
   [a] ->
   -- | the meet
   a
-meet = meet' lte
+meet = meet' (PO.<=)
 
 -- | finds the join of a set within a preorder
 join ::
@@ -31,4 +31,4 @@ join ::
   [a] ->
   -- | the join
   a
-join = meet' (flip lte)
+join = meet' (\x y -> y PO.<= x)

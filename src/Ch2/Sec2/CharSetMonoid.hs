@@ -6,7 +6,7 @@ where
 
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
-import Lib.Preorder
+import Lib.Preorder as PO
 
 chars :: [Char]
 chars = ['a' .. 'd']
@@ -14,7 +14,7 @@ chars = ['a' .. 'd']
 newtype CharSetMonoid = CharSetMonoid [Char] deriving (Eq, Ord, Show)
 
 instance Preorder CharSetMonoid where
-  (CharSetMonoid xs) `lte` (CharSetMonoid ys) = xs `isSubsetOf` ys
+  (CharSetMonoid xs) <= (CharSetMonoid ys) = xs `isSubsetOf` ys
 
 instance Monoid CharSetMonoid where
   mempty = CharSetMonoid chars

@@ -12,7 +12,7 @@ data YesNoMaybe = No | Maybe | Yes deriving (Eq, Ord, Show)
 newtype YnmMin = YnmMin YesNoMaybe deriving (Eq, Ord, Show)
 
 instance Preorder YnmMin where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid YnmMin where
   mempty = YnmMin Yes
@@ -23,7 +23,7 @@ instance Semigroup YnmMin where
 newtype YnmMax = YnmMax YesNoMaybe deriving (Eq, Ord, Show)
 
 instance Preorder YnmMax where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 instance Monoid YnmMax where
   mempty = YnmMax No

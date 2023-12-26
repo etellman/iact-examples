@@ -15,22 +15,12 @@ import TestLib.Assertions
 newtype P = P Int deriving (Show, Eq, Ord)
 
 instance Preorder P where
-  lte = (<=)
+  (<=) = (Prelude.<=)
 
 newtype Q = Q Int deriving (Show, Eq, Ord)
 
 instance Preorder Q where
-  lte = (<=)
-
--- newtype PSetPO = PSetPO [P] deriving (Show, Eq, Ord)
-
--- instance Preorder PSetPO where
---   lte (PSetPO x) (PSetPO y)= x `isSubsetOf` y
-
--- newtype QSetPO = QSetPO [P] deriving (Show, Eq, Ord)
-
--- instance Preorder QSetPO where
---   lte (QSetPO x) (QSetPO y)= x `isSubsetOf` y
+  (<=) = (Prelude.<=)
 
 fstar1 :: (P -> Q) -> [P] -> [Q] -> [P]
 fstar1 f ps qs = do
