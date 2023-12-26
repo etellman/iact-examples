@@ -1,9 +1,10 @@
 module Ch1.Sec2.Exercise61
-  ( Ex61 (..),
-    Ex61Set (..),
+  ( Ex52 (..),
+    allEx52s,
+    Ex52Set (..),
     CharSetPO (..),
-    Ex61Op (..),
-    Ex61OpSet (..),
+    Ex52Op (..),
+    Ex52OpSet (..),
   )
 where
 
@@ -11,27 +12,30 @@ import Ch1.Set (isSubsetOf)
 import Lib.Preorder as PO
 import Lib.Preorders (CharPO)
 
-newtype Ex61 = Ex61 Char deriving (Show, Eq, Ord)
+data Ex52 = A | B | C deriving (Show, Eq, Ord)
 
-instance Preorder Ex61 where
-  (Ex61 'a') <= (Ex61 'b') = True
-  (Ex61 'a') <= (Ex61 'c') = True
+allEx52s :: [Ex52]
+allEx52s = [A, B, C]
+
+instance Preorder Ex52 where
+  A <= B = True
+  A <= C = True
   x <= y = x == y
 
-newtype Ex61Set = Ex61Set [Ex61] deriving (Show, Eq, Ord)
+newtype Ex52Set = Ex52Set [Ex52] deriving (Show, Eq, Ord)
 
-instance Preorder Ex61Set where
-  (Ex61Set xs) <= (Ex61Set ys) = xs `isSubsetOf` ys
+instance Preorder Ex52Set where
+  (Ex52Set xs) <= (Ex52Set ys) = xs `isSubsetOf` ys
 
-newtype Ex61Op = Ex61Op Ex61 deriving (Show, Eq, Ord)
+newtype Ex52Op = Ex52Op Ex52 deriving (Show, Eq, Ord)
 
-instance Preorder Ex61Op where
-  (Ex61Op x) <= (Ex61Op y) = y PO.<= x
+instance Preorder Ex52Op where
+  (Ex52Op x) <= (Ex52Op y) = y PO.<= x
 
-newtype Ex61OpSet = Ex61OpSet [Ex61Op] deriving (Show, Eq, Ord)
+newtype Ex52OpSet = Ex52OpSet [Ex52Op] deriving (Show, Eq, Ord)
 
-instance Preorder Ex61OpSet where
-  (Ex61OpSet xs) <= (Ex61OpSet ys) = xs `isSubsetOf` ys
+instance Preorder Ex52OpSet where
+  (Ex52OpSet xs) <= (Ex52OpSet ys) = xs `isSubsetOf` ys
 
 newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq)
 
