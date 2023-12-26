@@ -10,7 +10,7 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder
+import Lib.Preorder as PO
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
@@ -50,8 +50,8 @@ prop_part_2_and_3 generator toSetPO = property $ do
   q <- forAll $ Gen.element xs
   let arrow' x = arrow x xs
 
-  q `lte` p ==> (toSetPO $ arrow' p) `lte` (toSetPO $ arrow' q)
-  p `lte` q === arrow' q `isSubsetOf` arrow' p
+  q PO.<= p ==> (toSetPO $ arrow' p) PO.<= (toSetPO $ arrow' q)
+  p PO.<= q === arrow' q `isSubsetOf` arrow' p
 
 tests :: TestTree
 tests =
