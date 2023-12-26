@@ -12,10 +12,6 @@ import Control.Monad (guard)
 
 class Preorder a where
   (<=) :: a -> a -> Bool
-  x <= y = x `lte` y
-
-  lte :: a -> a -> Bool
-  lte = (Lib.Preorder.<=)
 
 -- | determines whether elements are isomorphic
 (=~) :: Preorder a => a -> a -> Bool
