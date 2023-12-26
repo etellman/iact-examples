@@ -4,7 +4,7 @@ import Data.Monoid (All (..), Any (..))
 import Data.Set (fromList, toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Lib.Preorder (BoolPO (..))
+import Lib.Preorders (BoolPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions

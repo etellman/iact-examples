@@ -9,6 +9,7 @@ where
 
 import Ch1.Set (isSubsetOf)
 import Lib.Preorder as PO
+import Lib.Preorders (CharPO)
 
 newtype Ex61 = Ex61 Char deriving (Show, Eq, Ord)
 

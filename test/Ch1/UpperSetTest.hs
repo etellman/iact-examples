@@ -5,6 +5,7 @@ import Ch1.UpperSet
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Lib.Preorder as PO
+import Lib.Preorders (BoolPO (..), IntPO (..))
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
