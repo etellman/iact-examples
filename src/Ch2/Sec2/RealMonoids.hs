@@ -1,16 +1,12 @@
 module Ch2.Sec2.RealMonoids
-  ( ApproximateDouble,
-    RealPlus (..),
+  ( RealPlus (..),
     RealTimes (..),
     RealDiscrete (..),
   )
 where
 
-import Data.Eq.Approximate
+import Lib.ApproximateDouble
 import Lib.Preorder
-import TypeLevel.NaturalNumber
-
-type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
 
 -- | +/1
 newtype RealPlus = RealPlus ApproximateDouble deriving (Show, Eq, Ord)
