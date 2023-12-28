@@ -24,9 +24,10 @@ path = path' []
 -- vertices
 path' :: (Eq v, Graph v a) => [v] -> v -> v -> Bool
 path' visited from to =
-  let children v = fmap target $ filter (\x -> source x == v) (arrowsFrom from)
+  let children = (fmap target) . arrowsFrom $ from
+      unvisited v = not $ elem v visited
    in from == to
         || (not . null) (connections from to)
         || any
           (\v -> path' (from : visited) v to)
-          (filter (\c -> not $ elem c visited) $ children from)
+          (filter unvisited children)
