@@ -1,7 +1,6 @@
 module Ch1.GraphTest (tests) where
 
 import Ch1.Graph
-import Data.Maybe (fromJust)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
@@ -9,6 +8,7 @@ import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 newtype Vertex = Vertex Char deriving (Eq, Ord, Show)
+
 newtype Arrow = Arrow (Vertex, Vertex)
 
 instance Graph Vertex Arrow where
@@ -23,12 +23,6 @@ instance Graph Vertex Arrow where
 
 genVertex :: Gen Vertex
 genVertex = Gen.element (vertices :: [Vertex])
-
-genArrow :: Vertex -> Gen Arrow
-genArrow v = Gen.element $ arrowsFrom v
-
-genFilteredArrow :: Vertex -> (Arrow -> Bool) -> Gen Arrow
-genFilteredArrow v p = Gen.element (filter p $ arrowsFrom v)
 
 prop_reflexive :: Property
 prop_reflexive = property $ do
@@ -56,9 +50,6 @@ tests :: TestTree
 tests =
   testGroup
     "Ch1.GraphTest"
-    [ testGroup
-        "graph as partial order"
-        [ testProperty "reflexive" prop_reflexive,
-          testProperty "transitive" prop_transitive
-        ]
+    [ testProperty "reflexive" prop_reflexive,
+      testProperty "transitive" prop_transitive
     ]
