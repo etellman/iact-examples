@@ -9,22 +9,26 @@ import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 newtype Vertex = Vertex Char deriving (Eq, Ord, Show)
+newtype Arrow = Arrow (Vertex, Vertex)
 
-instance Graph Vertex where
+instance Graph Vertex Arrow where
   vertices = fmap Vertex ['a' .. 'f']
-  arrows = do
-    v1 <- vertices
+  arrowsFrom v1 = do
     v2 <- filter (v1 <=) vertices
-    return (v1, v2)
+    return $ Arrow (v1, v2)
+
+  source (Arrow (v, _)) = v
+  target (Arrow (_, v)) = v
+  weight _ = 1
 
 genVertex :: Gen Vertex
 genVertex = Gen.element (vertices :: [Vertex])
 
-genArrow :: Gen (Vertex, Vertex)
-genArrow = Gen.element (arrows :: [(Vertex, Vertex)])
+genArrow :: Vertex -> Gen Arrow
+genArrow v = Gen.element $ arrowsFrom v
 
-genFilteredArrow :: ((Vertex, Vertex) -> Bool) -> Gen (Vertex, Vertex)
-genFilteredArrow p = Gen.element (filter p arrows)
+genFilteredArrow :: Vertex -> (Arrow -> Bool) -> Gen Arrow
+genFilteredArrow v p = Gen.element (filter p $ arrowsFrom v)
 
 prop_reflexive :: Property
 prop_reflexive = property $ do
@@ -48,31 +52,6 @@ prop_transitive = property $ do
   -- exercise and verify
   viaV2 ==> path v1 v3
 
-prop_compose :: Property
-prop_compose = property $ do
-  -- set up
-  a1 <- forAll genArrow
-  a2 <- forAll $ genFilteredArrow (\a -> source a == target a1)
-
-  -- exercise
-  let composed = fromJust $ compose a1 a2
-
-  -- verify
-  (source composed) === source a1
-  (target composed) === target a2
-
-prop_notComposable :: Property
-prop_notComposable = property $ do
-  -- set up
-  a1 <- forAll genArrow
-  a2 <- forAll $ genFilteredArrow (\a -> source a /= target a1)
-
-  -- exercise
-  let composed = compose a1 a2
-
-  -- verify
-  composed === Nothing
-
 tests :: TestTree
 tests =
   testGroup
@@ -80,11 +59,6 @@ tests =
     [ testGroup
         "graph as partial order"
         [ testProperty "reflexive" prop_reflexive,
-          testProperty "transitive" prop_transitive,
-          testGroup
-            "compose"
-            [ testProperty "composable" prop_compose,
-              testProperty "not composable" prop_notComposable
-            ]
+          testProperty "transitive" prop_transitive
         ]
     ]

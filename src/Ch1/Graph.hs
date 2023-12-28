@@ -1,40 +1,30 @@
 module Ch1.Graph
   ( Graph (..),
-    compose,
     connections,
     path,
   )
 where
 
-class Graph v where
+class Graph v a | v -> a where
   vertices :: [v]
-  arrows :: [(v, v)]
-
-  source :: ((v, v) -> v)
-  source (x, _) = x
-
-  target :: ((v, v) -> v)
-  target (_, x) = x
-
--- the target of two composed arrows, if possible
-compose :: (Eq v, Graph v) => (v, v) -> (v, v) -> Maybe (v, v)
-compose f g
-  | target f == source g = Just $ (source f, target g)
-  | otherwise = Nothing
+  arrowsFrom :: v -> [a]
+  source :: a -> v
+  target :: a -> v
+  weight :: a -> Int
 
 -- direct connections between two vertices
-connections :: (Eq v, Graph v) => v -> v -> [(v, v)]
-connections v1 v2 = filter (\a -> source a == v1 && target a == v2) arrows
+connections :: (Eq v, Graph v a) => v -> v -> [a]
+connections v1 v2 = filter (\x -> target x == v2) (arrowsFrom v1)
 
 -- determine if there is at least one path between two vertices
-path :: (Eq v, Graph v) => v -> v -> Bool
+path :: (Eq v, Graph v a) => v -> v -> Bool
 path = path' []
 
 -- determine if there is at least one path between two vertices, keeping track of already visited
 -- vertices
-path' :: (Eq v, Graph v) => [v] -> v -> v -> Bool
+path' :: (Eq v, Graph v a) => [v] -> v -> v -> Bool
 path' visited from to =
-  let children v = fmap target $ filter (\a -> source a == v) arrows
+  let children v = fmap target $ filter (\x -> source x == v) (arrowsFrom from)
    in from == to
         || (not . null) (connections from to)
         || any

@@ -9,16 +9,20 @@ import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
 import Lib.Preorder as PO
 
 data Ex31 = P | Q | R | S | T deriving (Eq, Show)
+newtype Ex31Arrow = Ex31Arrow (Ex31, Ex31)
 
-instance Graph Ex31 where
+instance Graph Ex31 Ex31Arrow where
   vertices = [P, Q, R, S, T]
-  arrows =
-    [ (P, Q),
-      (P, R),
-      (Q, S),
-      (R, S),
-      (S, T)
-    ]
+
+  arrowsFrom P = fmap Ex31Arrow [(P, Q), (P, R)]
+  arrowsFrom Q = fmap Ex31Arrow [(Q, S)]
+  arrowsFrom R = fmap Ex31Arrow [(R, S)]
+  arrowsFrom S = fmap Ex31Arrow [(S, T)]
+  arrowsFrom _ = []
+
+  source (Ex31Arrow (v, _)) = v
+  target (Ex31Arrow (_, v)) = v
+  weight _ = 1
 
 instance Preorder Ex31 where
   (<=) = path

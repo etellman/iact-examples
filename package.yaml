@@ -40,6 +40,9 @@ ghc-options:
 - -XInstanceSigs
 - -XNumericUnderscores
 - -XGeneralizedNewtypeDeriving
+- -XMultiParamTypeClasses
+- -XFunctionalDependencies
+- -XAllowAmbiguousTypes
 
 library:
   source-dirs: src
