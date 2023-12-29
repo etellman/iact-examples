@@ -1,20 +1,22 @@
 module Ch1.GraphTest (tests) where
 
 import Ch1.Graph
+import Control.Monad (guard)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-newtype Vertex = Vertex Char deriving (Eq, Ord, Show)
+newtype Vertex = Vertex Int deriving (Eq, Ord, Show)
 
 newtype Arrow = Arrow (Vertex, Vertex)
 
 instance Graph Vertex Arrow where
-  vertices = fmap Vertex ['a' .. 'f']
-  arrowsFrom v1 = do
-    v2 <- filter (v1 <=) vertices
+  vertices = fmap Vertex [1 .. 30]
+  arrowsFrom v1@(Vertex x) = do
+    v2@(Vertex y) <- vertices
+    guard $ (x `mod` 5 - y `mod` 3) == 1
     return $ Arrow (v1, v2)
 
   source (Arrow (v, _)) = v
@@ -39,12 +41,16 @@ prop_transitive = property $ do
   v2 <- forAll genVertex
   v3 <- forAll genVertex
 
-  let viaV2 = path v1 v2 && path v2 v3
-  cover 10 "path exists" viaV2
-  cover 10 "no path" viaV2
+  let v1v2 = path v1 v2
+      v1v3 = path v1 v3
+      v2v3 = path v2 v3
+
+  cover 10 "v1 -> v2 -> v3" $ v1v2 && v2v3
+  cover 10 "not v1 -> v3" $ not $ v1v3
 
   -- exercise and verify
-  viaV2 ==> path v1 v3
+  v1v2 && v2v3 ==> v1v3
+  not v1v3 ==> not v1v2 || not v2v3
 
 tests :: TestTree
 tests =
