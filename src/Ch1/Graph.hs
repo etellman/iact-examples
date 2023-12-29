@@ -1,35 +1,43 @@
 module Ch1.Graph
   ( Graph (..),
     connections,
-    path,
+    isPath,
+    shortestPath,
   )
 where
+
+import Data.Maybe (isJust)
 
 class Graph v a | v -> a where
   vertices :: [v]
   arrowsFrom :: v -> [a]
   source :: a -> v
   target :: a -> v
-  weight :: a -> Int
 
 -- direct connections between two vertices
 connections :: (Eq v, Graph v a) => v -> v -> [a]
 connections v1 v2 =
   let targetMatches a = target a == v2
-    in filter targetMatches (arrowsFrom v1)
+   in filter targetMatches (arrowsFrom v1)
 
 -- determine if there is at least one path between two vertices
-path :: (Eq v, Graph v a) => v -> v -> Bool
-path = path' []
+isPath :: (Eq v, Graph v a) => v -> v -> Bool
+isPath v1 v2 = isJust $ shortestPath (const 1) v1 v2
 
--- determine if there is at least one path between two vertices, keeping track of already visited
--- vertices
-path' :: (Eq v, Graph v a) => [v] -> v -> v -> Bool
-path' visited from to =
-  let children = (fmap target) . arrowsFrom $ from
-      unvisited v = not $ elem v visited
-   in from == to
-        || (not . null) (connections from to)
-        || any
-          (\v -> path' (from : visited) v to)
-          (filter unvisited children)
+-- find the minimum weight path
+shortestPath :: (Eq v, Graph v a) => (a -> Int) -> v -> v -> Maybe Int
+shortestPath weight v1 v2 = path2 weight [] v1 v2
+
+-- minimum weight path, keeping track of visited vertices
+path2 :: (Eq v, Graph v a) => (a -> Int) -> [v] -> v -> v -> Maybe Int
+path2 weight visited from to
+  | from == to = Just 0
+  | (not . null) direct = Just $ minimum direct
+  | (not . null) indirect = minimum indirect
+  | otherwise = Nothing
+  where
+    unvisited a = not $ elem (target a) visited
+    direct = fmap weight $ connections from to
+    unvisitedArrows = (filter unvisited (arrowsFrom from))
+    pathThrough a = path2 ((+ weight a) . weight) (from : visited) (target a) to
+    indirect = fmap pathThrough unvisitedArrows

@@ -22,10 +22,9 @@ instance Graph Ex31 Ex31Arrow where
 
   source (Ex31Arrow (v, _)) = v
   target (Ex31Arrow (_, v)) = v
-  weight _ = 1
 
 instance Preorder Ex31 where
-  (<=) = path
+  (<=) = isPath
 
 ex31ToBool :: Ex31 -> Ex31 -> BooleanAnd
 ex31ToBool x y = BooleanAnd $ x PO.<= y
