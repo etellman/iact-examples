@@ -1,6 +1,5 @@
 module Ch1.Graph
   ( Graph (..),
-    connections,
     isPath,
     shortestPath,
   )
@@ -26,7 +25,7 @@ isPath v1 v2 = isJust $ shortestPath (const 1) v1 v2
 
 -- find the minimum weight path
 shortestPath :: (Eq v, Graph v a) => (a -> Int) -> v -> v -> Maybe Int
-shortestPath weight v1 v2 = path2 weight [] v1 v2
+shortestPath weight = path2 weight []
 
 -- minimum weight path, keeping track of visited vertices
 path2 :: (Eq v, Graph v a) => (a -> Int) -> [v] -> v -> v -> Maybe Int
