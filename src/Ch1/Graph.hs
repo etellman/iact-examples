@@ -6,6 +6,7 @@ module Ch1.Graph
 where
 
 import Data.Maybe (isJust)
+import Data.Monoid (Sum (..))
 
 class Graph v a | v -> a where
   vertices :: [v]
@@ -21,16 +22,16 @@ connections v1 v2 =
 
 -- determine if there is at least one path between two vertices
 isPath :: (Eq v, Graph v a) => v -> v -> Bool
-isPath v1 v2 = isJust $ shortestPath (const 1) v1 v2
+isPath v1 v2 = isJust $ shortestPath (const $ Sum (1 :: Int)) v1 v2
 
 -- find the minimum weight path
-shortestPath :: (Eq v, Graph v a) => (a -> Int) -> v -> v -> Maybe Int
+shortestPath :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> v -> v -> Maybe m
 shortestPath weight = path2 weight []
 
 -- minimum weight path, keeping track of visited vertices
-path2 :: (Eq v, Graph v a) => (a -> Int) -> [v] -> v -> v -> Maybe Int
+path2 :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> [v] -> v -> v -> Maybe m
 path2 weight visited from to
-  | from == to = Just 0
+  | from == to = Just $ mempty
   | (not . null) direct = Just $ minimum direct
   | (not . null) indirect = minimum indirect
   | otherwise = Nothing
@@ -38,5 +39,5 @@ path2 weight visited from to
     unvisited a = not $ elem (target a) visited
     direct = fmap weight $ connections from to
     unvisitedArrows = (filter unvisited (arrowsFrom from))
-    pathThrough a = path2 ((+ weight a) . weight) (from : visited) (target a) to
+    pathThrough a = path2 ((mappend $ weight a) . weight) (from : visited) (target a) to
     indirect = fmap pathThrough unvisitedArrows

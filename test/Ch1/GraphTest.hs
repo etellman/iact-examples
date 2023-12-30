@@ -2,6 +2,7 @@ module Ch1.GraphTest (tests) where
 
 import Ch1.Graph
 import Control.Monad (guard)
+import Data.Monoid (Sum (..))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
@@ -35,6 +36,9 @@ prop_reflexive = property $ do
   -- exercise and verify
   H.assert $ isPath v v
 
+constWeight :: Int -> Arrow -> Sum Int
+constWeight n = const $ Sum n
+
 prop_transitive :: Property
 prop_transitive = property $ do
   -- set up
@@ -62,17 +66,17 @@ tests =
       testProperty "transitive" prop_transitive,
       testGroup
         "shortest path"
-        [ testCase "1 -> 1" $ shortestPath (const 1) (Vertex 1) (Vertex 1) @?= Just 0,
-          testCase "1 -> 2" $ shortestPath (const 1) (Vertex 1) (Vertex 2) @?= Just 1,
-          testCase "1 -> 3" $ shortestPath (const 1) (Vertex 1) (Vertex 3) @?= Just 1,
-          testCase "1 -> 4" $ shortestPath (const 1) (Vertex 1) (Vertex 4) @?= Just 2,
-          testCase "3 -> 9" $ shortestPath (const 1) (Vertex 3) (Vertex 9) @?= Nothing,
-          testCase "1 -> 5" $ shortestPath (const 1) (Vertex 1) (Vertex 5) @?= Nothing,
-          testCase "2 -> 5" $ shortestPath (const 1) (Vertex 2) (Vertex 5) @?= Nothing,
-          testCase "3 -> 7" $ shortestPath (const 1) (Vertex 3) (Vertex 7) @?= Nothing,
+        [ testCase "1 -> 1" $ shortestPath (constWeight 1) (Vertex 1) (Vertex 1) @?= Just (Sum 0),
+          testCase "1 -> 2" $ shortestPath (constWeight 1) (Vertex 1) (Vertex 2) @?= Just (Sum 1),
+          testCase "1 -> 3" $ shortestPath (constWeight 1) (Vertex 1) (Vertex 3) @?= Just (Sum 1),
+          testCase "1 -> 4" $ shortestPath (constWeight 1) (Vertex 1) (Vertex 4) @?= Just (Sum 2),
+          testCase "3 -> 9" $ shortestPath (constWeight 1) (Vertex 3) (Vertex 9) @?= Nothing,
+          testCase "1 -> 5" $ shortestPath (constWeight 1) (Vertex 1) (Vertex 5) @?= Nothing,
+          testCase "2 -> 5" $ shortestPath (constWeight 1) (Vertex 2) (Vertex 5) @?= Nothing,
+          testCase "3 -> 7" $ shortestPath (constWeight 1) (Vertex 3) (Vertex 7) @?= Nothing,
           testCase "1 -> 4, double cost" $
-            shortestPath (const 2) (Vertex 1) (Vertex 4) @?= Just 4,
+            shortestPath (constWeight 2) (Vertex 1) (Vertex 4) @?= Just 4,
           testCase "1 -> 4, alternate cost " $
-            shortestPath (\(Arrow (Vertex x, Vertex y)) -> y - x) (Vertex 1) (Vertex 4) @?= Just 3
+            shortestPath (\(Arrow (Vertex x, Vertex y)) -> Sum $ y - x) (Vertex 1) (Vertex 4) @?= Just 3
         ]
     ]
