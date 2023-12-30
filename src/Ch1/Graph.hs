@@ -38,6 +38,8 @@ path2 weight visited from to
   where
     unvisited a = not $ elem (target a) visited
     direct = fmap weight $ connections from to
-    unvisitedArrows = (filter unvisited (arrowsFrom from))
-    pathThrough a = path2 ((mappend $ weight a) . weight) (from : visited) (target a) to
-    indirect = fmap pathThrough unvisitedArrows
+    pathThrough a =
+      fmap
+        (weight a <>)
+        (path2 weight (target a : visited) (target a) to)
+    indirect = fmap pathThrough (filter unvisited (arrowsFrom from))
