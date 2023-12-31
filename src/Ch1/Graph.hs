@@ -15,12 +15,6 @@ class Graph v a | v -> a where
   source :: a -> v
   target :: a -> v
 
--- direct connections between two vertices
-connections :: (Eq v, Graph v a) => v -> v -> [a]
-connections v1 v2 =
-  let targetMatches a = target a == v2
-   in filter targetMatches (arrowsFrom v1)
-
 -- determine if there is at least one path between two vertices
 isPath :: (Eq v, Graph v a) => v -> v -> Bool
 isPath v1 v2 = isJust $ shortestPath v1 v2
@@ -37,14 +31,12 @@ minPath weight = path2 weight []
 path2 :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> [v] -> v -> v -> Maybe m
 path2 weight visited from to
   | from == to = Just $ mempty
-  | (not . null) direct = Just $ minimum direct
-  | (not . null) indirect = minimum indirect
+  | from `elem` visited = Nothing
+  | (not . null) paths = minimum paths
   | otherwise = Nothing
   where
-    unvisited a = not $ elem (target a) visited
-    direct = fmap weight $ connections from to
     pathThrough a =
       fmap
         (weight a <>)
-        (path2 weight (target a : visited) (target a) to)
-    indirect = fmap pathThrough (filter unvisited (arrowsFrom from))
+        (path2 weight (from : visited) (target a) to)
+    paths = filter isJust $ fmap pathThrough (arrowsFrom from)
