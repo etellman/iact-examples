@@ -1,6 +1,7 @@
 module Ch1.Graph
   ( Graph (..),
     isPath,
+    minPath,
     shortestPath,
   )
 where
@@ -22,11 +23,15 @@ connections v1 v2 =
 
 -- determine if there is at least one path between two vertices
 isPath :: (Eq v, Graph v a) => v -> v -> Bool
-isPath v1 v2 = isJust $ shortestPath (const $ Sum (1 :: Int)) v1 v2
+isPath v1 v2 = isJust $ shortestPath v1 v2
+
+-- find the path with the fewest edges
+shortestPath :: (Eq v, Graph v a) => v -> v -> Maybe Int
+shortestPath v1 v2 = fmap getSum $ minPath (const $ Sum 1) v1 v2
 
 -- find the minimum weight path
-shortestPath :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> v -> v -> Maybe m
-shortestPath weight = path2 weight []
+minPath :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> v -> v -> Maybe m
+minPath weight = path2 weight []
 
 -- minimum weight path, keeping track of visited vertices
 path2 :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> [v] -> v -> v -> Maybe m
