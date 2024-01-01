@@ -1,7 +1,7 @@
 module Ch2.Sec3.Exercise39Test (tests) where
 
-import Ch1.Graph
 import Data.Monoid (Sum (..))
+import Lib.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
 

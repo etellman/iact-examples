@@ -4,11 +4,12 @@ module Ch2.Sec3.Example31
   )
 where
 
-import Ch1.Graph
 import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
+import Lib.Graph
 import Lib.Preorder as PO
 
 data Ex31 = P | Q | R | S | T deriving (Eq, Show)
+
 newtype Ex31Arrow = Ex31Arrow (Ex31, Ex31)
 
 instance Graph Ex31 Ex31Arrow where

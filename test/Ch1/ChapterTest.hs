@@ -1,7 +1,6 @@
 module Ch1.ChapterTest (chapterTests) where
 
 import Ch1.BooleanSystemTest
-import Ch1.GraphTest
 import Ch1.PartitionTest
 import Ch1.PreservingTest
 import Ch1.Sec1.SectionTest
@@ -25,7 +24,6 @@ chapterTests =
       Ch1.SetSystemTest.tests,
       Ch1.BooleanSystemTest.tests,
       Ch1.SetTest.tests,
-      Ch1.GraphTest.tests,
       Ch1.UpperSetTest.tests,
       Ch1.PartitionTest.tests
     ]

@@ -1,6 +1,6 @@
-module Ch1.GraphTest (tests) where
+module Lib.GraphTest (tests) where
 
-import Ch1.Graph
+import Lib.Graph
 import Control.Monad (guard)
 import Data.Monoid (Sum (..))
 import Hedgehog as H

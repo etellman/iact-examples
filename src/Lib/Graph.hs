@@ -1,4 +1,4 @@
-module Ch1.Graph
+module Lib.Graph
   ( Graph (..),
     isPath,
     minPath,
