@@ -77,7 +77,7 @@ tests =
         ],
       testGroup
         "min path"
-        [           testCase "1 -> 4, double cost" $
+        [ testCase "1 -> 4, double cost" $
             minPath (constWeight 2) (Vertex 1) (Vertex 4) @?= Just 4,
           testCase "1 -> 4, alternate cost " $
             minPath (\(Arrow (Vertex x, Vertex y)) -> Sum $ y - x) (Vertex 1) (Vertex 4) @?= Just 3
