@@ -18,17 +18,17 @@ testProbabilities v ws =
           maxPath (\a -> fromRatio (weight a) 6) v v2 @?= Just w
    in fmap test (zip vertices $ fmap Probability ws)
 
-toYnm :: Int -> YnmMin
-toYnm d
-  | d >= 5 = YnmMin Yes
-  | d >= 3 = YnmMin Maybe
-  | otherwise = YnmMin No
+categorizeYnm :: Int -> YesNoMaybe
+categorizeYnm d
+  | d >= 5 = Yes
+  | d >= 3 = Maybe
+  | otherwise = No
 
 testYnm :: Vertex -> [YesNoMaybe] -> [TestTree]
 testYnm v ws =
   let test (v2, w) =
         testCase (show v2) $
-          maxPath (toYnm . weight) v v2 @?= Just w
+          maxPath (YnmMin . categorizeYnm . weight) v v2 @?= Just w
    in fmap test (zip vertices $ fmap YnmMin ws)
 
 tests :: TestTree
