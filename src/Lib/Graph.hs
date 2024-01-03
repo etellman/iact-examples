@@ -1,6 +1,7 @@
 module Lib.Graph
   ( Graph (..),
     isPath,
+    maxPath,
     minPath,
     shortestPath,
   )
@@ -25,18 +26,29 @@ shortestPath v1 v2 = fmap getSum $ minPath (const $ Sum 1) v1 v2
 
 -- find the minimum weight path
 minPath :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> v -> v -> Maybe m
-minPath weight = path2 weight []
+minPath weight = path2 weight minimum []
+
+-- find the maximum weight path
+maxPath :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> v -> v -> Maybe m
+maxPath weight = path2 weight maximum []
 
 -- minimum weight path, keeping track of visited vertices
-path2 :: (Eq v, Graph v a, Monoid m, Ord m) => (a -> m) -> [v] -> v -> v -> Maybe m
-path2 weight visited from to
+path2 ::
+  (Eq v, Graph v a, Monoid m, Ord m) =>
+  (a -> m) ->
+  ([Maybe m] -> Maybe m) ->
+  [v] ->
+  v ->
+  v ->
+  Maybe m
+path2 weight select visited from to
   | from == to = Just $ mempty
   | from `elem` visited = Nothing
-  | (not . null) paths = minimum paths
+  | (not . null) paths = select paths
   | otherwise = Nothing
   where
     pathThrough a =
       fmap
         (weight a <>)
-        (path2 weight (from : visited) (target a) to)
+        (path2 weight select (from : visited) (target a) to)
     paths = filter isJust $ fmap pathThrough (arrowsFrom from)

@@ -15,18 +15,20 @@ testProbabilities :: Vertex -> [ApproximateDouble] -> [TestTree]
 testProbabilities v ws =
   let test (v2, w) =
         testCase (show v2) $
-          minPath (\a -> fromRatio (weight a) 6) v v2 @?= Just w
+          maxPath (\a -> fromRatio (weight a) 6) v v2 @?= Just w
    in fmap test (zip vertices $ fmap Probability ws)
 
 toYnm :: Int -> YnmMin
-toYnm 6 = YnmMin Yes
-toYnm _ = YnmMin Maybe
+toYnm d
+  | d >= 5 = YnmMin Yes
+  | d >= 3 = YnmMin Maybe
+  | otherwise = YnmMin No
 
 testYnm :: Vertex -> [YesNoMaybe] -> [TestTree]
 testYnm v ws =
   let test (v2, w) =
         testCase (show v2) $
-          minPath (toYnm . weight) v v2 @?= Just w
+          maxPath (toYnm . weight) v v2 @?= Just w
    in fmap test (zip vertices $ fmap YnmMin ws)
 
 tests :: TestTree
@@ -43,8 +45,8 @@ tests =
       testGroup
         "yes/no/maybe"
         [ testGroup "A ->" $ testYnm A [Yes, Maybe, Maybe, Maybe],
-          testGroup "B ->" $ testYnm B [Maybe, Yes, Maybe, Maybe],
-          testGroup "C ->" $ testYnm C [Maybe, Maybe, Yes, Maybe],
-          testGroup "D ->" $ testYnm D [Maybe, Maybe, Yes, Yes]
+          testGroup "B ->" $ testYnm B [No, Yes, Yes, Yes],
+          testGroup "C ->" $ testYnm C [No, Maybe, Yes, Maybe],
+          testGroup "D ->" $ testYnm D [No, Maybe, Yes, Yes]
         ]
     ]
