@@ -8,7 +8,7 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 genEx31 :: Gen Ex31
-genEx31 = Gen.element [P, Q, R, S, T]
+genEx31 = Gen.element vertices
 
 prop_identity ::
   (Show p, Monoid q, Preorder q) =>
@@ -41,5 +41,5 @@ tests =
   testGroup
     "Ch2.Sec3.Example31Test"
     [ testProperty "identity" $ prop_identity genEx31 ex31ToBool,
-      testProperty "monad operation" $ prop_mplus genEx31 ex31ToBool
+      testProperty "monoid operation" $ prop_mplus genEx31 ex31ToBool
     ]

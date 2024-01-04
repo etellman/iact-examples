@@ -1,6 +1,7 @@
 module Ch2.Sec3.Example31
   ( Ex31 (..),
     ex31ToBool,
+    vertices,
   )
 where
 

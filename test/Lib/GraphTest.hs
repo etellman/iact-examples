@@ -61,7 +61,7 @@ prop_transitive = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch1.GraphTest"
+    "Lib.GraphTest"
     [ testProperty "reflexive" prop_reflexive,
       testProperty "transitive" prop_transitive,
       testGroup
