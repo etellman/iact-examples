@@ -6,9 +6,7 @@ import Data.List (union)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Lib.Graph
-import Lib.Preorder as PO
 import Test.Tasty
-import Test.Tasty.Hedgehog
 
 genCity :: Gen City
 genCity = Gen.element cities
