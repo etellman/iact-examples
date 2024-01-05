@@ -8,7 +8,6 @@ where
 
 import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
 import Lib.Graph
-import Lib.Preorder as PO
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
 
@@ -28,8 +27,5 @@ arrowsFrom R = fmap Arrow [(R, S)]
 arrowsFrom S = fmap Arrow [(S, T)]
 arrowsFrom _ = []
 
-instance Preorder Vertex where
-  (<=) = isPath arrowsFrom
-
 toBooleanAnd :: Vertex -> Vertex -> BooleanAnd
-toBooleanAnd x y = BooleanAnd $ x PO.<= y
+toBooleanAnd x y = BooleanAnd $ isPath arrowsFrom x y
