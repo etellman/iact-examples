@@ -1,10 +1,10 @@
 module Lib.GraphTest (tests) where
 
-import Lib.Graph
 import Control.Monad (guard)
 import Data.Monoid (Sum (..))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Lib.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
@@ -16,14 +16,16 @@ newtype Arrow = Arrow (Vertex, Vertex)
 
 instance Graph Vertex Arrow where
   vertices = fmap Vertex [1 .. 9]
-  arrowsFrom v1@(Vertex x) = do
-    i <- [0, 1]
-    let y = (2 * x + i) `mod` 5
-    guard $ y /= 0
-    return $ Arrow (v1, Vertex y)
 
   source (Arrow (v, _)) = v
   target (Arrow (_, v)) = v
+
+arrowsFrom :: Vertex -> [Arrow]
+arrowsFrom v1@(Vertex x) = do
+  i <- [0, 1]
+  let y = (2 * x + i) `mod` 5
+  guard $ y /= 0
+  return $ Arrow (v1, Vertex y)
 
 genVertex :: Gen Vertex
 genVertex = Gen.element (vertices :: [Vertex])
@@ -34,7 +36,7 @@ prop_reflexive = property $ do
   v <- forAll genVertex
 
   -- exercise and verify
-  H.assert $ isPath v v
+  H.assert $ isPath arrowsFrom v v
 
 constWeight :: Int -> Arrow -> Sum Int
 constWeight n = const $ Sum n
@@ -46,9 +48,11 @@ prop_transitive = property $ do
   v2 <- forAll genVertex
   v3 <- forAll genVertex
 
-  let v1v2 = isPath v1 v2
-      v1v3 = isPath v1 v3
-      v2v3 = isPath v2 v3
+
+  let ip = isPath arrowsFrom
+      v1v2 = ip v1 v2
+      v1v3 = ip v1 v3
+      v2v3 = ip v2 v3
 
   cover 10 "indirect route" $ v1v2 && v2v3
   cover 5 "direct and no indirect route" $ (not v1v2 || not v2v3) && v1v3
@@ -58,6 +62,9 @@ prop_transitive = property $ do
   v1v2 && v2v3 ==> v1v3
   not v1v3 ==> not v1v2 || not v2v3
 
+shortest :: Vertex -> Vertex -> Maybe Int
+shortest = shortestPath arrowsFrom
+
 tests :: TestTree
 tests =
   testGroup
@@ -66,20 +73,25 @@ tests =
       testProperty "transitive" prop_transitive,
       testGroup
         "shortest path"
-        [ testCase "1 -> 1" $ shortestPath (Vertex 1) (Vertex 1) @?= Just 0,
-          testCase "1 -> 2" $ shortestPath (Vertex 1) (Vertex 2) @?= Just 1,
-          testCase "1 -> 3" $ shortestPath (Vertex 1) (Vertex 3) @?= Just 1,
-          testCase "1 -> 4" $ shortestPath (Vertex 1) (Vertex 4) @?= Just 2,
-          testCase "3 -> 9" $ shortestPath (Vertex 3) (Vertex 9) @?= Nothing,
-          testCase "1 -> 5" $ shortestPath (Vertex 1) (Vertex 5) @?= Nothing,
-          testCase "2 -> 5" $ shortestPath (Vertex 2) (Vertex 5) @?= Nothing,
-          testCase "3 -> 7" $ shortestPath (Vertex 3) (Vertex 7) @?= Nothing
+        [ testCase "1 -> 1" $ shortest (Vertex 1) (Vertex 1) @?= Just 0,
+          testCase "1 -> 2" $ shortest (Vertex 1) (Vertex 2) @?= Just 1,
+          testCase "1 -> 3" $ shortest (Vertex 1) (Vertex 3) @?= Just 1,
+          testCase "1 -> 4" $ shortest (Vertex 1) (Vertex 4) @?= Just 2,
+          testCase "3 -> 9" $ shortest (Vertex 3) (Vertex 9) @?= Nothing,
+          testCase "1 -> 5" $ shortest (Vertex 1) (Vertex 5) @?= Nothing,
+          testCase "2 -> 5" $ shortest (Vertex 2) (Vertex 5) @?= Nothing,
+          testCase "3 -> 7" $ shortest (Vertex 3) (Vertex 7) @?= Nothing
         ],
       testGroup
         "min path"
         [ testCase "1 -> 4, double cost" $
-            minPath (constWeight 2) (Vertex 1) (Vertex 4) @?= Just 4,
+            minPath arrowsFrom (constWeight 2) (Vertex 1) (Vertex 4) @?= Just 4,
           testCase "1 -> 4, alternate cost " $
-            minPath (\(Arrow (Vertex x, Vertex y)) -> Sum $ y - x) (Vertex 1) (Vertex 4) @?= Just 3
+            minPath
+              arrowsFrom
+              (\(Arrow (Vertex x, Vertex y)) -> Sum $ y - x)
+              (Vertex 1)
+              (Vertex 4)
+              @?= Just 3
         ]
     ]

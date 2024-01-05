@@ -2,7 +2,7 @@ module Ch2.Sec3.Exercise41Test (tests) where
 
 import Ch2.Sec2.YesNoMaybe
 import Ch2.Sec3.Exercise41
-import Ch2.Sec3.Figure18 (Arrow (..), Vertex (..))
+import Ch2.Sec3.Figure18
 import Lib.ApproximateDouble (ApproximateDouble)
 import Lib.Graph
 import Test.Tasty
@@ -15,7 +15,7 @@ testProbabilities :: Vertex -> [ApproximateDouble] -> [TestTree]
 testProbabilities v ws =
   let test (v2, w) =
         testCase (show v2) $
-          maxPath (\a -> fromRatio (weight a) 6) v v2 @?= Just w
+          maxPath arrowsFrom (\a -> fromRatio (weight a) 6) v v2 @?= Just w
    in fmap test (zip vertices $ fmap Probability ws)
 
 categorizeYnm :: Int -> YesNoMaybe
@@ -28,7 +28,7 @@ testYnm :: Vertex -> [YesNoMaybe] -> [TestTree]
 testYnm v ws =
   let test (v2, w) =
         testCase (show v2) $
-          maxPath (YnmMin . categorizeYnm . weight) v v2 @?= Just w
+          maxPath arrowsFrom (YnmMin . categorizeYnm . weight) v v2 @?= Just w
    in fmap test (zip vertices $ fmap YnmMin ws)
 
 tests :: TestTree

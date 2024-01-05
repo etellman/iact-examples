@@ -5,6 +5,7 @@ module Ch2.Sec3.Exercise42
     Arrow (..),
     cities,
     transports,
+    arrowsFrom,
   )
 where
 
@@ -32,18 +33,19 @@ data Arrow = Arrow
 instance Graph City Arrow where
   vertices = cities
 
-  arrowsFrom V = [Arrow V X (Transports [A, C])]
-  arrowsFrom W = [Arrow W Z (Transports [C, B])]
-  arrowsFrom X = [Arrow X Y (Transports [A])]
-  arrowsFrom Y = [Arrow Y Z (Transports [A, C])]
-  arrowsFrom Z =
-    [ Arrow Z V (Transports [A, B]),
-      Arrow Z X (Transports [B]),
-      Arrow Z Y (Transports [C])
-    ]
-
   source = from
   target = to
+
+arrowsFrom :: City -> [Arrow]
+arrowsFrom V = [Arrow V X (Transports [A, C])]
+arrowsFrom W = [Arrow W Z (Transports [C, B])]
+arrowsFrom X = [Arrow X Y (Transports [A])]
+arrowsFrom Y = [Arrow Y Z (Transports [A, C])]
+arrowsFrom Z =
+  [ Arrow Z V (Transports [A, B]),
+    Arrow Z X (Transports [B]),
+    Arrow Z Y (Transports [C])
+  ]
 
 newtype Transports = Transports [Transport] deriving (Eq, Show)
 
@@ -52,9 +54,6 @@ instance Ord Transports where
 
 instance Preorder Transports where
   (<=) = (Prelude.<=)
-
-instance Preorder City where
-  (<=) = isPath
 
 instance Monoid Transports where
   mempty = Transports transports
