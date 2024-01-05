@@ -1,9 +1,7 @@
-module Ch2.Sec3.Exercise42Test
-  ( tests,
-  )
-where
+module Ch2.Sec3.Exercise42Test (tests) where
 
 import Ch2.Sec3.Exercise42
+import qualified Ch2.Sec3.VCategoryProperties as VC
 import Data.List (union)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -25,36 +23,9 @@ cityToTransports c1 c2 =
         Just ts -> ts
         Nothing -> Transports []
 
-prop_identity ::
-  (Show p, Monoid q, Preorder q) =>
-  Gen p ->
-  (p -> p -> q) ->
-  Property
-prop_identity gen hom = property $ do
-  -- set up
-  x <- forAll gen
-
-  -- exercise and verify
-  H.assert $ (hom x x) PO.<= mempty
-
-prop_mplus ::
-  (Show p, Monoid q, Preorder q) =>
-  Gen p ->
-  (p -> p -> q) ->
-  Property
-prop_mplus gen hom = property $ do
-  -- set up
-  x <- forAll gen
-  y <- forAll gen
-  z <- forAll gen
-
-  -- exercise and verify
-  H.assert $ ((hom x y) <> (hom y z)) PO.<= (hom x z)
-
 tests :: TestTree
 tests =
   testGroup
     "Ch2.Sec3.Exercise42Test"
-    [ testProperty "identity" $ prop_identity genCity cityToTransports,
-      testProperty "monad operation" $ prop_mplus genCity cityToTransports
+    [ VC.tests genCity cityToTransports
     ]

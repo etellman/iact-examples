@@ -1,12 +1,10 @@
 module Ch2.Sec3.Example31
   ( Vertex (..),
-    toBooleanAnd,
     vertices,
     arrowsFrom,
   )
 where
 
-import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
 import Lib.Graph
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
@@ -26,6 +24,3 @@ arrowsFrom Q = fmap Arrow [(Q, S)]
 arrowsFrom R = fmap Arrow [(R, S)]
 arrowsFrom S = fmap Arrow [(S, T)]
 arrowsFrom _ = []
-
-toBooleanAnd :: Vertex -> Vertex -> BooleanAnd
-toBooleanAnd x y = BooleanAnd $ isPath arrowsFrom x y
