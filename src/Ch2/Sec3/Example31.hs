@@ -1,6 +1,6 @@
 module Ch2.Sec3.Example31
-  ( Ex31 (..),
-    ex31ToBool,
+  ( Vertex (..),
+    toBooleanAnd,
     vertices,
     arrowsFrom,
   )
@@ -10,25 +10,26 @@ import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
 import Lib.Graph
 import Lib.Preorder as PO
 
-data Ex31 = P | Q | R | S | T deriving (Eq, Show)
+data Vertex = P | Q | R | S | T deriving (Eq, Show)
 
-newtype Ex31Arrow = Ex31Arrow (Ex31, Ex31)
+newtype Arrow = Arrow (Vertex, Vertex)
 
-instance Graph Ex31 Ex31Arrow where
-  vertices = [P, Q, R, S, T]
+instance Graph Vertex Arrow where
+  source (Arrow (v, _)) = v
+  target (Arrow (_, v)) = v
 
-  source (Ex31Arrow (v, _)) = v
-  target (Ex31Arrow (_, v)) = v
+vertices :: [Vertex]
+vertices = [P, Q, R, S, T]
 
-arrowsFrom :: Ex31 -> [Ex31Arrow]
-arrowsFrom P = fmap Ex31Arrow [(P, Q), (P, R)]
-arrowsFrom Q = fmap Ex31Arrow [(Q, S)]
-arrowsFrom R = fmap Ex31Arrow [(R, S)]
-arrowsFrom S = fmap Ex31Arrow [(S, T)]
+arrowsFrom :: Vertex -> [Arrow]
+arrowsFrom P = fmap Arrow [(P, Q), (P, R)]
+arrowsFrom Q = fmap Arrow [(Q, S)]
+arrowsFrom R = fmap Arrow [(R, S)]
+arrowsFrom S = fmap Arrow [(S, T)]
 arrowsFrom _ = []
 
-instance Preorder Ex31 where
+instance Preorder Vertex where
   (<=) = isPath arrowsFrom
 
-ex31ToBool :: Ex31 -> Ex31 -> BooleanAnd
-ex31ToBool x y = BooleanAnd $ x PO.<= y
+toBooleanAnd :: Vertex -> Vertex -> BooleanAnd
+toBooleanAnd x y = BooleanAnd $ x PO.<= y

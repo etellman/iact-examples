@@ -31,8 +31,6 @@ data Arrow = Arrow
   }
 
 instance Graph City Arrow where
-  vertices = cities
-
   source = from
   target = to
 

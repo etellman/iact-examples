@@ -2,6 +2,7 @@ module Ch2.Sec3.Figure18
   ( Vertex (..),
     Arrow (..),
     arrowsFrom,
+    vertices,
   )
 where
 
@@ -16,10 +17,11 @@ data Arrow = Arrow
   }
 
 instance Graph Vertex Arrow where
-  vertices = [A, B, C, D]
-
   source = from
   target = to
+
+vertices :: [Vertex]
+vertices = [A, B, C, D]
 
 arrowsFrom :: Vertex -> [Arrow]
 arrowsFrom A = [Arrow A C 3]

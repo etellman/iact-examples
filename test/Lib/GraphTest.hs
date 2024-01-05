@@ -15,10 +15,11 @@ newtype Vertex = Vertex Int deriving (Eq, Ord, Show)
 newtype Arrow = Arrow (Vertex, Vertex)
 
 instance Graph Vertex Arrow where
-  vertices = fmap Vertex [1 .. 9]
-
   source (Arrow (v, _)) = v
   target (Arrow (_, v)) = v
+
+vertices :: [Vertex]
+vertices = fmap Vertex [1 .. 9]
 
 arrowsFrom :: Vertex -> [Arrow]
 arrowsFrom v1@(Vertex x) = do

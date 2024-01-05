@@ -12,9 +12,6 @@ import Data.Maybe (fromJust, isJust)
 import Data.Monoid (Sum (..))
 
 class Graph v a | v -> a where
-  vertices :: [v]
-
-  -- arrowsFrom :: v -> [a]
   source :: a -> v
   target :: a -> v
 
