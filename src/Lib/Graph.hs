@@ -8,7 +8,7 @@ module Lib.Graph
   )
 where
 
-import Data.Maybe (isJust)
+import Data.Maybe (isJust, fromJust)
 import Data.Monoid (Sum (..))
 
 class Graph v a | v -> a where
@@ -46,7 +46,7 @@ maxPath = pathWith maximum
 -- find a path using a custom way to combine weights
 pathWith ::
   (Eq v, Graph v a, Monoid m, Ord m) =>
-  ([Maybe m] -> Maybe m) ->
+  ([m] -> m) ->
   (a -> m) ->
   v ->
   v ->
@@ -56,7 +56,7 @@ pathWith select weight = path2 select weight []
 -- minimum weight path, keeping track of visited vertices
 path2 ::
   (Eq v, Graph v a, Monoid m, Ord m) =>
-  ([Maybe m] -> Maybe m) ->
+  ([m] -> m) ->
   (a -> m) ->
   [v] ->
   v ->
@@ -65,7 +65,7 @@ path2 ::
 path2 select weight visited from to
   | from == to = Just $ mempty
   | from `elem` visited = Nothing
-  | (not . null) paths = select paths
+  | (not . null) paths = Just $ select paths
   | otherwise = Nothing
   where
     path2' = path2 select weight
@@ -73,4 +73,4 @@ path2 select weight visited from to
       fmap
         (weight a <>)
         (path2' (from : visited) (target a) to)
-    paths = filter isJust $ fmap pathThrough (arrowsFrom from)
+    paths = fmap fromJust $ filter isJust $ fmap pathThrough (arrowsFrom from)

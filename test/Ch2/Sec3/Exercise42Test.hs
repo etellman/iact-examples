@@ -5,7 +5,6 @@ where
 
 import Ch2.Sec3.Exercise42
 import Data.List (union)
-import Data.Maybe (isJust, fromJust)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Lib.Graph
@@ -16,10 +15,8 @@ import Test.Tasty.Hedgehog
 genCity :: Gen City
 genCity = Gen.element cities
 
-anyOf :: [Maybe Transports] -> Maybe Transports
-anyOf xs =
-  let xs' = fmap fromJust $ filter isJust xs
-   in Just $ Transports $ foldr (\(Transports ts) total -> union ts total) [] xs'
+anyOf :: [Transports] -> Transports
+anyOf = Transports . (foldr (\(Transports ts) total -> union ts total) [])
 
 cityToTransports :: City -> City -> Transports
 cityToTransports c1 c2 =
