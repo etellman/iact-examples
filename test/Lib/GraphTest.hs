@@ -12,22 +12,22 @@ import TestLib.Assertions
 
 newtype Vertex = Vertex Int deriving (Eq, Ord, Show)
 
-newtype Arrow = Arrow (Vertex, Vertex)
+newtype TestArrow = TestArrow (Vertex, Vertex)
 
-instance Graph Vertex Arrow Int where
-  source (Arrow (v, _)) = v
-  target (Arrow (_, v)) = v
+instance Arrow TestArrow Vertex Int where
+  source (TestArrow (v, _)) = v
+  target (TestArrow (_, v)) = v
   weight' = const 1
 
 vertices :: [Vertex]
 vertices = fmap Vertex [1 .. 9]
 
-arrowsFrom :: Vertex -> [Arrow]
+arrowsFrom :: Vertex -> [TestArrow]
 arrowsFrom v1@(Vertex x) = do
   i <- [0, 1]
   let y = (2 * x + i) `mod` 5
   guard $ y /= 0
-  return $ Arrow (v1, Vertex y)
+  return $ TestArrow (v1, Vertex y)
 
 genVertex :: Gen Vertex
 genVertex = Gen.element (vertices :: [Vertex])
@@ -40,7 +40,7 @@ prop_reflexive = property $ do
   -- exercise and verify
   H.assert $ isPath arrowsFrom v v
 
-constWeight :: Int -> Arrow -> Sum Int
+constWeight :: Int -> TestArrow -> Sum Int
 constWeight n = const $ Sum n
 
 prop_transitive :: Property
@@ -91,7 +91,7 @@ tests =
           testCase "1 -> 4, alternate cost " $
             minPath
               arrowsFrom
-              (\(Arrow (Vertex x, Vertex y)) -> Sum $ y - x)
+              (\(TestArrow (Vertex x, Vertex y)) -> Sum $ y - x)
               (Vertex 1)
               (Vertex 4)
               @?= Just 3

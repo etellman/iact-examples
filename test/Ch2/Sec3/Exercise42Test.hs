@@ -23,12 +23,12 @@ transportsBetween c1 c2 =
         Just ts -> ts
         Nothing -> Transports []
 
-hasTransport :: Transport -> Arrow -> Bool
+hasTransport :: Transport -> Route -> Bool
 hasTransport t a =
   let (Transports ts) = weight a
    in t `elem` ts
 
-routeVia :: Transport -> City -> [Arrow]
+routeVia :: Transport -> City -> [Route]
 routeVia t c = filter (hasTransport t) (arrowsFrom c)
 
 prop_path :: Property
