@@ -17,7 +17,7 @@ newtype TestArrow = TestArrow (Vertex, Vertex)
 instance Arrow TestArrow Vertex IntWeight where
   source (TestArrow (v, _)) = v
   target (TestArrow (_, v)) = v
-  weight' = const $ IntWeight (Sum 1)
+  weight = const $ IntWeight (Sum 1)
 
 vertices :: [Vertex]
 vertices = fmap Vertex [1 .. 9]
@@ -47,7 +47,6 @@ prop_transitive = property $ do
   v2 <- forAll genVertex
   v3 <- forAll genVertex
 
-
   let ip = isPath arrowsFrom
       v1v2 = ip v1 v2
       v1v3 = ip v1 v3
@@ -67,7 +66,7 @@ weightToInt (IntWeight (Sum x)) = x
 shortest :: Vertex -> Vertex -> Maybe Int
 shortest v1 v2 =
   let w = minPath arrowsFrom v1 v2
-    in fmap weightToInt w
+   in fmap weightToInt w
 
 tests :: TestTree
 tests =

@@ -28,7 +28,7 @@ data ProbabilityArrow = ProbabilityArrow
 instance Arrow ProbabilityArrow Vertex Probability where
   source = paFrom
   target = paTo
-  weight' = paWeight
+  weight = paWeight
 
 fromRatio :: Int -> Int -> Probability
 fromRatio m n = Probability $ fromIntegral m / fromIntegral n
@@ -53,7 +53,7 @@ data YnmArrow = YnmArrow
 instance Arrow YnmArrow Vertex YnmMin where
   source = ynmFrom
   target = ynmTo
-  weight' = ynmWeight
+  weight = ynmWeight
 
 ynmArrowsFrom :: Vertex -> [YnmArrow]
 ynmArrowsFrom v =

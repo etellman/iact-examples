@@ -14,13 +14,13 @@ data Vertex = A | B | C | D deriving (Eq, Show)
 data Fig18Arrow = Fig18Arrow
   { from :: Vertex,
     to :: Vertex,
-    weight :: Int
+    fig18eight :: Int
   }
 
 instance Arrow Fig18Arrow Vertex IntWeight where
   source = from
   target = to
-  weight' = IntWeight . Sum . weight
+  weight = IntWeight . Sum . fig18eight
 
 vertices :: [Vertex]
 vertices = [A, B, C, D]

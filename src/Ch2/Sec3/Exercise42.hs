@@ -27,13 +27,13 @@ transports = [A, B, C]
 data Route = Route
   { from :: City,
     to :: City,
-    weight :: Transports
+    routeTransports :: Transports
   }
 
 instance Arrow Route City Transports where
   source = from
   target = to
-  weight' = weight
+  weight = routeTransports
 
 arrowsFrom :: City -> [Route]
 arrowsFrom V = [Route V X (Transports [A, C])]

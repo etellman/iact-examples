@@ -16,7 +16,7 @@ newtype IntWeight = IntWeight (Sum Int) deriving (Semigroup, Monoid, Eq, Ord, Sh
 class Arrow a v w | a -> v w where
   source :: a -> v
   target :: a -> v
-  weight' :: a -> w
+  weight :: a -> w
 
 -- determine if there is at least one path between two vertices
 isPath ::
@@ -73,6 +73,6 @@ path2 arrowsFrom select visited from to
     path2' = path2 arrowsFrom select
     pathThrough a =
       fmap
-        (weight' a <>)
+        (weight a <>)
         (path2' (from : visited) (target a) to)
     paths = fmap fromJust $ filter isJust $ fmap pathThrough (arrowsFrom from)
