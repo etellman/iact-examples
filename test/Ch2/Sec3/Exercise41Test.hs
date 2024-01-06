@@ -8,27 +8,16 @@ import Lib.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
 
-fromRatio :: Int -> Int -> Probability
-fromRatio m n = Probability $ fromIntegral m / fromIntegral n
-
 testProbabilities :: Vertex -> [ApproximateDouble] -> [TestTree]
 testProbabilities v ws =
   let test (v2, w) =
         testCase (show v2) $
-          maxPath arrowsFrom (\a -> fromRatio (weight a) 6) v v2 @?= Just w
+          maxPath probArrowsFrom v v2 @?= Just w
    in fmap test (zip vertices $ fmap Probability ws)
-
-categorizeYnm :: Int -> YesNoMaybe
-categorizeYnm d
-  | d >= 5 = Yes
-  | d >= 3 = Maybe
-  | otherwise = No
 
 testYnm :: Vertex -> [YesNoMaybe] -> [TestTree]
 testYnm v ws =
-  let test (v2, w) =
-        testCase (show v2) $
-          maxPath arrowsFrom (YnmMin . categorizeYnm . weight) v v2 @?= Just w
+  let test (v2, w) = testCase (show v2) $ maxPath ynmArrowsFrom v v2 @?= Just w
    in fmap test (zip vertices $ fmap YnmMin ws)
 
 tests :: TestTree

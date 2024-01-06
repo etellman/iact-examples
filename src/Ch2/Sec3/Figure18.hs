@@ -6,6 +6,7 @@ module Ch2.Sec3.Figure18
   )
 where
 
+import Data.Monoid (Sum (..))
 import Lib.Graph
 
 data Vertex = A | B | C | D deriving (Eq, Show)
@@ -16,10 +17,10 @@ data Fig18Arrow = Fig18Arrow
     weight :: Int
   }
 
-instance Arrow Fig18Arrow Vertex Int where
+instance Arrow Fig18Arrow Vertex IntWeight where
   source = from
   target = to
-  weight' = weight
+  weight' = IntWeight . Sum . weight
 
 vertices :: [Vertex]
 vertices = [A, B, C, D]

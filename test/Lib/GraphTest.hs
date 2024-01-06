@@ -14,10 +14,10 @@ newtype Vertex = Vertex Int deriving (Eq, Ord, Show)
 
 newtype TestArrow = TestArrow (Vertex, Vertex)
 
-instance Arrow TestArrow Vertex Int where
+instance Arrow TestArrow Vertex IntWeight where
   source (TestArrow (v, _)) = v
   target (TestArrow (_, v)) = v
-  weight' = const 1
+  weight' = const $ IntWeight (Sum 1)
 
 vertices :: [Vertex]
 vertices = fmap Vertex [1 .. 9]
@@ -40,9 +40,6 @@ prop_reflexive = property $ do
   -- exercise and verify
   H.assert $ isPath arrowsFrom v v
 
-constWeight :: Int -> TestArrow -> Sum Int
-constWeight n = const $ Sum n
-
 prop_transitive :: Property
 prop_transitive = property $ do
   -- set up
@@ -64,8 +61,13 @@ prop_transitive = property $ do
   v1v2 && v2v3 ==> v1v3
   not v1v3 ==> not v1v2 || not v2v3
 
+weightToInt :: IntWeight -> Int
+weightToInt (IntWeight (Sum x)) = x
+
 shortest :: Vertex -> Vertex -> Maybe Int
-shortest = shortestPath arrowsFrom
+shortest v1 v2 =
+  let w = minPath arrowsFrom v1 v2
+    in fmap weightToInt w
 
 tests :: TestTree
 tests =
@@ -83,17 +85,5 @@ tests =
           testCase "1 -> 5" $ shortest (Vertex 1) (Vertex 5) @?= Nothing,
           testCase "2 -> 5" $ shortest (Vertex 2) (Vertex 5) @?= Nothing,
           testCase "3 -> 7" $ shortest (Vertex 3) (Vertex 7) @?= Nothing
-        ],
-      testGroup
-        "min path"
-        [ testCase "1 -> 4, double cost" $
-            minPath arrowsFrom (constWeight 2) (Vertex 1) (Vertex 4) @?= Just 4,
-          testCase "1 -> 4, alternate cost " $
-            minPath
-              arrowsFrom
-              (\(TestArrow (Vertex x, Vertex y)) -> Sum $ y - x)
-              (Vertex 1)
-              (Vertex 4)
-              @?= Just 3
         ]
     ]

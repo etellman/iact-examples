@@ -8,10 +8,8 @@ import Test.Tasty.HUnit
 
 testPathsFrom :: Vertex -> [Int] -> [TestTree]
 testPathsFrom v ws =
-  let test (v2, w) =
-        testCase (show v2) $
-          minPath arrowsFrom (Sum . weight) v v2 @?= Just w
-   in fmap test (zip vertices (fmap Sum ws))
+  let test (v2, w) = testCase (show v2) $ minPath arrowsFrom v v2 @?= Just w
+   in fmap test (zip vertices (fmap (IntWeight . Sum) ws))
 
 tests :: TestTree
 tests =

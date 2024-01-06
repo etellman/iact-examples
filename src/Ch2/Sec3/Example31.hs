@@ -5,16 +5,17 @@ module Ch2.Sec3.Example31
   )
 where
 
+import Data.Monoid (Sum (..))
 import Lib.Graph
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
 
 newtype Ex31Arrow = Ex31Arrow (Vertex, Vertex)
 
-instance Arrow Ex31Arrow Vertex Int where
+instance Arrow Ex31Arrow Vertex IntWeight where
   source (Ex31Arrow (v, _)) = v
   target (Ex31Arrow (_, v)) = v
-  weight' = const 1
+  weight' = const $ IntWeight (Sum 1)
 
 vertices :: [Vertex]
 vertices = [P, Q, R, S, T]
