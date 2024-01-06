@@ -16,9 +16,10 @@ data Arrow = Arrow
     weight :: Int
   }
 
-instance Graph Vertex Arrow where
+instance Graph Vertex Arrow Int where
   source = from
   target = to
+  weight' = weight
 
 vertices :: [Vertex]
 vertices = [A, B, C, D]

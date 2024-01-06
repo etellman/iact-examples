@@ -30,9 +30,10 @@ data Arrow = Arrow
     weight :: Transports
   }
 
-instance Graph City Arrow where
+instance Graph City Arrow Transports where
   source = from
   target = to
+  weight' = weight
 
 arrowsFrom :: City -> [Arrow]
 arrowsFrom V = [Arrow V X (Transports [A, C])]

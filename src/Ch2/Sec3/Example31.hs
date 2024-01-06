@@ -11,9 +11,10 @@ data Vertex = P | Q | R | S | T deriving (Eq, Show)
 
 newtype Arrow = Arrow (Vertex, Vertex)
 
-instance Graph Vertex Arrow where
+instance Graph Vertex Arrow Int where
   source (Arrow (v, _)) = v
   target (Arrow (_, v)) = v
+  weight' = const 1
 
 vertices :: [Vertex]
 vertices = [P, Q, R, S, T]
