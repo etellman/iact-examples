@@ -53,18 +53,18 @@ pathWith ::
   v ->
   v ->
   Maybe w
-pathWith select arrowsFrom = path2 select arrowsFrom []
+pathWith = path2 []
 
 -- minimum weight path, keeping track of visited vertices
 path2 ::
   (Eq v, Arrow a v w, Monoid w) =>
+  [v] ->
   ([w] -> w) ->
   (v -> [a]) ->
-  [v] ->
   v ->
   v ->
   Maybe w
-path2 select arrowsFrom visited from to
+path2 visited select arrowsFrom from to
   | from == to = Just $ mempty
   | from `elem` visited = Nothing
   | (not . null) paths = Just $ select paths
@@ -73,5 +73,5 @@ path2 select arrowsFrom visited from to
     pathThrough a =
       fmap
         (weight a <>)
-        (path2 select arrowsFrom (from : visited) (target a) to)
+        (path2 (from : visited) select arrowsFrom (target a) to)
     paths = fmap fromJust $ filter isJust $ fmap pathThrough (arrowsFrom from)
