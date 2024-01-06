@@ -18,7 +18,7 @@ anyOf = Transports . (foldr (\(Transports ts) total -> union ts total) [])
 
 transportsBetween :: City -> City -> Transports
 transportsBetween c1 c2 =
-  let path = pathWith arrowsFrom anyOf c1 c2
+  let path = pathWith anyOf arrowsFrom c1 c2
    in case path of
         Just ts -> ts
         Nothing -> Transports []
