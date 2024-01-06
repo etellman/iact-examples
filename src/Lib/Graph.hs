@@ -20,12 +20,12 @@ class Arrow a v w | a -> v w where
 
 -- determine if there is at least one path between two vertices
 isPath ::
-  (Eq v, Arrow a v w, Monoid w, Ord w) =>
+  (Eq v, Arrow a v w, Monoid w) =>
   (v -> [a]) ->
   v ->
   v ->
   Bool
-isPath arrowsFrom v1 v2 = isJust $ minPath arrowsFrom v1 v2
+isPath arrowsFrom v1 v2 = isJust $ pathWith head arrowsFrom v1 v2
 
 -- find the minimum weight path
 minPath ::
@@ -47,7 +47,7 @@ maxPath = pathWith maximum
 
 -- find a path using a custom way to combine weights
 pathWith ::
-  (Eq v, Arrow a v w, Monoid w, Ord w) =>
+  (Eq v, Arrow a v w, Monoid w) =>
   ([w] -> w) ->
   (v -> [a]) ->
   v ->
@@ -57,7 +57,7 @@ pathWith select arrowsFrom = path2 select arrowsFrom []
 
 -- minimum weight path, keeping track of visited vertices
 path2 ::
-  (Eq v, Arrow a v w, Monoid w, Ord w) =>
+  (Eq v, Arrow a v w, Monoid w) =>
   ([w] -> w) ->
   (v -> [a]) ->
   [v] ->
