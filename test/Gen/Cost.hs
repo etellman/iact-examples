@@ -1,4 +1,4 @@
-module Ch2.Sec2.GenCost
+module Gen.Cost
   ( genCost,
     genCostPreorder,
     genCostOpposite,

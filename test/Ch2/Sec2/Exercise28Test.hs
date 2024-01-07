@@ -3,7 +3,7 @@ module Ch2.Sec2.Exercise28Test (tests) where
 import Ch2.Sec2.MonoidalMapProperties
 import Monoid.BooleanMonoids
 import Monoid.Cost
-import Ch2.Sec2.GenCost
+import Gen.Cost
 import Test.Tasty
 
 d :: CostPreorder -> BooleanAnd
