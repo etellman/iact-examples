@@ -1,8 +1,8 @@
 module Ch2.Sec2.Exercise28Test (tests) where
 
 import Ch2.Sec2.MonoidalMapProperties
-import Ch2.Sec2.BooleanMonoids
-import Ch2.Sec2.CostMonoid
+import Monoid.BooleanMonoids
+import Monoid.CostMonoid
 import Ch2.Sec2.GenCost
 import Test.Tasty
 

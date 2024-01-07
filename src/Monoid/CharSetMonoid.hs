@@ -1,4 +1,4 @@
-module Ch2.Sec2.CharSetMonoid
+module Monoid.CharSetMonoid
   ( CharSetMonoid (..),
     chars,
   )

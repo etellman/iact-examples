@@ -1,4 +1,4 @@
-module Ch2.Sec2.BooleanMonoids
+module Monoid.BooleanMonoids
   ( BooleanAnd (..),
     BooleanOr (..),
   )

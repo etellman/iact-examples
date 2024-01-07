@@ -1,4 +1,4 @@
-module Ch2.Sec2.RealMonoids
+module Monoid.RealMonoids
   ( RealPlus (..),
     RealTimes (..),
     RealDiscrete (..),

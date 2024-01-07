@@ -5,7 +5,7 @@ module Ch2.Sec2.GenCost
   )
 where
 
-import Ch2.Sec2.CostMonoid
+import Monoid.CostMonoid
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range

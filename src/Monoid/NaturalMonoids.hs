@@ -1,4 +1,4 @@
-module Ch2.Sec2.NaturalMonoids
+module Monoid.NaturalMonoids
   ( NaturalPlus (..),
     NaturalTimes (..),
     NaturalDivides (..),

@@ -1,4 +1,4 @@
-module Ch2.Sec2.CostMonoid
+module Monoid.CostMonoid
   ( ApproximateDouble,
     Cost (..),
     CostPreorder (..),

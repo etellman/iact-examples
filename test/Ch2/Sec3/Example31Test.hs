@@ -1,6 +1,6 @@
 module Ch2.Sec3.Example31Test (tests) where
 
-import Ch2.Sec2.BooleanMonoids (BooleanAnd (..))
+import Monoid.BooleanMonoids (BooleanAnd (..))
 import Ch2.Sec3.Example31
 import qualified Ch2.Sec3.VCategoryProperties as VC
 import Hedgehog as H

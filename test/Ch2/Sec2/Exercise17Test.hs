@@ -1,7 +1,7 @@
 module Ch2.Sec2.Exercise17Test (tests) where
 
 import Ch2.Sec2.MonoidalPreorderProperties
-import Ch2.Sec2.NaturalMonoids
+import Monoid.NaturalMonoids
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
