@@ -1,7 +1,6 @@
 module Lib.GraphTest (tests) where
 
 import Control.Monad (guard)
-import Data.Monoid (Sum (..))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Lib.Graph
@@ -17,7 +16,7 @@ newtype TestArrow = TestArrow (Vertex, Vertex)
 instance Arrow TestArrow Vertex IntWeight where
   source (TestArrow (v, _)) = v
   target (TestArrow (_, v)) = v
-  weight = const $ IntWeight (Sum 1)
+  weight = const unitWeight
 
 vertices :: [Vertex]
 vertices = fmap Vertex [1 .. 9]
@@ -60,13 +59,8 @@ prop_transitive = property $ do
   v1v2 && v2v3 ==> v1v3
   not v1v3 ==> not v1v2 || not v2v3
 
-weightToInt :: IntWeight -> Int
-weightToInt (IntWeight (Sum x)) = x
-
 shortest :: Vertex -> Vertex -> Maybe Int
-shortest v1 v2 =
-  let w = minPath arrowsFrom v1 v2
-   in fmap weightToInt w
+shortest v1 = fmap fromIntWeight . minPath arrowsFrom v1
 
 tests :: TestTree
 tests =

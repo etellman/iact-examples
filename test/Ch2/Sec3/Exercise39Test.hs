@@ -1,7 +1,6 @@
 module Ch2.Sec3.Exercise39Test (tests) where
 
 import Ch2.Sec3.Figure18
-import Data.Monoid (Sum (..))
 import Lib.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -9,7 +8,7 @@ import Test.Tasty.HUnit
 testPathsFrom :: Vertex -> [Int] -> [TestTree]
 testPathsFrom v ws =
   let test (v2, w) = testCase (show v2) $ minPath arrowsFrom v v2 @?= Just w
-   in fmap test (zip vertices (fmap (IntWeight . Sum) ws))
+   in fmap test (zip vertices (fmap toIntWeight ws))
 
 tests :: TestTree
 tests =
