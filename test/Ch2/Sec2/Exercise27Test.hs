@@ -2,7 +2,7 @@ module Ch2.Sec2.Exercise27Test (tests) where
 
 import Ch2.Sec2.MonoidalMapProperties
 import Monoid.BooleanMonoids
-import Monoid.CostMonoid
+import Monoid.Cost
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty

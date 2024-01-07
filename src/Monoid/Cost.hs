@@ -1,4 +1,4 @@
-module Monoid.CostMonoid
+module Monoid.Cost
   ( ApproximateDouble,
     Cost (..),
     CostPreorder (..),
