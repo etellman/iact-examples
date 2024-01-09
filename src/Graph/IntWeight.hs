@@ -3,11 +3,12 @@ module Graph.IntWeight
     fromIntWeight,
     toIntWeight,
     unitWeight,
+    toCost,
   )
 where
 
-import Data.Maybe (fromJust, isJust)
 import Data.Monoid (Sum (..))
+import Monoid.Cost
 
 newtype IntWeight = IntWeight (Sum Int) deriving (Semigroup, Monoid, Eq, Ord, Show)
 
@@ -19,3 +20,6 @@ toIntWeight x = IntWeight $ Sum x
 
 unitWeight :: IntWeight
 unitWeight = toIntWeight 1
+
+toCost :: IntWeight -> Cost
+toCost (IntWeight (Sum x)) = Cost $ fromIntegral x

@@ -6,6 +6,7 @@ import Graph.IntWeight
 import Graph.Path
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
@@ -29,6 +30,9 @@ arrowsFrom v1@(Vertex x) = do
   let y = (2 * x + i) `mod` 5
   guard $ y /= 0
   return $ TestArrow (v1, Vertex y)
+
+shortest :: Vertex -> Vertex -> Maybe Int
+shortest v1 = fmap fromIntWeight . minPath arrowsFrom v1
 
 prop_reflexive :: Property
 prop_reflexive = property $ do
@@ -58,8 +62,20 @@ prop_transitive = property $ do
   v1v2 && v2v3 ==> v1v3
   not v1v3 ==> not v1v2 || not v2v3
 
-shortest :: Vertex -> Vertex -> Maybe Int
-shortest v1 = fmap fromIntWeight . minPath arrowsFrom v1
+prop_cost :: Property
+prop_cost = property $ do
+  -- set up
+  v1 <- forAll $ Gen.element vertices
+  v2 <- forAll $ Gen.element vertices
+  cover 30 "path exists" $ isPath arrowsFrom v1 v2
+
+  -- exercise
+  let cost = costPath toCost arrowsFrom v1 v2
+
+  -- verify
+  case (minPath arrowsFrom v1 v2) of
+    Just w -> cost === toCost w
+    Nothing -> cost === Infinity
 
 tests :: TestTree
 tests =
@@ -67,6 +83,7 @@ tests =
     "Graph.PathTest"
     [ testProperty "reflexive" prop_reflexive,
       testProperty "transitive" prop_transitive,
+      testProperty "cost" prop_cost,
       testGroup
         "shortest path"
         [ testCase "1 -> 1" $ shortest (Vertex 1) (Vertex 1) @?= Just 0,

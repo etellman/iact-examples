@@ -2,12 +2,14 @@ module Graph.Path
   ( isPath,
     maxPath,
     minPath,
+    costPath,
     pathWith,
   )
 where
 
 import Data.Maybe (fromJust, isJust)
 import Graph.Arrow (Arrow (..))
+import Monoid.Cost
 
 -- determine if there is at least one path between two vertices
 isPath ::
@@ -17,6 +19,19 @@ isPath ::
   v ->
   Bool
 isPath arrowsFrom v1 v2 = isJust $ pathWith head arrowsFrom v1 v2
+
+-- find the minimum cost path
+costPath ::
+  (Eq v, Arrow a v w, Monoid w, Ord w) =>
+  (w -> Cost) ->
+  (v -> [a]) ->
+  v ->
+  v ->
+  Cost
+costPath toCost arrowsFrom v1 v2 =
+  case (minPath arrowsFrom v1 v2) of
+    Just w -> toCost w
+    Nothing -> Infinity
 
 -- find the minimum weight path
 minPath ::
