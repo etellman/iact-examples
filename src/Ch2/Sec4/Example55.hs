@@ -77,19 +77,22 @@ xyvertices =
 
 xyarrows :: XYVertex -> [XYArrow]
 xyarrows (XYVertex (x, y)) =
-  do
-    xa <- xarrows x
-    ya <- yarrows y
+  let fromx =
+        do
+          xa <- xarrows x
+          return $ XYArrow
+              (XYVertex (xsource xa, y))
+              (XYVertex (xtarget xa, y))
+              (xweight xa)
+      fromy =
+        do
+          ya <- yarrows y
+          return $ XYArrow
+              (XYVertex (x, ysource ya))
+              (XYVertex (x, ytarget ya))
+              (yweight ya)
 
-    [ XYArrow
-        (XYVertex (xsource xa, y))
-        (XYVertex (xtarget xa, y))
-        (xweight xa),
-      XYArrow
-        (XYVertex (x, ysource ya))
-        (XYVertex (x, ytarget ya))
-        (yweight ya)
-      ]
+   in fromx ++ fromy
 
 instance Arrow XYArrow XYVertex IntWeight where
   source = xysource

@@ -41,6 +41,7 @@ prop_reflexive = property $ do
 
   -- exercise and verify
   H.assert $ isPath arrowsFrom v v
+  Just mempty === minPath arrowsFrom v v
 
 prop_transitive :: Property
 prop_transitive = property $ do
