@@ -10,6 +10,7 @@ module Ch2.Sec4.Example55
     XYVertex (..),
     XYArrow (..),
     xyarrows,
+    xyvertices,
   )
 where
 
@@ -66,20 +67,31 @@ data XYArrow = XYArrow
   }
   deriving (Eq, Show)
 
+xyvertices :: [XYVertex]
+xyvertices =
+  do
+    x <- xvertices
+    y <- yvertices
+
+    return $ XYVertex (x, y)
+
 xyarrows :: XYVertex -> [XYArrow]
 xyarrows (XYVertex (x, y)) =
-  let fromx = do
-        xa <- xarrows x
-        return $
-          XYArrow
-            (XYVertex $ ((xsource xa), y))
-            (XYVertex $ ((xtarget xa), y))
-            (xweight xa)
-      fromy = do
-        ya <- yarrows y
-        return $
-          XYArrow
-            (XYVertex $ (x, (ysource ya)))
-            (XYVertex $ (x, (ytarget ya)))
-            (yweight ya)
-   in fromx ++ fromy
+  do
+    xa <- xarrows x
+    ya <- yarrows y
+
+    [ XYArrow
+        (XYVertex (xsource xa, y))
+        (XYVertex (xtarget xa, y))
+        (xweight xa),
+      XYArrow
+        (XYVertex (x, ysource ya))
+        (XYVertex (x, ytarget ya))
+        (yweight ya)
+      ]
+
+instance Arrow XYArrow XYVertex IntWeight where
+  source = xysource
+  target = xytarget
+  weight = toIntWeight . xyweight
