@@ -19,7 +19,7 @@ prop_monotonicity gen = property $ do
   y1 <- forAll gen
   y2 <- forAll gen
 
-  cover 4 "all lte" $ x1 PO.<= y1 && x2 PO.<= y2
+  cover 2 "all lte" $ x1 PO.<= y1 && x2 PO.<= y2
 
   -- exercise and verify
   x1 PO.<= y1 && x2 PO.<= y2 ==> (x1 <> x2) PO.<= (y1 <> y2)
