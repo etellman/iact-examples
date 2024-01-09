@@ -29,13 +29,10 @@ arrowsFrom v1@(Vertex x) = do
   guard $ y /= 0
   return $ TestArrow (v1, Vertex y)
 
-genVertex :: Gen Vertex
-genVertex = Gen.element (vertices :: [Vertex])
-
 prop_reflexive :: Property
 prop_reflexive = property $ do
   -- set up
-  v <- forAll genVertex
+  v <- forAll $ Gen.element vertices
 
   -- exercise and verify
   H.assert $ isPath arrowsFrom v v
@@ -43,9 +40,9 @@ prop_reflexive = property $ do
 prop_transitive :: Property
 prop_transitive = property $ do
   -- set up
-  v1 <- forAll genVertex
-  v2 <- forAll genVertex
-  v3 <- forAll genVertex
+  v1 <- forAll $ Gen.element vertices
+  v2 <- forAll $ Gen.element vertices
+  v3 <- forAll $ Gen.element vertices
 
   let ip = isPath arrowsFrom
       v1v2 = ip v1 v2
