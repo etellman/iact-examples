@@ -91,7 +91,6 @@ xyarrows (XYVertex (x, y)) =
               (XYVertex (x, ysource ya))
               (XYVertex (x, ytarget ya))
               (yweight ya)
-
    in fromx ++ fromy
 
 instance Arrow XYArrow XYVertex IntWeight where
