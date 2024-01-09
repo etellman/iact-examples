@@ -4,7 +4,7 @@ import Ch2.Sec2.YesNoMaybe
 import Ch2.Sec3.Exercise41
 import Ch2.Sec3.Figure18
 import Lib.ApproximateDouble (ApproximateDouble)
-import Graph.Graph
+import Graph.Path
 import Test.Tasty
 import Test.Tasty.HUnit
 

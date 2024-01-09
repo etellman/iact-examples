@@ -1,8 +1,8 @@
-module Graph.GraphTest (tests) where
+module Graph.PathTest (tests) where
 
 import Control.Monad (guard)
 import Graph.Arrow
-import Graph.Graph
+import Graph.Path
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
@@ -66,7 +66,7 @@ shortest v1 = fmap fromIntWeight . minPath arrowsFrom v1
 tests :: TestTree
 tests =
   testGroup
-    "Graph.GraphTest"
+    "Graph.PathTest"
     [ testProperty "reflexive" prop_reflexive,
       testProperty "transitive" prop_transitive,
       testGroup

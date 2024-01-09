@@ -1,4 +1,4 @@
-module Graph.Graph
+module Graph.Path
   ( isPath,
     maxPath,
     minPath,
@@ -7,7 +7,6 @@ module Graph.Graph
 where
 
 import Data.Maybe (fromJust, isJust)
-import Data.Monoid (Sum (..))
 import Graph.Arrow (Arrow (..))
 
 -- determine if there is at least one path between two vertices

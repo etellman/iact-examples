@@ -5,7 +5,7 @@ import Ch2.Sec3.Example31
 import qualified Ch2.Sec3.VCategoryProperties as VC
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Graph.Graph (isPath)
+import Graph.Path (isPath)
 import Test.Tasty
 
 genVertex :: Gen Vertex

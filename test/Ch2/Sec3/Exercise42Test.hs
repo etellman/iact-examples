@@ -5,7 +5,7 @@ import qualified Ch2.Sec3.VCategoryProperties as VC
 import Control.Monad (guard)
 import Data.List (union)
 import Graph.Arrow
-import Graph.Graph
+import Graph.Path
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
