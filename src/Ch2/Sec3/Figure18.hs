@@ -6,7 +6,7 @@ module Ch2.Sec3.Figure18
   )
 where
 
-import Graph.Graph
+import Graph.Arrow
 
 data Vertex = A | B | C | D deriving (Eq, Show)
 

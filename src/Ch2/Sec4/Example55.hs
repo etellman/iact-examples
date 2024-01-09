@@ -13,7 +13,7 @@ module Ch2.Sec4.Example55
   )
 where
 
-import Graph.Graph
+import Graph.Arrow
 
 data XVertex = A | B | C deriving (Eq, Show)
 

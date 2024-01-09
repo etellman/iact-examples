@@ -4,9 +4,10 @@ import Ch2.Sec3.Exercise42
 import qualified Ch2.Sec3.VCategoryProperties as VC
 import Control.Monad (guard)
 import Data.List (union)
+import Graph.Arrow
+import Graph.Graph
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Graph.Graph
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

@@ -5,7 +5,7 @@ module Ch2.Sec3.Example31
   )
 where
 
-import Graph.Graph
+import Graph.Arrow
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
 

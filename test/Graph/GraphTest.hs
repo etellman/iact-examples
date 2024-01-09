@@ -1,9 +1,10 @@
 module Graph.GraphTest (tests) where
 
 import Control.Monad (guard)
+import Graph.Arrow
+import Graph.Graph
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Graph.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog

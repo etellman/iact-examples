@@ -8,8 +8,8 @@ where
 
 import Ch2.Sec2.YesNoMaybe
 import Ch2.Sec3.Figure18
+import Graph.Arrow
 import Lib.ApproximateDouble (ApproximateDouble)
-import Graph.Graph
 
 newtype Probability = Probability ApproximateDouble deriving (Eq, Ord, Show)
 
