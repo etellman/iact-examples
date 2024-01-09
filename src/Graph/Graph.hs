@@ -1,4 +1,4 @@
-module Lib.Graph
+module Graph.Graph
   ( Arrow (..),
     isPath,
     maxPath,

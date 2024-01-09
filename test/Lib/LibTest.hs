@@ -1,6 +1,6 @@
 module Lib.LibTest (libTests) where
 
-import Lib.GraphTest
+import Graph.GraphTest
 import Lib.PreorderTest
 import Test.Tasty
 
@@ -9,5 +9,5 @@ libTests =
   testGroup
     "Lib.LibTest"
     [ Lib.PreorderTest.tests,
-      Lib.GraphTest.tests
+      Graph.GraphTest.tests
     ]

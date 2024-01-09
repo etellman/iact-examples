@@ -9,7 +9,7 @@ where
 import Ch2.Sec2.YesNoMaybe
 import Ch2.Sec3.Figure18
 import Lib.ApproximateDouble (ApproximateDouble)
-import Lib.Graph
+import Graph.Graph
 
 newtype Probability = Probability ApproximateDouble deriving (Eq, Ord, Show)
 

@@ -11,7 +11,7 @@ where
 
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
-import Lib.Graph
+import Graph.Graph
 import Lib.Preorder as PO
 
 data City = V | W | X | Y | Z deriving (Eq, Show)

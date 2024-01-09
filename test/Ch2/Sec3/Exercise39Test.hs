@@ -1,7 +1,7 @@
 module Ch2.Sec3.Exercise39Test (tests) where
 
 import Ch2.Sec3.Figure18
-import Lib.Graph
+import Graph.Graph
 import Test.Tasty
 import Test.Tasty.HUnit
 

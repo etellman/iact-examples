@@ -6,7 +6,7 @@ import Control.Monad (guard)
 import Data.List (union)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Lib.Graph
+import Graph.Graph
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

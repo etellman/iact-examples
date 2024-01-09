@@ -5,7 +5,7 @@ module Ch2.Sec3.Example31
   )
 where
 
-import Lib.Graph
+import Graph.Graph
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
 
