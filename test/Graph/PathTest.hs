@@ -2,6 +2,7 @@ module Graph.PathTest (tests) where
 
 import Control.Monad (guard)
 import Graph.Arrow
+import Graph.IntWeight
 import Graph.Path
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen

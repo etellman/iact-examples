@@ -6,6 +6,7 @@ module Ch2.Sec3.Example31
 where
 
 import Graph.Arrow
+import Graph.IntWeight
 
 data Vertex = P | Q | R | S | T deriving (Eq, Show)
 

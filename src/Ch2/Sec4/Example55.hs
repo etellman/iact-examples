@@ -14,6 +14,7 @@ module Ch2.Sec4.Example55
 where
 
 import Graph.Arrow
+import Graph.IntWeight
 
 data XVertex = A | B | C deriving (Eq, Show)
 

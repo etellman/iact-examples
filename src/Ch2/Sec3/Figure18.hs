@@ -7,6 +7,7 @@ module Ch2.Sec3.Figure18
 where
 
 import Graph.Arrow
+import Graph.IntWeight
 
 data Vertex = A | B | C | D deriving (Eq, Show)
 
