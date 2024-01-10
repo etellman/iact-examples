@@ -1,3 +1,5 @@
+{-# LANGUAGE InstanceSigs #-}
+
 module Ch1.SetSystem
   ( SetSystem (..),
     simplify,

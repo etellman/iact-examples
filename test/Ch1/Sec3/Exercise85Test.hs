@@ -1,3 +1,5 @@
+{-# LANGUAGE NumericUnderscores #-}
+
 module Ch1.Sec3.Exercise85Test (tests) where
 
 import Data.Set (toList)

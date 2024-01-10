@@ -20,35 +20,33 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/etellman/iact-examples#readme>
 
 dependencies:
-- base >= 4.7 && < 5
-- partial-order >= 0.2.0.0
-- containers >= 0.6.7
-- approximate-equality >= 1.0.0.2
-- type-level-natural-number >= 2.0
+  - base >= 4.7 && < 5
+  - partial-order >= 0.2.0.0
+  - containers >= 0.6.7
+  - approximate-equality >= 1.0.0.2
+  - type-level-natural-number >= 2.0
 
 ghc-options:
-- -Wall
-- -Wcompat
-- -Widentities
-- -Wincomplete-record-updates
-- -Wincomplete-uni-patterns
-- -Wmissing-export-lists
-- -Wmissing-home-modules
-- -Wpartial-fields
-- -Wredundant-constraints
-- -XOverloadedStrings
-- -XInstanceSigs
-- -XNumericUnderscores
-- -XGeneralizedNewtypeDeriving
-- -XMultiParamTypeClasses
-- -XFunctionalDependencies
-- -XAllowAmbiguousTypes
+  - -Wall
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wmissing-export-lists
+  - -Wmissing-home-modules
+  - -Wpartial-fields
+  - -Wredundant-constraints
+
+default-extensions:
+  - MultiParamTypeClasses
 
 library:
   source-dirs: src
 
 tests:
   iact-examples-test:
+    default-extensions:
+      - OverloadedStrings
     main:                test.hs
     source-dirs:         test
     ghc-options:

@@ -1,3 +1,5 @@
+{-# LANGUAGE FunctionalDependencies #-}
+
 module Graph.Arrow (Arrow (..)) where
 
 class Arrow a v w | a -> v w where
