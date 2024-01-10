@@ -1,4 +1,4 @@
-module Ch2.Sec5.Example55Test (tests) where
+module Ch2.Sec5.Example60Test (tests) where
 
 import Gen.Cost (genCost)
 import Hedgehog as H
@@ -19,6 +19,6 @@ prop_monoidalClosed = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch2.Sec5.Example55Test"
+    "Ch2.Sec5.Example60Test"
     [ testProperty "monoidal closed" prop_monoidalClosed
     ]
