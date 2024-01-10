@@ -5,6 +5,7 @@ module Monoid.Cost
     Cost (..),
     CostPreorder (..),
     CostOpPreorder (..),
+    (-*),
   )
 where
 
@@ -38,3 +39,12 @@ newtype CostOpPreorder = CostOpPreorder Cost deriving (Show, Eq, Ord, Monoid, Se
 
 instance Preorder CostOpPreorder where
   (<=) = (Prelude.<=)
+
+-- | hom-element - see definition 2.57
+(-*) :: Cost -> Cost -> Cost
+(-*) (Cost x) (Cost y) = Cost $ max 0 (y - x)
+(-*) Infinity Infinity = Infinity
+(-*) Infinity _ = Cost 0
+(-*) _ Infinity = Infinity
+
+infixr 6 -*
