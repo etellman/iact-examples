@@ -3,7 +3,7 @@ module Ch1.Sec2.Exercise62Test (tests) where
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions

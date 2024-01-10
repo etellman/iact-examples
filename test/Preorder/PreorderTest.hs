@@ -1,12 +1,12 @@
-module Lib.PreorderTest (tests) where
+module Preorder.PreorderTest (tests) where
 
 import Data.List (nub, sort)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder as PO
-import Lib.Preorders (IntPO (..))
+import Preorder.Preorder as PO
+import Preorder.Preorders (IntPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
@@ -49,7 +49,7 @@ prop_connections = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Lib.PreorderTest"
+    "Preorder.PreorderTest"
     [ testProperty "isomorphic" prop_isomorphic,
       testProperty "connections" prop_connections
     ]

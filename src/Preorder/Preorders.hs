@@ -1,11 +1,11 @@
-module Lib.Preorders
+module Preorder.Preorders
   ( BoolPO (..),
     CharPO (..),
     IntPO (..),
   )
 where
 
-import Lib.Preorder
+import Preorder.Preorder
 
 newtype IntPO = IntPO Int deriving (Show, Eq, Ord)
 

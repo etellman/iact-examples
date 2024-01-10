@@ -5,7 +5,7 @@ module Ch1.UpperSet
 where
 
 import Ch1.Set (powerSet)
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 isUpperSet :: (Preorder a, Eq a) => [a] -> [a] -> Bool
 isUpperSet elements usCandidate =

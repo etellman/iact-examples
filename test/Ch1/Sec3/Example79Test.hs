@@ -1,6 +1,6 @@
 module Ch1.Sec3.Example79Test (tests) where
 
-import Lib.Preorder (Preorder (..))
+import Preorder.Preorder (Preorder (..))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty

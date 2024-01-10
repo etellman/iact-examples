@@ -1,4 +1,4 @@
-module Lib.Preorder
+module Preorder.Preorder
   ( Preorder (..),
     (=~),
     connections,
@@ -12,12 +12,12 @@ class Preorder a where
 
 -- | determines whether elements are isomorphic
 (=~) :: Preorder a => a -> a -> Bool
-x =~ y = x Lib.Preorder.<= y && y Lib.Preorder.<= x
+x =~ y = x Preorder.Preorder.<= y && y Preorder.Preorder.<= x
 
 -- | connections between pairs of elements
 connections :: Preorder a => [a] -> [(a, a)]
 connections xs = do
   x <- xs
   y <- xs
-  guard $ x Lib.Preorder.<= y
+  guard $ x Preorder.Preorder.<= y
   return (x, y)

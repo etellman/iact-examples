@@ -7,7 +7,7 @@ module Monoid.Cost
 where
 
 import Data.Eq.Approximate
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 import TypeLevel.NaturalNumber
 
 type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double

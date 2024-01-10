@@ -5,8 +5,8 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder as PO
-import Lib.Preorders (BoolPO (..))
+import Preorder.Preorder as PO
+import Preorder.Preorders (BoolPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions

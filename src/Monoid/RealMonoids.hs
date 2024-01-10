@@ -6,7 +6,7 @@ module Monoid.RealMonoids
 where
 
 import Lib.ApproximateDouble
-import Lib.Preorder
+import Preorder.Preorder
 
 -- | +/1
 newtype RealPlus = RealPlus ApproximateDouble deriving (Show, Eq, Ord)

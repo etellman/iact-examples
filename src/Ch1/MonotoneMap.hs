@@ -4,7 +4,7 @@ module Ch1.MonotoneMap
   )
 where
 
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 -- from exercise 61
 arrow :: Preorder a => a -> [a] -> [a]

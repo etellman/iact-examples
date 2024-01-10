@@ -1,7 +1,7 @@
 module Ch2.Sec3.VCategoryProperties (tests) where
 
 import Hedgehog as H
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

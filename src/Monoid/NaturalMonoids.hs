@@ -6,7 +6,7 @@ module Monoid.NaturalMonoids
   )
 where
 
-import Lib.Preorder
+import Preorder.Preorder
 
 -- | +/0
 newtype NaturalPlus = NaturalPlus Int deriving (Show, Eq, Ord)

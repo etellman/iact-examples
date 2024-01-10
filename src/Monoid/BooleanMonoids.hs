@@ -4,7 +4,7 @@ module Monoid.BooleanMonoids
   )
 where
 
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 -- and
 newtype BooleanAnd = BooleanAnd Bool deriving (Show, Eq, Ord)

@@ -12,7 +12,7 @@ where
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
 import Graph.Arrow
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 data City = V | W | X | Y | Z deriving (Eq, Show)
 

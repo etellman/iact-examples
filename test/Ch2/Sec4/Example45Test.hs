@@ -5,7 +5,7 @@ import qualified Ch2.Sec3.VCategoryProperties as VCP
 import Ch2.Sec4.Example45
 import Gen.Cost (genCostPreorder)
 import Hedgehog as H
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

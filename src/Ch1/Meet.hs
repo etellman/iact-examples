@@ -4,7 +4,7 @@ module Ch1.Meet
   )
 where
 
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 meet' :: (a -> a -> Bool) -> [a] -> [a] -> a
 meet' f xs xs' =

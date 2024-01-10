@@ -6,7 +6,7 @@ where
 
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 chars :: [Char]
 chars = ['a' .. 'd']

@@ -8,7 +8,7 @@ where
 
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 
 (==>) :: MonadTest m => Bool -> Bool -> m ()
 (==>) a b = assert $ not a || b

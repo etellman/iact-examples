@@ -3,7 +3,7 @@ module Ch1.Sec2.Exercise52Test (tests) where
 import Ch1.Set (cartesianProduct)
 import Ch1.UpperSet
 import Data.List (sort)
-import Lib.Preorder as PO
+import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.HUnit
 

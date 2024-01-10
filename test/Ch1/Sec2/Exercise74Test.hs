@@ -7,7 +7,7 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Lib.Preorder
+import Preorder.Preorder
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions

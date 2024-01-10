@@ -5,7 +5,7 @@ module Ch2.Sec2.YesNoMaybe
   )
 where
 
-import Lib.Preorder
+import Preorder.Preorder
 
 data YesNoMaybe = No | Maybe | Yes deriving (Eq, Ord, Show)
 

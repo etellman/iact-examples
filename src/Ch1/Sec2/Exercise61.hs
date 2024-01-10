@@ -9,8 +9,8 @@ module Ch1.Sec2.Exercise61
 where
 
 import Ch1.Set (isSubsetOf)
-import Lib.Preorder as PO
-import Lib.Preorders (CharPO)
+import Preorder.Preorder as PO
+import Preorder.Preorders (CharPO)
 
 data Ex52 = A | B | C deriving (Show, Eq, Ord)
 
