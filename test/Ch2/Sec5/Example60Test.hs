@@ -13,12 +13,14 @@ prop_monoidalClosed = property $ do
   w <- forAll $ genCost
   a <- forAll $ genCost
 
+  cover 10 "a <> v >= w" $ a <> v >= w
+  cover 10 "a <> v < w" $ a <> v < w
+  cover 5 "v == Infinity" $ v == Infinity
+  cover 5 "w == Infinity" $ w == Infinity
+  cover 5 "a == Infinity" $ a == Infinity
+
   -- exercise and verify
-  (a <> v <= w) === (a <= v -* w)
+  (a <> v >= w) === (a >= v -* w)
 
 tests :: TestTree
-tests =
-  testGroup
-    "Ch2.Sec5.Example60Test"
-    [ testProperty "monoidal closed" prop_monoidalClosed
-    ]
+tests = testGroup "Ch2.Sec5.Example60Test" [testProperty "monoidal closed" prop_monoidalClosed]

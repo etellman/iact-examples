@@ -43,7 +43,7 @@ instance Preorder CostOpPreorder where
 -- | hom-element - see definition 2.57
 (-*) :: Cost -> Cost -> Cost
 (-*) (Cost x) (Cost y) = Cost $ max 0 (y - x)
-(-*) Infinity Infinity = Infinity
+(-*) Infinity Infinity = Cost 0
 (-*) Infinity _ = Cost 0
 (-*) _ Infinity = Infinity
 
