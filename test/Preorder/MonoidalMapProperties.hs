@@ -1,4 +1,4 @@
-module Ch2.Sec2.MonoidalMapProperties
+module Preorder.MonoidalMapProperties
   ( laxMonotoneMap,
     strongMonotoneMap,
     strictMonotoneMap,

@@ -1,6 +1,6 @@
 module Ch2.Sec4.Example45Test (tests) where
 
-import Ch2.Sec2.MonoidalMapProperties
+import Preorder.MonoidalMapProperties
 import qualified Ch2.Sec3.VCategoryProperties as VCP
 import Ch2.Sec4.Example45
 import Gen.Cost (genCostPreorder)

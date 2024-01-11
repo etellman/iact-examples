@@ -1,6 +1,6 @@
 module Ch2.Sec2.Exercise28Test (tests) where
 
-import Ch2.Sec2.MonoidalMapProperties
+import Preorder.MonoidalMapProperties
 import Monoid.BooleanMonoids
 import Monoid.Cost
 import Gen.Cost

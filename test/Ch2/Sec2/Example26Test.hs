@@ -1,6 +1,6 @@
 module Ch2.Sec2.Example26Test (tests) where
 
-import Ch2.Sec2.MonoidalMapProperties
+import Preorder.MonoidalMapProperties
 import Monoid.NaturalMonoids
 import Monoid.RealMonoids
 import Hedgehog as H
