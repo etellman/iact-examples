@@ -1,43 +1,24 @@
 module Ch2.Sec5.Exercise59Test (tests) where
 
-import Gen.Cost (genCost)
-import Hedgehog as H
+import Gen.Cost (genCostPreorder)
 import Monoid.Cost
+import Preorder.MonoidalMapProperties
 import Test.Tasty
-import Test.Tasty.HUnit
-import Test.Tasty.Hedgehog
 
-closedTest :: Cost -> Cost -> Cost -> Bool
-closedTest v w a = (a <> v >= w) == (a >= v -* w)
-
-prop_monoidalClosed :: Property
-prop_monoidalClosed = property $ do
-  -- set up
-  v <- forAll $ genCost
-  w <- forAll $ genCost
-  a <- forAll $ genCost
-
-  cover 10 "a <> v >= w" $ a <> v >= w
-  cover 10 "a <> v < w" $ a <> v < w
-  cover 5 "v == Infinity" $ v == Infinity
-  cover 5 "w == Infinity" $ w == Infinity
-  cover 5 "a == Infinity" $ a == Infinity
-
-  -- exercise and verify
-  H.assert $ closedTest v w a
-
--- mapFunction :: Cost -> Cost -> Cost
--- mapFunction v x = v -* x
+testClosed :: String -> Cost -> TestTree
+testClosed name c =
+  let rightAdjunct (CostPreorder x) = CostPreorder (x -* c)
+   in testGroup
+        name
+        [ namedLaxMonotoneMap "left" genCostPreorder ((CostPreorder c) <>),
+          namedLaxMonotoneMap "right" genCostPreorder rightAdjunct
+        ]
 
 tests :: TestTree
 tests =
   testGroup
     "Ch2.Sec5.Exercise59Test"
-    [ testGroup
-        "monoidal closed"
-        [ testProperty "monoidal closed property" prop_monoidalClosed,
-          testCase "infinity 0 0" $
-            assertBool "infinity 0 0" $
-              closedTest Infinity (Cost 0) (Cost 0)
-        ]
+    [ testClosed "zero" (Cost 0),
+      testClosed "non-zero finite" (Cost 17),
+      testClosed "infinite" Infinity
     ]

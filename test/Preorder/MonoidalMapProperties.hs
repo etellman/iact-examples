@@ -2,6 +2,7 @@ module Preorder.MonoidalMapProperties
   ( laxMonotoneMap,
     strongMonotoneMap,
     strictMonotoneMap,
+    namedLaxMonotoneMap,
   )
 where
 
@@ -44,7 +45,15 @@ laxMonotoneMap ::
   Gen p ->
   (p -> q) ->
   TestTree
-laxMonotoneMap gen f = monoidalMap "lax" gen f (PO.<=)
+laxMonotoneMap = namedLaxMonotoneMap "lax"
+
+namedLaxMonotoneMap ::
+  (Show p, Monoid p, Monoid q, Preorder q) =>
+  String ->
+  Gen p ->
+  (p -> q) ->
+  TestTree
+namedLaxMonotoneMap name gen f = monoidalMap name gen f (PO.<=)
 
 strongMonotoneMap ::
   (Show p, Monoid p, Monoid q, Preorder q) =>
