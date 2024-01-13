@@ -31,6 +31,20 @@ prop64d gen (-*) = property $ do
   -- exercise and verify
   H.assert $ v PO.=~ (mempty -* v)
 
+prop64e ::
+  (Monoid m, Show m, PO.Preorder m) =>
+  Gen m ->
+  (m -> m -> m) ->
+  Property
+prop64e gen (-*) = property $ do
+  -- set up
+  u <- forAll gen
+  v <- forAll gen
+  w <- forAll gen
+
+  -- exercise and verify
+  H.assert $ ((u -* v) <> (v -* w)) PO.<= (u -* w)
+
 testClosed ::
   (Monoid m, Show m, PO.Preorder m) =>
   String ->
@@ -51,6 +65,7 @@ testClosed name gen (-*) v =
           testGroup
             "proposition 2.64"
             [ testProperty "c" $ prop64c gen (-*),
-              testProperty "d" $ prop64d gen (-*)
+              testProperty "d" $ prop64d gen (-*),
+              testProperty "e" $ prop64e gen (-*)
             ]
         ]
