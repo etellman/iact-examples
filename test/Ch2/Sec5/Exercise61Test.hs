@@ -5,12 +5,19 @@ import Monoid.BooleanMonoids (BooleanAnd (..))
 import Preorder.MonoidalClosedProperties (testClosed)
 import Test.Tasty
 
+hom :: Bool -> Bool -> Bool
+hom False False = True
+hom False True = True
+hom True False = False
+hom True True = True
+
+(-*) :: BooleanAnd -> BooleanAnd -> BooleanAnd
+(BooleanAnd x) -* (BooleanAnd y) = BooleanAnd (hom x y)
+
 testBooleanAnd :: Bool -> TestTree
 testBooleanAnd x =
-  let rightAdjunct (BooleanAnd y) = BooleanAnd (x || y)
-      leftAdjunct = ((BooleanAnd x) <>)
-      gen = BooleanAnd <$> Gen.bool
-   in testClosed (show x) gen leftAdjunct rightAdjunct
+  let gen = BooleanAnd <$> Gen.bool
+   in testClosed (show x) gen (-*) (BooleanAnd x)
 
 tests :: TestTree
 tests =

@@ -1,21 +1,20 @@
 module Ch2.Sec5.Exercise59Test (tests) where
 
 import Gen.Cost (genCostPreorder)
-import Monoid.Cost
+import qualified Monoid.Cost as C
 import Preorder.MonoidalClosedProperties (testClosed)
 import Test.Tasty
 
-testCostClosed :: String -> Cost -> TestTree
+testCostClosed :: String -> C.Cost -> TestTree
 testCostClosed name c =
-  let rightAdjunct (CostPreorder x) = CostPreorder (x -* c)
-      leftAdjunct = ((CostPreorder c) <>)
-   in testClosed name genCostPreorder leftAdjunct rightAdjunct
+  let (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
+   in testClosed name genCostPreorder (-*) (C.CostPreorder c)
 
 tests :: TestTree
 tests =
   testGroup
     "Ch2.Sec5.Exercise59Test"
-    [ testCostClosed "zero" (Cost 0),
-      testCostClosed "non-zero finite" (Cost 17),
-      testCostClosed "infinite" Infinity
+    [ testCostClosed "zero" (C.Cost 0),
+      testCostClosed "non-zero finite" (C.Cost 17),
+      testCostClosed "infinite" C.Infinity
     ]
