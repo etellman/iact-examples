@@ -17,7 +17,9 @@ hom True True = True
 testBooleanAnd :: Bool -> TestTree
 testBooleanAnd x =
   let gen = BooleanAnd <$> Gen.bool
-   in testClosed (show x) gen (-*) (BooleanAnd x)
+      join [] = Just $ BooleanAnd False
+      join xs =  Just $ minimum xs
+   in testClosed (show x) gen (-*) join (BooleanAnd x)
 
 tests :: TestTree
 tests =

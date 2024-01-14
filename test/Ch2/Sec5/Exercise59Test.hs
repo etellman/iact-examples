@@ -8,7 +8,9 @@ import Test.Tasty
 testCostClosed :: String -> C.Cost -> TestTree
 testCostClosed name c =
   let (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
-   in testClosed name genCostPreorder (-*) (C.CostPreorder c)
+      join [] = Just $ C.CostPreorder C.Infinity
+      join xs =  Just $ maximum xs
+   in testClosed name genCostPreorder (-*) join (C.CostPreorder c)
 
 tests :: TestTree
 tests =
