@@ -20,9 +20,9 @@ import Graph.IntWeight
 data XVertex = A | B | C deriving (Eq, Show)
 
 data XArrow = XArrow
-  { xsource :: XVertex,
-    xtarget :: XVertex,
-    xweight :: Int
+  { xsource :: !XVertex,
+    xtarget :: !XVertex,
+    xweight :: !Int
   }
 
 instance Arrow XArrow XVertex IntWeight where
@@ -41,9 +41,9 @@ xarrows C = []
 data YVertex = P | Q deriving (Eq, Show)
 
 data YArrow = YArrow
-  { ysource :: YVertex,
-    ytarget :: YVertex,
-    yweight :: Int
+  { ysource :: !YVertex,
+    ytarget :: !YVertex,
+    yweight :: !Int
   }
 
 instance Arrow YArrow YVertex IntWeight where
@@ -61,9 +61,9 @@ yarrows Q = [YArrow Q P 8]
 newtype XYVertex = XYVertex (XVertex, YVertex) deriving (Eq, Show)
 
 data XYArrow = XYArrow
-  { xysource :: XYVertex,
-    xytarget :: XYVertex,
-    xyweight :: Int
+  { xysource :: !XYVertex,
+    xytarget :: !XYVertex,
+    xyweight :: !Int
   }
   deriving (Eq, Show)
 

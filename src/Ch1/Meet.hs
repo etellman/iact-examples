@@ -8,7 +8,7 @@ import Preorder.Preorder as PO
 
 meet' :: (a -> a -> Bool) -> [a] -> [a] -> a
 meet' f xs xs' =
-  let lessThanAll = filter (\x -> all (\y -> f x y) xs') xs
+  let lessThanAll = filter (\x -> all (f x) xs') xs
    in foldr1 (\x a -> if f a x then x else a) lessThanAll
 
 -- | finds the meet of a set within a preorder

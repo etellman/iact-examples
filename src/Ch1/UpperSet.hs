@@ -11,10 +11,9 @@ isUpperSet :: (Preorder a, Eq a) => [a] -> [a] -> Bool
 isUpperSet elements usCandidate =
   all
     ( \p ->
-        ( all
-            (\q -> q `elem` usCandidate || (not $ p PO.<= q))
-            elements
-        )
+        all
+          (\q -> q `elem` usCandidate || not (p PO.<= q))
+          elements
     )
     usCandidate
 

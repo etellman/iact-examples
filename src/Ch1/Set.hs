@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Ch1.Set
   ( powerSet,
     isSubsetOf,
@@ -27,10 +29,10 @@ cartesianProduct xs ys = do
   return (x, y)
 
 disjointUnion :: [a] -> [a] -> [(Int, a)]
-disjointUnion xs ys = fmap ((,) 1) xs ++ fmap ((,) 2) ys
+disjointUnion xs ys = fmap (1,) xs ++ fmap (2,) ys
 
 isSubsetOf :: Eq a => [a] -> [a] -> Bool
-isSubsetOf xs ys = all (flip elem ys) xs
+isSubsetOf xs ys = all (`elem` ys) xs
 
 sameElementsBy :: (a -> a -> Bool) -> [a] -> [a] -> Bool
 sameElementsBy eq xs ys =
@@ -41,7 +43,7 @@ sameElementsBy eq xs ys =
 closureOp :: (a -> a -> Bool) -> [a] -> [[a]] -> [[a]]
 closureOp eq xs xss =
   let (without, with) = partition (null . intersectBy eq xs) xss
-      merged = foldr (\ys zs -> unionBy eq ys zs) [] with
+      merged = foldr (unionBy eq) [] with
    in merged : without
 
 closureBy :: (a -> a -> Bool) -> [[a]] -> [[a]]
@@ -59,7 +61,7 @@ overlapsBy _ [] = []
 overlapsBy eq (xs : xss) =
   let filtered = filter (not . null . intersectBy eq xs) xss
       with =
-        if null $ filtered
+        if null filtered
           then []
           else xs : filtered
    in with ++ overlapsBy eq xss

@@ -25,9 +25,9 @@ transports :: [Transport]
 transports = [A, B, C]
 
 data Route = Route
-  { from :: City,
-    to :: City,
-    routeTransports :: Transports
+  { from :: !City,
+    to :: !City,
+    routeTransports :: !Transports
   }
 
 instance Arrow Route City Transports where

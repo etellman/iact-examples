@@ -20,9 +20,9 @@ instance Monoid Probability where
   mempty = Probability 1.0
 
 data ProbabilityArrow = ProbabilityArrow
-  { paFrom :: Vertex,
-    paTo :: Vertex,
-    paWeight :: Probability
+  { paFrom :: !Vertex,
+    paTo :: !Vertex,
+    paWeight :: !Probability
   }
 
 instance Arrow ProbabilityArrow Vertex Probability where
@@ -45,9 +45,9 @@ categorizeYnm d
   | otherwise = No
 
 data YnmArrow = YnmArrow
-  { ynmFrom :: Vertex,
-    ynmTo :: Vertex,
-    ynmWeight :: YnmMin
+  { ynmFrom :: !Vertex,
+    ynmTo :: !Vertex,
+    ynmWeight :: !YnmMin
   }
 
 instance Arrow YnmArrow Vertex YnmMin where

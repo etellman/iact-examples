@@ -9,9 +9,9 @@ import Test.Tasty.Hedgehog
 prop_monoidalClosed :: Property
 prop_monoidalClosed = property $ do
   -- set up
-  v <- forAll $ genCost
-  w <- forAll $ genCost
-  a <- forAll $ genCost
+  v <- forAll genCost
+  w <- forAll genCost
+  a <- forAll genCost
 
   cover 10 "a <> v >= w" $ a <> v >= w
   cover 10 "a <> v < w" $ a <> v < w
@@ -23,4 +23,4 @@ prop_monoidalClosed = property $ do
   (a <> v >= w) === (a >= v -* w)
 
 tests :: TestTree
-tests = testGroup "Ch2.Sec5.Example60Test" [testProperty "monoidal closed" prop_monoidalClosed]
+tests = testGroup "Ch2.Sec5.Example60Test" [ testProperty "monoidal closed" prop_monoidalClosed ]

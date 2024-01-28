@@ -12,9 +12,9 @@ import Graph.IntWeight
 data Vertex = A | B | C | D deriving (Eq, Show)
 
 data Fig18Arrow = Fig18Arrow
-  { from :: Vertex,
-    to :: Vertex,
-    fig18weight :: Int
+  { from :: !Vertex,
+    to :: !Vertex,
+    fig18weight :: !Int
   }
 
 instance Arrow Fig18Arrow Vertex IntWeight where

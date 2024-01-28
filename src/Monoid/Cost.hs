@@ -15,7 +15,7 @@ import TypeLevel.NaturalNumber
 
 type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
 
-data Cost = Infinity | Cost ApproximateDouble deriving (Show, Eq)
+data Cost = Infinity | Cost !ApproximateDouble deriving (Show, Eq)
 
 instance Ord Cost where
   _ <= Infinity = True
@@ -28,7 +28,7 @@ instance Monoid Cost where
 instance Semigroup Cost where
   Infinity <> _ = Infinity
   _ <> Infinity = Infinity
-  (Cost x) <> (Cost y) = (Cost $ x + y)
+  (Cost x) <> (Cost y) = Cost $ x + y
 
 newtype CostPreorder = CostPreorder Cost deriving (Show, Eq, Ord, Monoid, Semigroup)
 

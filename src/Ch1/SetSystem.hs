@@ -46,7 +46,7 @@ partitions :: [a] -> [SetSystem a]
 partitions xs = fmap SetSystem (P.partitions xs)
 
 labelFor :: Eq a => SetSystem a -> a -> Int
-labelFor (SetSystem xss) x = P.labelFor xss x
+labelFor (SetSystem xss) = P.labelFor xss
 
 -- determines whether all the groups contain different elements
 disjoint :: Eq a => SetSystem a -> Bool
@@ -58,11 +58,11 @@ instance Ord a => Joinable (SetSystem a) where
   join (SetSystem xss) (SetSystem yss) = simplify $ SetSystem (xss ++ yss)
 
 simplify :: Ord a => SetSystem a -> SetSystem a
-simplify (SetSystem []) = (SetSystem [])
+simplify (SetSystem []) = SetSystem []
 simplify s@(SetSystem (x : xss))
   | disjoint s = SetSystem $ sort $ fmap sort (x : xss)
   | otherwise =
-      let (nonOverlapping, overlapping) = partition (\y -> null (intersect x y)) xss
+      let (nonOverlapping, overlapping) = partition (null . intersect x) xss
           withX = if null overlapping then [x] else fmap (union x) overlapping
        in simplify (SetSystem $ nonOverlapping ++ withX)
 

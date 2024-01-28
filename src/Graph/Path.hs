@@ -29,9 +29,7 @@ costPath ::
   v ->
   Cost
 costPath toCost arrowsFrom v1 v2 =
-  case (minPath arrowsFrom v1 v2) of
-    Just w -> toCost w
-    Nothing -> Infinity
+  maybe Infinity toCost (minPath arrowsFrom v1 v2)
 
 -- find the minimum weight path
 minPath ::
@@ -71,7 +69,7 @@ path2 ::
   v ->
   Maybe w
 path2 visited select arrowsFrom from to
-  | from == to = Just $ mempty
+  | from == to = Just mempty
   | from `elem` visited = Nothing
   | (not . null) paths = Just $ select paths
   | otherwise = Nothing
