@@ -10,15 +10,7 @@
 #
 # resolver: lts-21.13
 # resolver: nightly-2023-09-24
-# resolver: ghc-9.6.2
-#
-# The location of a snapshot can be provided as a file or url. Stack assumes
-# a snapshot provided as a file might change, whereas a url resource does not.
-#
-# resolver: ./custom-snapshot.yaml
-# resolver: https://example.com/snapshots/2023-01-01.yaml
-resolver:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/16.yaml
+resolver: ghc-9.4.8
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -41,6 +33,50 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 # extra-deps: []
+
+extra-deps:
+  - approximate-equality-1.1.0.2@sha256:564a83a453ff76d8008ade85d2308808816cb35886ac4891d79ea80e3292222c,1981
+  - partial-order-0.2.0.0@sha256:a0d6ddc9ebcfa965a5cbcff1d06d46a79d44ea5a0335c583c2a51bcb41334487,2275
+  - type-level-natural-number-2.0@sha256:d9b757b3244edf511296007cbea1c16d5861f8ba6d131603361d313d4d73ed3c,2554
+  - hedgehog-1.4@sha256:47633efec27b49fe5a21d51f3b9fce428ca4b945d39eaa163b2b6a1d3e1465be,4724
+  - tasty-1.5@sha256:2dc91101339814be9913846ca8c424d1c3eccfefb27c6335f3fea2af40a3d2e4,2870
+  - tasty-hedgehog-1.4.0.2@sha256:5c74496db551c8f1d783036aa8b99a39d89ec60a2925ea466a8bbcd5e68141c6,1852
+  - tasty-hunit-0.10.1@sha256:ebc17b490750d4796b21d44001b852688cc39f9c34e387d5e7958e09b9b3f3b9,1602
+  - ansi-terminal-1.0.2@sha256:1f90bb88e670ce63fbf2c9216d50857f2419582f1c6791e542c3eab97ecfd364,2897
+  - async-2.2.5@sha256:957d5ca4496e7048e3e78f108dbdc3e391eafe60b50417486e4c28957d430b05,3248
+  - barbies-2.0.5.0@sha256:2a6c67af6b12b7771ca8c4503819055800bd47c03cb7cab095d45f129bdaa310,4407
+  - call-stack-0.4.0@sha256:ac44d2c00931dc20b01750da8c92ec443eb63a7231e8550188cb2ac2385f7feb,1200
+  - concurrent-output-1.10.20@sha256:b0ebf122b3f22c9739045825334bd02bd2814752933a92db41e5b4648527139c,1712
+  - erf-2.0.0.0@sha256:11c5d3747d17b589009cbe9656ca792e4b5b2560d4aa44f6f1e80044794b1a8b,577
+  - lifted-async-0.10.2.5@sha256:2025bfa72a42232b5dee72ed16440762996415c912e6a26957fbaa7bd79cc0a3,2844
+  - mmorph-1.2.0@sha256:df9b213ec18f811cb3137b478d148f3f1680ee43f841cb775835fa282fdb0295,1083
+  - monad-control-1.0.3.1@sha256:2d657279839e1a760c86a69f00f0c36473ef6972d413ec0f83a40249c70e098e,2365
+  - optparse-applicative-0.18.1.0@sha256:b4cf8d9018e5e67cb1f14edb5130b6d05ad8bc1b5f6bd4efaa6ec0b7f28f559d,5132
+  - pretty-show-1.10@sha256:bfef8da0ac4db4fc7f41edfec9e9a701ac206418d70702bff1e40f20d6a2b1f1,1888
+  - primitive-0.8.0.0@sha256:d0ff45fa6e61f92af23611ceb8b9a6a04c236b50fb70c60e2ed3bfa532703670,3241
+  - random-1.2.1.1@sha256:e7c1f881159d5cc788619c9ee8b8f340ba2ff0db571cdf3d1a1968ebc5108789,6777
+  - resourcet-1.3.0@sha256:faa760fb28fb5c98fbe4867e375a775495cabc00926da81fa102dc991017d2c5,1739
+  - safe-exceptions-0.1.7.4@sha256:8bb7261bd54bd58acfcb154be6a161fb6d0d31a1852aadc8e927d2ad2d7651d1,1412
+  - tagged-0.8.8@sha256:c4fdbd3e1c423af0ccf8eb9e9962620106c34e32ed8e0cc647fb06899a703e04,2880
+  - transformers-base-0.4.6@sha256:6f18f320e371c8954c4b6b211e2fdd5d15a6d6310bd605b9d640f47ede408961,1643
+  - wl-pprint-annotated-0.1.0.1@sha256:79d12e6d7302c8bea0986cb713fcbfc33225cca3ee158ac741cf1a468f5ed8bc,2296
+  - ansi-terminal-types-0.11.5@sha256:f78440dfd95c4509e88855ac7cc2d9566ddf956a92c1290404cac93ad1a1b00a,1482
+  - base-orphans-0.9.1@sha256:c4733d09f798fc4304e936924a1a7d9fc2425aefad6c46ad4592035254b46051,3220
+  - colour-2.3.6@sha256:ebdcbf15023958838a527e381ab3c3b1e99ed12d1b25efeb7feaa4ad8c37664a,2378
+  - constraints-0.14@sha256:0af61e4b5f982bd0113640692c409e6344e7b3fe3690d51212a4a6fa84d02872,2250
+  - distributive-0.6.2.1@sha256:0f99f5541cca04acf89b64432b03422b6408e830a8dff30e6c4334ef1a48680c,2996
+  - happy-1.20.1.1@sha256:a381633c5e8f9e9e5a8e1900930ce13172397b4677fcfcc08cd38eb3f73b61b1,5811
+  - hashable-1.4.3.0@sha256:f3bf68acfa0df7a064a378ef2cdcfeb55e6fb96100675f4c593556dcbf3d7194,4718
+  - haskell-lexer-1.1.1@sha256:4ce310678b7e56b51acb558c0233d2f71a3f3553f8a88e9b48c0bc68301f799b,1296
+  - lifted-base-0.2.3.12@sha256:e94ad0692c9c5d85c373e508f23654f2da8ac8c3e475c2b65ffbc04fb165ad69,3369
+  - prettyprinter-1.7.1@sha256:9c43c9d8c3cd9f445596e5a2379574bba87f935a4d1fa41b5407ee3cf4edc743,6987
+  - prettyprinter-ansi-terminal-1.1.3@sha256:b00f727b964cf13adff7acf575a71fa7e405f5240aff50b07f10df76ab89f8d3,2574
+  - splitmix-0.1.0.5@sha256:bac0ae8d46a04e410666b0c8081cff63f060f29157983b569ca86ddb6e6e0dc6,6557
+  - terminal-size-0.3.4@sha256:f0318c54273d04afb65109683b442792dcb67af1ad01ab5ec64423a28bb97715,1291
+  - transformers-compat-0.7.2@sha256:044fb9955f63ee138fcebedfdcbe54afe741f2d5892a2d0bdf3a8052bd342643,5601
+  - unliftio-core-0.2.1.0@sha256:28800633b20e0f7bfbdda1248c28022749aa0935aea10b1e3fc9c88cbebb06de,1004
+  - boring-0.2.1@sha256:9e2566d93e8db00ea7c428bf6a4052f8479ef6b6a86294d65c6086d45a842e4b,2123
+  - type-equality-1@sha256:ebf53eaf3881b946d4ab56112a19f8b635c0f19cb5252c08fbf2588bc1ea22a5,1639
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
