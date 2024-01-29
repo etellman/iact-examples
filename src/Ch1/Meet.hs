@@ -6,10 +6,12 @@ where
 
 import Preorder.Preorder as PO
 
-meet' :: (a -> a -> Bool) -> [a] -> [a] -> a
+meet' :: (a -> a -> Bool) -> [a] -> [a] -> Maybe a
 meet' f xs xs' =
   let lessThanAll = filter (\x -> all (f x) xs') xs
-   in foldr1 (\x a -> if f a x then x else a) lessThanAll
+   in case lessThanAll of
+        [] -> Nothing
+        (y : ys) -> Just $ foldr (\x a -> if f a x then x else a) y ys
 
 -- | finds the meet of a set within a preorder
 meet ::
@@ -19,7 +21,7 @@ meet ::
   -- | the subset for the meet
   [a] ->
   -- | the meet
-  a
+  Maybe a
 meet = meet' (PO.<=)
 
 -- | finds the join of a set within a preorder
@@ -30,5 +32,5 @@ join ::
   -- | the subset for the join
   [a] ->
   -- | the join
-  a
-join = meet' (\x y -> y PO.<= x)
+  Maybe a
+join = meet' $ flip (PO.<=)

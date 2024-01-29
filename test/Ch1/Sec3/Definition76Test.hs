@@ -12,8 +12,7 @@ import TestLib.Assertions (assertMeet)
 
 genInts :: Gen [IntPO]
 genInts =
-  fmap IntPO
-    <$> toList
+  fmap IntPO . toList
     <$> Gen.set
       (Range.constant 1 100)
       (Gen.int (Range.linearBounded :: Range Int))
@@ -24,8 +23,13 @@ prop_nonEmpty = property $ do
   xs <- forAll genInts
   xs' <- forAll $ toList <$> Gen.subset (fromList xs)
 
-  -- exercise and verify
-  assertMeet xs xs' (meet xs xs')
+  -- exercise
+  let m = meet xs xs'
+
+  -- verify
+  case m of
+    Nothing -> assert False
+    Just x -> assertMeet xs xs' x
 
 prop_empty :: Property
 prop_empty = property $ do
