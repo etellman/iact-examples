@@ -14,14 +14,15 @@ where
 
 import Ch1.Joinable
 import qualified Ch1.Partition as P
+import Data.Containers.ListUtils (nubOrd)
 import Data.List
   ( intersect,
-    nub,
     partition,
     sort,
     union,
   )
 import qualified Data.PartialOrd as PO
+import Slist (slist)
 
 newtype SetSystem a = SetSystem [[a]] deriving (Eq, Show)
 
@@ -29,11 +30,11 @@ sets :: SetSystem a -> [[a]]
 sets (SetSystem xss) = xss
 
 elements :: Ord a => SetSystem a -> [a]
-elements (SetSystem xss) = (sort . nub . concat) xss
+elements (SetSystem xss) = (sort . nubOrd . concat) xss
 
-instance Eq a => PO.PartialOrd (SetSystem a) where
+instance Ord a => PO.PartialOrd (SetSystem a) where
   sx@(SetSystem xss) <= sy =
-    let elems = (nub . concat) xss
+    let elems = (nubOrd . concat) xss
         pairs = (,) <$> elems <*> elems
         connectionMatches (x, y) = not (connected x y sx) || connected x y sy
      in all connectionMatches pairs
@@ -49,10 +50,10 @@ labelFor :: Eq a => SetSystem a -> a -> Int
 labelFor (SetSystem xss) = P.labelFor xss
 
 -- determines whether all the groups contain different elements
-disjoint :: Eq a => SetSystem a -> Bool
-disjoint (SetSystem (xss)) =
+disjoint :: Ord a => SetSystem a -> Bool
+disjoint (SetSystem xss) =
   let elems = concat xss
-   in (length . nub) elems == length elems
+   in (length . slist . nubOrd) elems == (length . slist) elems
 
 instance Ord a => Joinable (SetSystem a) where
   join (SetSystem xss) (SetSystem yss) = simplify $ SetSystem (xss ++ yss)

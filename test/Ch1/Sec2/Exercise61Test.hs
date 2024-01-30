@@ -19,8 +19,7 @@ import TestLib.Assertions
 
 genChars :: (Char -> a) -> Gen [a]
 genChars f =
-  fmap f
-    <$> toList
+  fmap f . toList
     <$> Gen.set
       (Range.constant 1 50)
       Gen.alpha
@@ -47,7 +46,7 @@ prop_part_2_and_3 = property $ do
   q <- forAll $ Gen.element xs
   let arrow' x = arrow x xs
 
-  q PO.<= p ==> (CharSetPO $ arrow' p) PO.<= (CharSetPO $ arrow' q)
+  q PO.<= p ==> CharSetPO (arrow' p) PO.<= CharSetPO (arrow' q)
   p PO.<= q === arrow' q `isSubsetOf` arrow' p
 
 tests :: TestTree
@@ -55,7 +54,7 @@ tests =
   testGroup
     "Ch1.Sec2.Exercise61Test"
     [ testProperty "part 1" prop_part_1,
-      testProperty "parts 2 and 3" $ prop_part_2_and_3,
+      testProperty "parts 2 and 3" prop_part_2_and_3,
       testGroup
         "part 4"
         [ testCase "pairs" $ do
@@ -105,7 +104,7 @@ tests =
           testCase "opposite upper set" $
             do
               -- set up
-              let toOpSet = Ex52OpSet . (fmap Ex52Op)
+              let toOpSet = Ex52OpSet . fmap Ex52Op
                   fromPairs = sort . fmap (bimap toOpSet toOpSet)
 
               -- exercise

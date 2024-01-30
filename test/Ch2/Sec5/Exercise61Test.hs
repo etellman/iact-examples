@@ -14,11 +14,12 @@ hom True True = True
 (-*) :: BooleanAnd -> BooleanAnd -> BooleanAnd
 (BooleanAnd x) -* (BooleanAnd y) = BooleanAnd (hom x y)
 
+infix 6 -*
+
 testBooleanAnd :: Bool -> TestTree
 testBooleanAnd x =
   let gen = BooleanAnd <$> Gen.bool
-      join [] = Just $ BooleanAnd False
-      join xs =  Just $ minimum xs
+      join xs = Just $ foldr min (BooleanAnd False) xs
    in testClosed (show x) gen (-*) join (BooleanAnd x)
 
 tests :: TestTree
