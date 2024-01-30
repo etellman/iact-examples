@@ -1,8 +1,6 @@
 module Preorder.MonoidalClosedProperties (testClosed) where
 
-import Data.List (nub)
-import TestLib.Assertions
-import Data.Maybe (fromJust, isJust)
+import Data.Containers.ListUtils (nubOrd)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -12,20 +10,28 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 prop64b ::
-  (Monoid m, Eq m, Show m, PO.Preorder m) =>
+  (Monoid m, Ord m, Show m, PO.Preorder m) =>
   Gen m ->
   ([m] -> Maybe m) ->
   Property
 prop64b gen join = property $ do
   -- set up
   v <- forAll gen
-  xs <- forAll $ nub <$> Gen.list (Range.constant 0 10) gen
+  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 10) gen
 
   -- exercise
   let j = join xs
 
   -- verify
-  isJust j ==> (v <> (fromJust j)) =~ ((fromJust $ join $ fmap (v <>) xs))
+  case j of
+    Nothing -> success
+    (Just j') ->
+      let ys = fmap (v <>) xs
+       in case join ys of
+            Nothing -> failure
+            (Just ys') -> assert $ (v <> j') =~ ys'
+
+-- isJust j ==> (v <> fromJust j) =~ fromJust (join ys)
 
 prop64c ::
   (Monoid m, Show m, PO.Preorder m) =>
@@ -67,7 +73,7 @@ prop64e gen (-*) = property $ do
   H.assert $ ((u -* v) <> (v -* w)) PO.<= (u -* w)
 
 testClosed ::
-  (Monoid m, Eq m, Show m, PO.Preorder m) =>
+  (Monoid m, Ord m, Show m, PO.Preorder m) =>
   String ->
   Gen m ->
   (m -> m -> m) ->

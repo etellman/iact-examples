@@ -1,6 +1,7 @@
 module Preorder.PreorderTest (tests) where
 
-import Data.List (nub, sort)
+import Data.Containers.ListUtils (nubOrd)
+import Data.List (sort)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -26,11 +27,10 @@ prop_connections = property $ do
   -- set up
   xs <-
     forAll $
-      fmap IntPO
-        <$> toList
+      fmap IntPO . toList
         <$> Gen.set
           (Range.constant 1 20)
-          (Gen.int $ (Range.constantBounded :: Range Int))
+          (Gen.int (Range.constantBounded :: Range Int))
 
   -- exercise
   let pairs = connections xs
@@ -43,8 +43,8 @@ prop_connections = property $ do
   n <- forAll $ Gen.element xs
   m PO.<= n ==> (m, n) `elem` pairs
 
-  (sort . nub $ fmap fst pairs) === sort xs
-  (sort . nub $ fmap snd pairs) === sort xs
+  (sort . nubOrd $ fmap fst pairs) === sort xs
+  (sort . nubOrd $ fmap snd pairs) === sort xs
 
 tests :: TestTree
 tests =
