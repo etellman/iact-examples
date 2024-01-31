@@ -1,8 +1,8 @@
 module Ch1.Sec4.Exercise97Test (tests) where
 
+import Data.Containers.ListUtils (nubOrd)
 import Ch1.Partition (partitions)
 import Ch1.Sec4.PartitionAdjunctProperties
-import Data.List (nub)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -12,11 +12,10 @@ import Test.Tasty.Hedgehog
 
 genSs :: Gen [S]
 genSs =
-  fmap S
-    <$> toList
+  fmap S . toList
     <$> Gen.set
       (Range.constant 2 10)
-      (Gen.int $ (Range.linear 0 1000))
+      (Gen.int (Range.linear 0 1000))
 
 g :: Int -> S -> T
 g n (S s) = T (s `rem` n)
@@ -36,7 +35,7 @@ prop_right = property $ do
   -- set up
   ss <- forAll genSs
   n <- forAll $ Gen.int (Range.constant 2 20)
-  tss <- forAll $ Gen.element $ (partitions . nub . fmap (g n)) ss
+  tss <- forAll $ Gen.element $ (partitions . nubOrd . fmap (g n)) ss
 
   -- exercise
   checkRightAdjunct ss tss (g n)

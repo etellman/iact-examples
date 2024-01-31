@@ -1,7 +1,8 @@
 module Ch1.Sec4.Exercise117Test (tests) where
 
 import Ch1.Set (cartesianProduct, isSubsetOf)
-import Data.List (nub, partition, sort)
+import Data.Containers.ListUtils (nubOrd)
+import Data.List (partition, sort)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -10,7 +11,7 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 sameElements :: Ord a => [(a, a)] -> [(a, a)] -> Bool
-sameElements xs ys = (nub . sort $ xs) == (nub . sort) ys
+sameElements xs ys = (nubOrd . sort $ xs) == (nubOrd . sort) ys
 
 genPair :: [Int] -> Gen (Int, Int)
 genPair xs = do
@@ -29,7 +30,7 @@ closure [] = []
 closure pairs =
   let merged = foldr closureOp pairs pairs
    in if sameElements merged pairs
-        then nub pairs
+        then nubOrd pairs
         else closure merged
 
 genInts :: Gen [Int]
@@ -37,13 +38,13 @@ genInts =
   toList
     <$> Gen.set
       (Range.constant 2 20)
-      (Gen.int $ (Range.constantBounded :: Range Int))
+      (Gen.int (Range.constantBounded :: Range Int))
 
 prop_exercise117 :: Property
 prop_exercise117 = property $ do
   -- set up
   ss <- forAll genInts
-  let us = filter (\(a, b) -> a <= b) (cartesianProduct ss ss)
+  let us = filter (uncurry (<=)) (cartesianProduct ss ss)
 
   q <- forAll $ toList <$> Gen.set (Range.constant 1 8) (genPair ss)
 

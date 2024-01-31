@@ -1,53 +1,63 @@
 module Ch1.SetTest (tests) where
 
 import Ch1.Set
-import Data.List (nub, partition, sort)
+import Data.Containers.ListUtils (nubOrd)
+import Data.List (partition, sort)
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+import Slist (slist)
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
 
+safeLength :: [a] -> Int
+safeLength = length . slist
+
 prop_powerSet :: Property
 prop_powerSet = property $ do
   -- set up
-  xs <- forAll $ nub <$> Gen.list (Range.constant 0 8) (Gen.int $ Range.constant 0 1000)
+  xs <-
+    forAll $
+      nubOrd
+        <$> Gen.list
+          (Range.constant 0 8)
+          (Gen.int $ Range.constant 0 1000)
 
   -- exercise
   let xss = powerSet xs
 
   -- verify
-  length xss === 2 ^ (length xs)
-  nub xss === xss
-  (sort . nub . concat) xss === sort xs
+  safeLength xss === 2 ^ safeLength xs
+  nubOrd xss === xss
+  (sort . nubOrd . concat) xss === sort xs
 
 prop_cartesianProduct :: Property
 prop_cartesianProduct = property $ do
   -- set up
-  xs <- forAll $ nub <$> Gen.list (Range.constant 0 20) (Gen.int $ Range.constant 0 1000)
-  ys <- forAll $ nub <$> Gen.list (Range.constant 0 20) Gen.alpha
+  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) (Gen.int $ Range.constant 0 1000)
+  ys <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
 
   -- exercise
   let pairs = cartesianProduct xs ys
 
   -- verify
-  length pairs === length xs * length ys
-  H.assert $ all (\x -> elem x xs) (fmap fst pairs)
-  H.assert $ all (\y -> elem y ys) (fmap snd pairs)
+  safeLength pairs === safeLength xs * safeLength ys
+  H.assert $ all ((`elem` xs) . fst) pairs
+  H.assert $ all ((`elem` ys) . snd) pairs
 
 prop_disjointUnion :: Property
 prop_disjointUnion = property $ do
   -- set up
-  xs <- forAll $ nub <$> Gen.list (Range.constant 0 20) Gen.alpha
-  ys <- forAll $ nub <$> Gen.list (Range.constant 0 20) Gen.alpha
+  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
+  ys <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
 
   -- exercise
   let pairs = disjointUnion xs ys
 
   -- verify
-  length pairs === length xs + length ys
+  safeLength pairs === safeLength xs + safeLength ys
 
   let (xs', ys') = partition (\p -> fst p == 1) pairs
   fmap snd xs' === xs
@@ -62,7 +72,7 @@ prop_closureBy = property $ do
   -- set up
   xss <- forAll $ toList <$> Gen.set (Range.constant 0 30) genCharSet
   cover 50 "overlaps" $ not . null $ overlapsBy (==) xss
-  let elements = sort . nub . concat
+  let elements = sort . nubOrd . concat
 
   -- exercise
   let yss = closureBy (==) xss
