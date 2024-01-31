@@ -20,10 +20,10 @@ prop_powerSet = property $ do
   -- set up
   xs <-
     forAll $
-      nubOrd
-        <$> Gen.list
+      toList
+        <$> Gen.set
           (Range.constant 0 8)
-          (Gen.int $ Range.constant 0 1000)
+          (Gen.int (Range.constantBounded :: Range Int))
 
   -- exercise
   let xss = powerSet xs
@@ -36,8 +36,13 @@ prop_powerSet = property $ do
 prop_cartesianProduct :: Property
 prop_cartesianProduct = property $ do
   -- set up
-  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) (Gen.int $ Range.constant 0 1000)
-  ys <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
+  xs <-
+    forAll $
+      toList
+        <$> Gen.set
+          (Range.constant 0 20)
+          (Gen.int (Range.constant 0 1000))
+  ys <- forAll $ toList <$> Gen.set (Range.constant 0 20) Gen.alpha
 
   -- exercise
   let pairs = cartesianProduct xs ys
@@ -50,8 +55,8 @@ prop_cartesianProduct = property $ do
 prop_disjointUnion :: Property
 prop_disjointUnion = property $ do
   -- set up
-  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
-  ys <- forAll $ nubOrd <$> Gen.list (Range.constant 0 20) Gen.alpha
+  xs <- forAll $ toList <$> Gen.set (Range.constant 0 20) Gen.alpha
+  ys <- forAll $ toList <$> Gen.set (Range.constant 0 20) Gen.alpha
 
   -- exercise
   let pairs = disjointUnion xs ys
