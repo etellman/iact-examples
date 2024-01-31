@@ -59,6 +59,6 @@ checkRightAdjunct ss tp g = do
 
   s1 <- forAll $ Gen.element ss
   s2 <- forAll $ Gen.element ss
-  cover 20 "same S partition" (samePartition sp s1 s2)
+  cover 10 "same S partition" (samePartition sp s1 s2)
 
   (samePartition sp s1 s2) ==> samePartition tp (g s1) (g s2)

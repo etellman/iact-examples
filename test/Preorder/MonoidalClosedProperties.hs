@@ -9,29 +9,31 @@ import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
+-- | Determines whether the two ways of finding the join are isomporphic
+joinMatches ::
+  (Monoid m, PO.Preorder m, MonadTest a) =>
+  m ->
+  Maybe m ->
+  m ->
+  a ()
+joinMatches v j2 j1 = maybe failure (\j2' -> assert $ (v <> j1) =~ j2') j2
+
 prop64b ::
   (Monoid m, Ord m, Show m, PO.Preorder m) =>
   Gen m ->
   ([m] -> Maybe m) ->
   Property
-prop64b gen join = property $ do
+prop64b genElement preorderJoin = property $ do
   -- set up
-  v <- forAll gen
-  xs <- forAll $ nubOrd <$> Gen.list (Range.constant 0 10) gen
+  v <- forAll genElement
+  as <- forAll $ nubOrd <$> Gen.list (Range.constant 0 10) genElement
 
   -- exercise
-  let j = join xs
+  let j1 = preorderJoin as
+      j2 = preorderJoin $ fmap (v <>) as
 
   -- verify
-  case j of
-    Nothing -> success
-    (Just j') ->
-      let ys = fmap (v <>) xs
-       in case join ys of
-            Nothing -> failure
-            (Just ys') -> assert $ (v <> j') =~ ys'
-
--- isJust j ==> (v <> fromJust j) =~ fromJust (join ys)
+  maybe failure (joinMatches v j2) j1
 
 prop64c ::
   (Monoid m, Show m, PO.Preorder m) =>
