@@ -3,6 +3,7 @@ module Ch1.Sec1.Exercise37Test (tests) where
 import Ch1.Set (cartesianProduct)
 import Ch1.SetSystem
 import qualified Data.PartialOrd as PO
+import Slist (slist)
 import Test.Tasty
 import Test.Tasty.HUnit
 
@@ -13,4 +14,4 @@ tests = testCase "Ch1.Sec1.Exercise37Test" $ do
       pairs = cartesianProduct xs xs
 
   -- verify
-  length (filter (\(x, y) -> x PO.<= y) pairs) @=? 12
+  (length . slist) (filter (uncurry (PO.<=)) pairs) @=? 12
