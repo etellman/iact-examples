@@ -16,7 +16,9 @@ joinMatches ::
   Maybe m ->
   m ->
   a ()
-joinMatches v j2 j1 = maybe failure (\j2' -> assert $ (v <> j1) =~ j2') j2
+joinMatches v j2 j1 =
+  let checkJoin = assert . ((v <> j1) =~)
+   in maybe failure checkJoin j2
 
 prop64b ::
   (Monoid m, Ord m, Show m, PO.Preorder m) =>

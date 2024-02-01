@@ -1,9 +1,10 @@
 module Ch1.SetSystemTest (tests) where
 
+import Data.Containers.ListUtils (nubOrd)
 import Ch1.BooleanSystem
 import Ch1.Joinable
 import Ch1.SetSystem
-import Data.List (nub, sort)
+import Data.List (sort)
 import qualified Data.PartialOrd as PO
 import Data.Set (toList)
 import Hedgehog as H
@@ -15,8 +16,7 @@ import Test.Tasty.Hedgehog
 
 genSystem :: Gen (SetSystem Int)
 genSystem =
-  SetSystem
-    <$> (fmap toList)
+  SetSystem . fmap toList
     <$> Gen.list
       (Range.constant 0 20)
       (Gen.set (Range.constant 0 10) (Gen.int $ Range.constant 1 20))
@@ -39,7 +39,7 @@ prop_join = property $ do
   -- set up
   s1 <- forAll genSystem
   s2 <- forAll genSystem
-  let combined = ((sort . nub) $ (elements s1) ++ (elements s2))
+  let combined = sort . nubOrd $ elements s1 ++ elements s2
 
   -- exercise
   let joined = join s1 s2
@@ -58,7 +58,7 @@ tests =
         assertBool "no overlap" $ disjoint $ SetSystem [['a', 'b'], ['c', 'd']]
         assertBool "overlap" $ not . disjoint $ SetSystem [['a', 'b'], ['b', 'c']]
         assertBool "singleton" $ disjoint $ SetSystem [['a']]
-        assertBool "empty" $ disjoint $ (SetSystem [[]] :: SetSystem Char),
+        assertBool "empty" $ disjoint (SetSystem [[]] :: SetSystem Char),
       testProperty "simplify" prop_simplify,
       testProperty "join" prop_join,
       testGroup
