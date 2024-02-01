@@ -10,37 +10,41 @@ import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 genIntSet :: Gen [IntPO]
-genIntSet =
-  do
-    fmap IntPO
-    <$> toList
+genIntSet = do
+  fmap IntPO . toList
     <$> Gen.set
       (Range.constant 1 20)
-      (Gen.int $ (Range.constantBounded :: Range Int))
+      (Gen.int (Range.constantBounded :: Range Int))
 
 prop_meet :: Property
 prop_meet = property $ do
   -- set up
-  xs <- forAll $ genIntSet
-  xs' <- forAll $ toList <$> Gen.subset (fromList xs)
+  xs <- forAll genIntSet
+  as <- forAll $ toList <$> Gen.subset (fromList xs)
 
   -- exercise
-  let meet = if null xs' then maximum xs else minimum xs'
+  let meet = case (xs, as) of
+                ([], _) -> error "empty xs"
+                (b:bs, []) -> foldr max b bs
+                (_, b:bs) -> foldr min b bs
 
   -- verify
-  assertMeet xs xs' meet
+  assertMeet xs as meet
 
 prop_join :: Property
 prop_join = property $ do
   -- set up
-  xs <- forAll $ genIntSet
-  xs' <- forAll $ toList <$> Gen.subset (fromList xs)
+  xs <- forAll genIntSet
+  as <- forAll $ toList <$> Gen.subset (fromList xs)
 
   -- exercise
-  let join = if null xs' then minimum xs else maximum xs'
+  let join = case (xs, as) of
+                ([], _) -> error "empty xs"
+                (b:bs, []) -> foldr min b bs
+                (_, b:bs) -> foldr max b bs
 
   -- verify
-  assertJoin xs xs' join
+  assertJoin xs as join
 
 tests :: TestTree
 tests =
