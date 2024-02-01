@@ -36,8 +36,13 @@ prop_empty = property $ do
   -- set up
   xs <- forAll genInts
 
-  -- exercise and verify
-  assertMeet xs [] (maximum xs)
+  -- exercise
+  let actual = case xs of
+                 [] -> error "empty xs"
+                 (y:ys) -> foldr max y ys
+
+  -- verify
+  assertMeet xs [] actual
 
 tests :: TestTree
 tests =

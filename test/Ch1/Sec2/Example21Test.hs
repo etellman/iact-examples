@@ -15,8 +15,8 @@ prop_example_21 = property $ do
       f 21 = 'c'
       f 22 = 'd'
       f 23 = 'd'
-      f _ = undefined
-  x <- forAll $ Gen.element (concat $ fmap snd ss)
+      f _ = error "unregognized value"
+  x <- forAll $ Gen.element (concatMap snd ss)
 
   -- exercise
   let xs = lookup (f x) ss

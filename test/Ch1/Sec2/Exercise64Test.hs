@@ -1,7 +1,7 @@
 module Ch1.Sec2.Exercise64Test (tests) where
 
 import qualified Ch1.Partition as P
-import Data.List (nub)
+import Data.Containers.ListUtils (nubOrd)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
@@ -15,8 +15,7 @@ newtype Y = Y Int deriving (Show, Eq, Ord)
 
 genXs :: Gen [X]
 genXs =
-  fmap X
-    <$> nub
+  fmap X . nubOrd
     <$> Gen.list
       (Range.constant 2 100)
       (Gen.int $ Range.constant 1 500)
@@ -37,7 +36,7 @@ prop_exercise_64 = property $ do
   n2 <- forAll $ Gen.int (Range.constant 1 7)
 
   let f (X x) = Y (m * x)
-      ys = (fmap f xs)
+      ys = fmap f xs
       pp = partitionPair xs ys f
 
   -- exercise

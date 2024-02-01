@@ -26,14 +26,18 @@ prop_exercise85 f verify = property $ do
       f' (DividesPO m) (DividesPO n) = DividesPO $ f m n
   xs' <-
     forAll $
-      fmap DividesPO
-        <$> toList
+      fmap DividesPO . toList
         <$> Gen.set
           (Range.linear 1 10)
-          (Gen.int $ (Range.linear 1 15))
+          (Gen.int (Range.linear 1 15))
 
-  -- exercise and verify
-  verify xs xs' (foldr1 f' xs')
+  -- exercise
+  let actual = case xs' of
+                 [] -> error "empty xs'"
+                 (y:ys) -> foldr f' y ys
+
+  -- verify
+  verify xs xs' actual
 
 tests :: TestTree
 tests =
