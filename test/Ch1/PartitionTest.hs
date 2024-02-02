@@ -1,6 +1,7 @@
 module Ch1.PartitionTest (tests) where
 
 import Ch1.Partition
+import Slist (slist)
 import Test.Tasty
 import Test.Tasty.HUnit
 
@@ -10,7 +11,7 @@ tests =
     "Ch1.PartitionTest"
     [ testCase "partition" $ do
         let xs = [1 .. 4] :: [Int]
-        (length $ partitions xs) @?= 15,
+        (length . slist $ partitions xs) @?= 15,
       testGroup
         "distribute"
         [ testCase "non-empty" $

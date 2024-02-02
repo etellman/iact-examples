@@ -10,6 +10,8 @@ where
 import Data.Maybe (fromJust, isJust)
 import Graph.Arrow (Arrow (..))
 import Monoid.Cost
+import Safe.Foldable (maximumMay, minimumMay)
+import Safe (headMay)
 
 -- determine if there is at least one path between two vertices
 isPath ::
@@ -18,7 +20,7 @@ isPath ::
   v ->
   v ->
   Bool
-isPath arrowsFrom v1 v2 = isJust $ pathWith head arrowsFrom v1 v2
+isPath arrowsFrom v1 v2 = isJust $ pathWith headMay arrowsFrom v1 v2
 
 -- find the minimum cost path
 costPath ::
@@ -38,7 +40,7 @@ minPath ::
   v ->
   v ->
   Maybe w
-minPath = pathWith minimum
+minPath = pathWith minimumMay
 
 -- find the maximum weight path
 maxPath ::
@@ -47,12 +49,12 @@ maxPath ::
   v ->
   v ->
   Maybe w
-maxPath = pathWith maximum
+maxPath = pathWith maximumMay
 
 -- find a path using a custom way to combine weights
 pathWith ::
   (Eq v, Arrow a v w, Monoid w) =>
-  ([w] -> w) ->
+  ([w] -> Maybe w) ->
   (v -> [a]) ->
   v ->
   v ->
@@ -63,7 +65,7 @@ pathWith = path2 []
 path2 ::
   (Eq v, Arrow a v w, Monoid w) =>
   [v] ->
-  ([w] -> w) ->
+  ([w] -> Maybe w) ->
   (v -> [a]) ->
   v ->
   v ->
@@ -71,7 +73,7 @@ path2 ::
 path2 visited select arrowsFrom from to
   | from == to = Just mempty
   | from `elem` visited = Nothing
-  | (not . null) paths = Just $ select paths
+  | (not . null) paths = select paths
   | otherwise = Nothing
   where
     pathThrough a =

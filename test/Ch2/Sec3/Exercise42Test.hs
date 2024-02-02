@@ -14,8 +14,8 @@ import Test.Tasty.Hedgehog
 genCity :: Gen City
 genCity = Gen.element cities
 
-anyOf :: [Transports] -> Transports
-anyOf = Transports . (foldr (\(Transports ts) total -> union ts total) [])
+anyOf :: [Transports] -> Maybe Transports
+anyOf = Just . Transports . (foldr (\(Transports ts) total -> union ts total) [])
 
 transportsBetween :: City -> City -> Transports
 transportsBetween c1 c2 =

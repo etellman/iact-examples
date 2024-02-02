@@ -26,6 +26,7 @@ dependencies:
   - approximate-equality >= 1.1.0.2
   - type-level-natural-number >= 2.0
   - slist >= 0.2.1.0
+  - safe >= 0.3.14
 
 ghc-options:
   - -Wall
