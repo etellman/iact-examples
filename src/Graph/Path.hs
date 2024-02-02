@@ -7,7 +7,7 @@ module Graph.Path
   )
 where
 
-import Data.Maybe (fromJust, isJust)
+import Data.Maybe (isJust, mapMaybe)
 import Graph.Arrow (Arrow (..))
 import Monoid.Cost
 import Safe.Foldable (maximumMay, minimumMay)
@@ -80,4 +80,4 @@ path2 visited select arrowsFrom from to
       fmap
         (weight a <>)
         (path2 (from : visited) select arrowsFrom (target a) to)
-    paths = fmap fromJust $ filter isJust $ fmap pathThrough (arrowsFrom from)
+    paths = mapMaybe pathThrough (arrowsFrom from)
