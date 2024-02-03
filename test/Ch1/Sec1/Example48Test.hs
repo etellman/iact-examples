@@ -4,6 +4,7 @@ import Ch1.SetSystem
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+import Slist (slist)
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
@@ -15,18 +16,18 @@ prop_coarse = property $ do
 
   -- exercise and verify
   c <- forAll $ Gen.element xs
-  labelFor coarse c === const 0 c
+  labelFor coarse c === 0
 
 -- the finest partition is the identity function, if the elements are used as the partition labels
 prop_fine :: Property
 prop_fine = property $ do
   -- set up
   let xs = [0 .. 20] :: [Int]
-      fine = SetSystem $ fmap (\c -> [c]) xs
+      fine = SetSystem $ fmap (: []) xs
 
   -- exercise and verify
-  i <- forAll $ Gen.int (Range.constant 0 (length xs - 1))
-  labelFor fine (xs !! i) === id i
+  i <- forAll $ Gen.int (Range.constant 0 ((length . slist) xs - 1))
+  labelFor fine i === i
 
 tests :: TestTree
 tests =
