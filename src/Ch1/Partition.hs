@@ -16,7 +16,6 @@ import Data.List
     partition,
     sort,
   )
-import Data.Maybe (fromJust)
 
 isFiner :: Eq a => [[a]] -> [[a]] -> Bool
 isFiner xss yss = all (\xs -> any (xs `isSubsetOf`) yss) xss
@@ -33,13 +32,13 @@ distribute x (xs : xss) =
       prependXs = map (xs :) restWithX -- [[bc, "ade"], [bc, "afg"]]
    in firstWithX : prependXs -- [["abc", "de", "fg"], [[bc, "ade"], [bc, "afg"]]]
 
--- | finds the index of a partition
-labelFor :: Eq a => [[a]] -> a -> Int
-labelFor xss x = fromJust . findIndex (elem x) $ xss
+-- | finds the label of a partition
+labelFor :: Eq a => [[a]] -> a -> Maybe Int
+labelFor xss x = findIndex (elem x) xss
 
 -- | converts a list of lists to a partition function
-partitionFor :: Eq a => [[a]] -> a -> [a]
-partitionFor xss x = xss !! labelFor xss x
+partitionFor :: Eq a => [[a]] -> a -> Maybe [a]
+partitionFor xss x = fmap (xss !!) (labelFor xss x)
 
 samePartition :: Eq a => [[a]] -> a -> a -> Bool
 samePartition xss x1 x2 = partitionFor xss x1 == partitionFor xss x2

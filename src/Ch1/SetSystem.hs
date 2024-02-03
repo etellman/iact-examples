@@ -46,7 +46,7 @@ instance Functor SetSystem where
 partitions :: [a] -> [SetSystem a]
 partitions xs = fmap SetSystem (P.partitions xs)
 
-labelFor :: Eq a => SetSystem a -> a -> Int
+labelFor :: Eq a => SetSystem a -> a -> Maybe Int
 labelFor (SetSystem xss) = P.labelFor xss
 
 -- determines whether all the groups contain different elements

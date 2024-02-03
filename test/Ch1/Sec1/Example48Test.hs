@@ -16,7 +16,7 @@ prop_coarse = property $ do
 
   -- exercise and verify
   c <- forAll $ Gen.element xs
-  labelFor coarse c === 0
+  labelFor coarse c === Just 0
 
 -- the finest partition is the identity function, if the elements are used as the partition labels
 prop_fine :: Property
@@ -27,7 +27,7 @@ prop_fine = property $ do
 
   -- exercise and verify
   i <- forAll $ Gen.int (Range.constant 0 ((length . slist) xs - 1))
-  labelFor fine i === i
+  labelFor fine i === Just i
 
 tests :: TestTree
 tests =

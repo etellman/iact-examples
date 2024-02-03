@@ -8,10 +8,11 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-convertIndex :: Eq a => SetSystem a -> SetSystem a -> Int -> Int
-convertIndex (SetSystem xs) ySystem i =
+convertIndex :: Eq a => SetSystem a -> SetSystem a -> Maybe Int -> Maybe Int
+convertIndex (SetSystem xs) ySystem (Just i) =
   let x = head $ xs !! i
    in labelFor ySystem x
+convertIndex _ _ Nothing = Nothing
 
 prop_example47 :: Property
 prop_example47 = property $ do
