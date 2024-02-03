@@ -11,6 +11,7 @@ module Ch1.Partition
 where
 
 import Ch1.Set (isSubsetOf)
+import Safe (at)
 import Data.List
   ( findIndex,
     partition,
@@ -38,7 +39,7 @@ labelFor xss x = findIndex (elem x) xss
 
 -- | converts a list of lists to a partition function
 partitionFor :: Eq a => [[a]] -> a -> Maybe [a]
-partitionFor xss x = fmap (xss !!) (labelFor xss x)
+partitionFor xss x = fmap (xss `at`) (labelFor xss x)
 
 samePartition :: Eq a => [[a]] -> a -> a -> Bool
 samePartition xss x1 x2 = partitionFor xss x1 == partitionFor xss x2

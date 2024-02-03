@@ -7,11 +7,12 @@ import qualified Hedgehog.Gen as Gen
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
+import Safe (at, headMay)
 
 convertIndex :: Eq a => SetSystem a -> SetSystem a -> Maybe Int -> Maybe Int
 convertIndex (SetSystem xs) ySystem (Just i) =
-  let x = head $ xs !! i
-   in labelFor ySystem x
+  let x = headMay $ xs `at` i
+   in x >>= labelFor ySystem
 convertIndex _ _ Nothing = Nothing
 
 prop_example47 :: Property
