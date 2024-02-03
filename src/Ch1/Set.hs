@@ -18,6 +18,7 @@ import Data.List
     partition,
     unionBy,
   )
+import Slist (slist)
 
 powerSet :: [a] -> [[a]]
 powerSet = filterM (const [False, True])
@@ -38,7 +39,8 @@ sameElementsBy :: (a -> a -> Bool) -> [a] -> [a] -> Bool
 sameElementsBy eq xs ys =
   let xs' = nubBy eq xs
       ys' = nubBy eq ys
-   in length xs' == length ys' && length xs' == length (intersectBy eq xs' ys')
+      safeLength = length . slist
+   in safeLength xs' == safeLength ys' && safeLength xs' == safeLength (intersectBy eq xs' ys')
 
 closureOp :: (a -> a -> Bool) -> [a] -> [[a]] -> [[a]]
 closureOp eq xs xss =

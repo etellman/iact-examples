@@ -24,8 +24,7 @@ prop_powerSet ::
 prop_powerSet combine assertion = property $ do
   -- set up
   xs <- forAll $ Gen.set (Range.constant 4 10) Gen.alpha
-  let xss = powerSet $ fmap CharPO $ toList xs
-
+  let xss = filter (not . null) $ powerSet $ CharPO <$> toList xs
   xss' <- forAll $ toList <$> Gen.subset (fromList xss)
 
   -- exercise
