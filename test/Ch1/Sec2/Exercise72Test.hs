@@ -31,7 +31,7 @@ prop_exercise72 = property $ do
   let phi (PartitionPO zss) = BoolPO $ samePartition zss c1 c2
 
   -- exercise and verify
-  p1 PO.<= p2 ==> (phi p1) PO.<= (phi p2)
+  p1 PO.<= p2 ==> phi p1 PO.<= phi p2
 
 tests :: TestTree
 tests = testProperty "Ch1.Sec2.Exercise72Test" prop_exercise72

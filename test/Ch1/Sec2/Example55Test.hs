@@ -9,8 +9,8 @@ import TestLib.Assertions
 prop_example55 :: Property
 prop_example55 = property $ do
   -- set up
-  x <- forAll $ Gen.bool
-  y <- forAll $ Gen.bool
+  x <- forAll Gen.bool
+  y <- forAll Gen.bool
   let f False = 17 :: Int
       f True = 24
 

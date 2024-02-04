@@ -15,7 +15,7 @@ prop_identity gen hom = property $ do
   x <- forAll gen
 
   -- exercise and verify
-  H.assert $ (hom x x) PO.<= mempty
+  H.assert $ hom x x PO.<= mempty
 
 prop_mplus ::
   (Show p, Monoid q, Preorder q) =>
@@ -29,7 +29,7 @@ prop_mplus gen hom = property $ do
   z <- forAll gen
 
   -- exercise and verify
-  H.assert $ ((hom x y) <> (hom y z)) PO.<= (hom x z)
+  H.assert $ (hom x y <> hom y z) PO.<= hom x z
 
 tests ::
   (Show p, Monoid q, Preorder q) =>

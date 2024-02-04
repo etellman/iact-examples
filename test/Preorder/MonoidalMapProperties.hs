@@ -36,7 +36,7 @@ monoidalMap ::
 monoidalMap name gen f cmp =
   testGroup
     name
-    [ testCase "identity" $ assertBool "identity" $ (f mempty) `cmp` mempty,
+    [ testCase "identity" $ assertBool "identity" $ f mempty `cmp` mempty,
       testProperty "monoid" $ prop_monoid gen f cmp
     ]
 

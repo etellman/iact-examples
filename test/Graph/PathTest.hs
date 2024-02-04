@@ -57,7 +57,7 @@ prop_transitive = property $ do
 
   cover 10 "indirect route" $ v1v2 && v2v3
   cover 5 "direct and no indirect route" $ (not v1v2 || not v2v3) && v1v3
-  cover 5 "no route" $ not $ v1v3
+  cover 5 "no route" $ not v1v3
 
   -- exercise and verify
   v1v2 && v2v3 ==> v1v3
@@ -74,7 +74,7 @@ prop_cost = property $ do
   let cost = costPath toCost arrowsFrom v1 v2
 
   -- verify
-  case (minPath arrowsFrom v1 v2) of
+  case minPath arrowsFrom v1 v2 of
     Just w -> cost === toCost w
     Nothing -> cost === Infinity
 
