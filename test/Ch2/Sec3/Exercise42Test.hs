@@ -15,7 +15,9 @@ genCity :: Gen City
 genCity = Gen.element cities
 
 anyOf :: [Transports] -> Maybe Transports
-anyOf = Just . Transports . (foldr (\(Transports ts) total -> union ts total) [])
+anyOf =
+  let op (Transports ts) = union ts
+   in Just . Transports . foldr op []
 
 transportsBetween :: City -> City -> Transports
 transportsBetween c1 c2 =
@@ -43,7 +45,7 @@ prop_path = property $ do
 
   -- verify
   guard $ (not . null) ts
-  t <- forAll $ Gen.element $ ts
+  t <- forAll $ Gen.element ts
   H.assert $ isPath (routeVia t) c1 c2
 
 tests :: TestTree

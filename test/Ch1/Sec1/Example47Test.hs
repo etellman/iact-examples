@@ -4,16 +4,13 @@ import Ch1.SetSystem
 import qualified Data.PartialOrd as PO
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Safe (atMay, headMay)
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
-import Safe (at, headMay)
 
 convertIndex :: Eq a => SetSystem a -> SetSystem a -> Maybe Int -> Maybe Int
-convertIndex (SetSystem xs) ySystem (Just i) =
-  let x = headMay $ xs `at` i
-   in x >>= labelFor ySystem
-convertIndex _ _ Nothing = Nothing
+convertIndex (SetSystem xs) ySystem i = i >>= atMay xs >>= headMay >>= labelFor ySystem
 
 prop_example47 :: Property
 prop_example47 = property $ do
