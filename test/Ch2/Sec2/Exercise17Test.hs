@@ -17,5 +17,4 @@ tests =
     "Ch2.Sec2.Exercise17Test"
     [ monoid "monoid" genNatural,
       testProperty "symmetry" $ prop_symmetry genNatural
-      -- not monotonic
     ]

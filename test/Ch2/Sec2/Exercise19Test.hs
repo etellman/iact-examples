@@ -9,7 +9,7 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 genCharSet :: Gen CharSetMonoid
-genCharSet = CharSetMonoid <$> toList <$> Gen.subset (fromList chars)
+genCharSet = CharSetMonoid . toList <$> Gen.subset (fromList chars)
 
 tests :: TestTree
 tests =

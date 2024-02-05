@@ -14,7 +14,7 @@ class Preorder a where
 (=~) :: Preorder a => a -> a -> Bool
 x =~ y = x Preorder.Preorder.<= y && y Preorder.Preorder.<= x
 
-infix 6 =~
+infix 5 =~
 
 -- | connections between pairs of elements
 connections :: Preorder a => [a] -> [(a, a)]

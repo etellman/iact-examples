@@ -11,12 +11,10 @@ import Test.Tasty.Hedgehog
 
 genXs :: Gen (Set IntPO)
 genXs =
-  fromList
-    <$> fmap IntPO
-    <$> toList
+  fromList . fmap IntPO . toList
     <$> Gen.set
       (Range.linear 1 1000)
-      (Gen.int $ (Range.linearBounded :: Range Int))
+      (Gen.int (Range.linearBounded :: Range Int))
 
 prop_meet :: Property
 prop_meet = property $ do

@@ -24,4 +24,4 @@ prop_exercise10 = property $ do
   p1 && p2 && p3 ==> p4
 
 tests :: TestTree
-tests = testProperty "Ch2.Sec2.Exercise10Test" $ prop_exercise10
+tests = testProperty "Ch2.Sec2.Exercise10Test" prop_exercise10

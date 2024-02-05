@@ -8,8 +8,8 @@ import Test.Tasty
 testCostClosed :: String -> C.Cost -> TestTree
 testCostClosed name c =
   let (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
-      join xs =  Just $ foldr max (C.CostPreorder C.Infinity) xs
-   in testClosed name genCostPreorder (-*) join (C.CostPreorder c)
+      monoidJoin xs = Just $ foldr max (C.CostPreorder C.Infinity) xs
+   in testClosed name genCostPreorder (-*) monoidJoin (C.CostPreorder c)
 
 tests :: TestTree
 tests =

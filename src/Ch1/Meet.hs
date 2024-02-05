@@ -7,8 +7,8 @@ where
 import Preorder.Preorder as PO
 
 meet' :: (a -> a -> Bool) -> [a] -> [a] -> Maybe a
-meet' f xs xs' =
-  let lessThanAll = filter (\x -> all (f x) xs') xs
+meet' f xs as =
+  let lessThanAll = filter (\x -> all (f x) as) xs
    in case lessThanAll of
         [] -> Nothing
         (y : ys) -> Just $ foldr (\x a -> if f a x then x else a) y ys

@@ -20,7 +20,7 @@ tests =
         joinTest True True True,
       testCase "partial order" $ do
         let ordTest x y expected =
-              (BooleanSystem x) PO.<= (BooleanSystem y) @=? expected
+              BooleanSystem x PO.<= BooleanSystem y @=? expected
 
         ordTest False False True
         ordTest False True True
