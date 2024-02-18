@@ -27,6 +27,7 @@ dependencies:
   - type-level-natural-number >= 2.0
   - slist >= 0.2.1.0
   - safe >= 0.3.14
+  - monoid-subclasses >= 1.2.4.1
 
 ghc-options:
   - -Wall
