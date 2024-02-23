@@ -2,8 +2,6 @@ module Ch3.Sec3.Exercise53
   ( verticesG,
     VertexG (..),
     arrowsG,
-    verticesH,
-    arrowsH,
     alphaVertex,
     alphaArrow,
   )
@@ -35,12 +33,6 @@ instance Arrow ArrowH VertexH IntWeight where
   source (ArrowH _ (v, _)) = v
   target (ArrowH _ (_, v)) = v
   weight = const unitWeight
-
-verticesH :: [VertexH]
-verticesH = [V4, V5]
-
-arrowsH :: [ArrowH]
-arrowsH = [ArrowH "c" (V4, V5), ArrowH "d" (V4, V5), ArrowH "e" (V5, V5)]
 
 alphaVertex :: VertexG -> VertexH
 alphaVertex V1 = V4
