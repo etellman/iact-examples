@@ -15,7 +15,7 @@ prop_partB = property $ do
   let s _ = 0 :: Int
 
   -- exercise and verify
-  s (s x) === s x
+  (s . s) x === s x
 
 prop_partD :: Property
 prop_partD = property $ do
@@ -24,7 +24,7 @@ prop_partD = property $ do
   let s n = foldr min n (factors n)
 
   -- exercise and verify
-  s (s x) === s x
+  (s . s) x === s x
 
 tests :: TestTree
 tests =
