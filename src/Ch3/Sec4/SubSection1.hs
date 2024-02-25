@@ -50,3 +50,4 @@ fArrow :: ArrowGR -> ArrowDDS
 fArrow (ArrowGR "target" (GrArrow, GrVertex)) = ArrowDDS "next" (State, State)
 fArrow (ArrowGR "source" (GrArrow, GrVertex)) = ArrowDDS "id" (State, State)
 fArrow _ = error "unexpected arrow"
+
