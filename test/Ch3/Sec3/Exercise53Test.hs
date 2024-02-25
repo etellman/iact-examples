@@ -27,6 +27,6 @@ tests :: TestTree
 tests =
   testGroup
     "Ch3.Sec3.Exercise53Test"
-    [ testProperty "vertices" prop_source,
-      testProperty "vertices" prop_target
+    [ testProperty "source" prop_source,
+      testProperty "target" prop_target
     ]
