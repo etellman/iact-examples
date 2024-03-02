@@ -28,6 +28,8 @@ dependencies:
   - slist >= 0.2.1.0
   - safe >= 0.3.14
   - monoid-subclasses >= 1.2.4.1
+  - adjunctions >= 4.4.2
+  - distributive >= 0.6.2.1
 
 ghc-options:
   - -Wall
