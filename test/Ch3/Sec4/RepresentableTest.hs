@@ -38,10 +38,10 @@ prop_tabulateB = property $ do
   x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   -- exercise
-  let tx = tabulate B :: Int -> B Int
+  let tx = tabulate D :: Int -> D Int
 
   -- verify
-  tx x === B x
+  tx x === D x
 
 prop_indexB :: Property
 prop_indexB = property $ do
@@ -49,10 +49,10 @@ prop_indexB = property $ do
   x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   -- exercise
-  let ix = index B :: Int -> B Int
+  let ix = index D :: Int -> D Int
 
   -- verify
-  ix x === B x
+  ix x === D x
 
 prop_tabulatePair :: Property
 prop_tabulatePair = property $ do
@@ -60,7 +60,7 @@ prop_tabulatePair = property $ do
   c <- forAll Gen.alpha
 
   -- exercise
-  let tx = (tabulate ord) :: Char -> Int
+  let tx = tabulate ord :: Char -> Int
 
   -- verify
   index tx c === ord c

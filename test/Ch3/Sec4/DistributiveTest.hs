@@ -1,7 +1,7 @@
 module Ch3.Sec4.DistributiveTest (tests) where
 
 import Ch3.Sec4.AdjunctionExample
-import qualified Data.Distributive as D
+import qualified Data.Distributive as DI
 import Hedgehog as H
 import Hedgehog.Gen as Gen
 import Hedgehog.Range as Range
@@ -14,23 +14,23 @@ prop_distributeMaybe = property $ do
   x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   -- exercise
-  let distributed = D.distribute $ Just (B x)
+  let distributed = DI.distribute $ Just (D x)
 
   -- verify
-  distributed === B (Just x)
+  distributed === D (Just x)
 
 prop_collectMaybe :: Property
 prop_collectMaybe = property $ do
   -- set up
   x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
   n <- forAll $ Gen.int (Range.constantBounded :: Range Int)
-  let f = B . (n *)
+  let f = D . (n *)
 
   -- exercise
-  let collected = D.collect f (Just x)
+  let collected = DI.collect f (Just x)
 
   -- verify
-  collected === B (Just $ n * x)
+  collected === D (Just $ n * x)
 
 prop_distributeList :: Property
 prop_distributeList = property $ do
@@ -38,23 +38,22 @@ prop_distributeList = property $ do
   xs <- forAll $ Gen.list (Range.constant 1 20) (Gen.int (Range.constantBounded :: Range Int))
 
   -- exercise
-  let distributed = D.distribute $ fmap B xs
+  let distributed = DI.distribute $ fmap D xs
 
   -- verify
-  distributed === B xs
+  distributed === D xs
 
 prop_collectList :: Property
 prop_collectList = property $ do
   -- set up
   xs <- forAll $ Gen.list (Range.constant 1 20) (Gen.int (Range.constantBounded :: Range Int))
-
   n <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   -- exercise
-  let collected = D.collect (B . (n *)) xs
+  let collected = DI.collect (D . (n *)) xs
 
   -- verify
-  collected === B (fmap (n *) xs)
+  collected === D (fmap (n *) xs)
 
 tests :: TestTree
 tests =
