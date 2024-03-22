@@ -1,4 +1,4 @@
-module Ch3.Sec4.AdjunctionTest (tests) where
+module Ch3.Sec4.AdjunctionExampleTest (tests) where
 
 import Ch3.Sec4.AdjunctionExample
 import Data.Functor.Adjunction
@@ -59,15 +59,9 @@ prop_rightAdjunct = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch3.Sec4.AdjunctionTest"
-    [ testGroup
-        "unit"
-        [ testProperty "unit" prop_unit
-        ],
-      testGroup
-        "counit"
-        [ testProperty "counit" prop_counit
-        ],
+    "Ch3.Sec4.AdjunctionExampleTest"
+    [ testProperty "unit" prop_unit,
+      testProperty "counit" prop_counit,
       testProperty "left adjunct" prop_leftAdjunct,
       testProperty "right adjunct" prop_rightAdjunct
     ]
