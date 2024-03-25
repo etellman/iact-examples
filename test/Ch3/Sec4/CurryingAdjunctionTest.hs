@@ -15,7 +15,8 @@ prop_leftAdjunct = property $ do
   let f (a, b) = a - b
 
   -- exercise and verify
-  leftAdjunct f x y === f (y, x)
+  let la = leftAdjunct :: ((Int, Int) -> Int) -> (Int -> Int -> Int)
+  la f x y === f (y, x)
 
 prop_rightAdjunct :: Property
 prop_rightAdjunct = property $ do
@@ -25,27 +26,36 @@ prop_rightAdjunct = property $ do
   let f a b = a - b
 
   -- exercise and verify
-  rightAdjunct f (x, y) === f y x
+  let ra = rightAdjunct :: (Int -> Int -> Int) -> ((Int, Int) -> Int)
+  ra f (x, y) === f y x
 
+-- from Category Theory for Programmers
+-- unit is a family of morphisms in the right category (D)
+-- unit_d, captures the first argument
 prop_unit :: Property
 prop_unit = property $ do
   -- set up
+  d <- forAll $ Gen.int (Range.constantBounded :: Range Int)
   x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
-  y <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   -- exercise and verify
-  unit y x === (x, y)
+  let ud = unit d :: Int -> (Int, Int)
+  ud x === (x, d)
 
+  -- from Category Theory for Programmers
+  -- counit is a family of morphisms in the left category (C)
+  -- counit_c captures applying f to c
 prop_counit :: Property
 prop_counit = property $ do
   -- set up
-  x <- forAll $ Gen.int (Range.constantBounded :: Range Int)
+  c <- forAll $ Gen.int (Range.constantBounded :: Range Int)
 
   m <- forAll $ Gen.int (Range.constantBounded :: Range Int)
   let f = (+ m) :: Int -> Int
 
   -- exercise and verify
-  counit (x, f) === f x
+  let cu = counit :: (Int, Int -> Int) -> Int
+  cu (c, f) === f c
 
 tests :: TestTree
 tests =
