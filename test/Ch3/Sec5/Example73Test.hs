@@ -20,7 +20,7 @@ prop_product = property $ do
   -- verify
   H.assert $ z <= x -- map from z to x
   H.assert $ z <= y -- map from z to y
-  z' <= x && z' <= y ==> z' <= z -- if map from z' to both x and y then map from z' to z
+  z' <= x && z' <= y ==> z' <= z -- if map from z' to x and z' to y then map from z' to z
 
 tests :: TestTree
 tests =
