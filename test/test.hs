@@ -1,6 +1,7 @@
 import Ch1.ChapterTest
 import Ch2.ChapterTest
 import Ch3.ChapterTest
+import Ch4.ChapterTest
 import Graph.GraphTest
 import Lib.LibTest
 import Monoid.MonoidTest
@@ -18,6 +19,7 @@ main = do
           Preorder.PreorderTest.tests,
           Ch1.ChapterTest.chapterTests,
           Ch2.ChapterTest.chapterTests,
-          Ch3.ChapterTest.chapterTests
+          Ch3.ChapterTest.chapterTests,
+          Ch4.ChapterTest.chapterTests
         ]
     )
