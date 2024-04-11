@@ -26,6 +26,7 @@ data XY = XY !X !Y deriving (Eq, Show)
 instance PO.Preorder XY where
   XY x1 y1 <= XY x2 y2 = x2 PO.<= x1 && y1 PO.<= y2
 
+-- The aunt needs to read book in order to explain any of this
 phi :: XY -> Bool
 phi (XY _ Book) = True
 phi _ = False
