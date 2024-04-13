@@ -1,11 +1,11 @@
 module Ch2.Sec3.Example31Test (tests) where
 
-import Monoid.BooleanMonoids (BooleanAnd (..))
 import Ch2.Sec3.Example31
-import qualified Ch2.Sec3.VCategoryProperties as VC
+import Graph.Path (isPath)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Graph.Path (isPath)
+import Monoid.BooleanMonoids (BooleanAnd (..))
+import qualified Properties.VCategoryProperties as VC
 import Test.Tasty
 
 genVertex :: Gen Vertex
@@ -16,7 +16,7 @@ toBooleanAnd x y = BooleanAnd $ isPath arrowsFrom x y
 
 tests :: TestTree
 tests =
-  testGroup
+  VC.vCategoryTests
     "Ch2.Sec3.Example31Test"
-    [ VC.tests genVertex toBooleanAnd
-    ]
+    genVertex
+    toBooleanAnd

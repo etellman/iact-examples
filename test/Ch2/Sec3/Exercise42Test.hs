@@ -1,7 +1,7 @@
 module Ch2.Sec3.Exercise42Test (tests) where
 
 import Ch2.Sec3.Exercise42
-import qualified Ch2.Sec3.VCategoryProperties as VC
+import Properties.VCategoryProperties (vCategoryTests)
 import Control.Monad (guard)
 import Data.List (union)
 import Graph.Arrow
@@ -52,6 +52,6 @@ tests :: TestTree
 tests =
   testGroup
     "Ch2.Sec3.Exercise42Test"
-    [ VC.tests genCity transportsBetween,
+    [ vCategoryTests "V-Category" genCity transportsBetween,
       testProperty "path" prop_path
     ]

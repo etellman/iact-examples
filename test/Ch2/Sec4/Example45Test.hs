@@ -1,7 +1,7 @@
 module Ch2.Sec4.Example45Test (tests) where
 
 import Preorder.MonoidalMapProperties
-import qualified Ch2.Sec3.VCategoryProperties as VCP
+import Properties.VCategoryProperties (vCategoryTests)
 import Ch2.Sec4.Example45
 import Gen.Cost (genCostPreorder)
 import Hedgehog as H
@@ -24,5 +24,5 @@ tests =
     "Ch2.Sec4.Example45Test"
     [ testGroup "f montone map" [strictMonotoneMap genCostPreorder f],
       testProperty "cf" prop_cf,
-      VCP.tests genCostPreorder cf
+      vCategoryTests "V-Category" genCostPreorder cf
     ]
