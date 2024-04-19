@@ -1,7 +1,7 @@
 module Ch2.Sec3.Example37Test (tests) where
 
 import Lib.MetricSpace
-import Lib.MetricSpaceProperties
+import Properties.MetricSpaceProperties
 import Test.Tasty
 
 newtype Ex37 = Ex37 Int deriving (Eq, Show)

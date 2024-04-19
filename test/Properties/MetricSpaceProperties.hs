@@ -1,4 +1,4 @@
-module Lib.MetricSpaceProperties (metricSpace) where
+module Properties.MetricSpaceProperties (metricSpace) where
 
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
