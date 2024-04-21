@@ -7,16 +7,23 @@ where
 
 import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (BooleanAnd (..))
+import Preorder.Preorder as PO
 
 newtype X = X Int deriving (Show, Eq, Ord)
 
+instance Preorder X where
+  X x <= X x' = x Prelude.<= x'
+
 instance VCategory X BooleanAnd where
-  hom (X a) (X b) = BooleanAnd $ a <= b
+  hom x x' = BooleanAnd $ x PO.<= x'
 
 newtype Y = Y Int deriving (Show, Eq, Ord)
 
+instance Preorder Y where
+  Y y <= Y y' = y Prelude.<= y'
+
 instance VCategory Y BooleanAnd where
-  hom (Y a) (Y b) = BooleanAnd $ a <= b
+  hom y y' = BooleanAnd $ y PO.<= y'
 
 data XY = XY !X !Y deriving (Show, Eq, Ord)
 

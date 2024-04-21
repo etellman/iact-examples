@@ -1,8 +1,6 @@
 module Properties.VCategoryProperties (vCategoryTests) where
 
 import Hedgehog as H
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
 import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
