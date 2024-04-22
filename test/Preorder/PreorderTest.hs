@@ -2,11 +2,12 @@ module Preorder.PreorderTest (tests) where
 
 import Data.Containers.ListUtils (nubOrd)
 import Data.List (sort)
+import Data.PartialOrd as PO
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder as PO
+import Preorder.Preorder (connections)
 import Preorder.Preorders (IntPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
@@ -18,9 +19,9 @@ prop_isomorphic = property $ do
   x <- forAll $ Gen.int (Range.linear 0 7)
   y <- forAll $ Gen.int (Range.linear 0 7)
 
-  cover 10 "is isomorphic" $ x == y
+  cover 10 "is isomorphic" $ x Prelude.== y
 
-  (IntPO x =~ IntPO y) === (x == y)
+  (IntPO x PO.== IntPO y) === (x Prelude.== y)
 
 prop_connections :: Property
 prop_connections = property $ do
@@ -41,7 +42,7 @@ prop_connections = property $ do
 
   m <- forAll $ Gen.element xs
   n <- forAll $ Gen.element xs
-  m PO.<= n ==> (m, n) `elem` pairs
+  m PO.<= n ==> (m, n) `Prelude.elem` pairs
 
   (sort . nubOrd $ fmap fst pairs) === sort xs
   (sort . nubOrd $ fmap snd pairs) === sort xs

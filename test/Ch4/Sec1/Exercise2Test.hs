@@ -3,7 +3,7 @@ module Ch4.Sec1.Exercise2Test (tests) where
 import Ch4.Sec1.Exercise2
 import Hedgehog as H
 import Hedgehog.Gen as Gen
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions ((==>))

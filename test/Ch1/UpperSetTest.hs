@@ -4,7 +4,7 @@ import Ch1.Set (powerSet)
 import Ch1.UpperSet
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Preorder.Preorders (BoolPO (..), IntPO (..))
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -13,10 +13,10 @@ import TestLib.Assertions
 
 newtype DiscreteIntPO = DiscreteIntPO Int deriving (Show, Eq, Ord)
 
-instance Preorder DiscreteIntPO where
-  (<=) = (==)
+instance PartialOrd DiscreteIntPO where
+  (<=) = (Prelude.==)
 
-prop_upperSets :: (Preorder a, Show a, Eq a) => [a] -> [[a]] -> Property
+prop_upperSets :: (PartialOrd a, Show a, Eq a) => [a] -> [[a]] -> Property
 prop_upperSets elements xss = property $ do
   -- set up
   set <- forAll $ Gen.element $ filter (not . null) xss
@@ -25,7 +25,7 @@ prop_upperSets elements xss = property $ do
   y <- forAll $ Gen.element set
 
   -- exercise and verify
-  y PO.<= x ==> y `elem` set
+  y PO.<= x ==> y `Prelude.elem` set
 
 tests :: TestTree
 tests =

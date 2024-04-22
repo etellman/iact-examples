@@ -6,11 +6,12 @@ import Ch1.Set
 import Ch1.UpperSet
 import Data.Bifunctor (bimap)
 import Data.List (sort)
+import Data.PartialOrd as PO
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder as PO
+import Preorder.Preorder (connections)
 import Preorder.Preorders (CharPO (..))
 import Test.Tasty
 import Test.Tasty.HUnit

@@ -5,7 +5,7 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Preorder.Preorders (BoolPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
@@ -13,7 +13,7 @@ import TestLib.Assertions
 
 newtype PartitionPO = PartitionPO [[Char]] deriving (Show, Eq, Ord)
 
-instance Preorder PartitionPO where
+instance PartialOrd PartitionPO where
   (PartitionPO xss) <= (PartitionPO yss) = isFiner xss yss
 
 prop_exercise72 :: Property

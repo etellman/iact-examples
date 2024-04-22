@@ -6,12 +6,12 @@ module Monoid.NaturalMonoids
   )
 where
 
-import Preorder.Preorder
+import Data.PartialOrd
 
 -- | +/0
 newtype NaturalPlus = NaturalPlus Int deriving (Show, Eq, Ord)
 
-instance Preorder NaturalPlus where
+instance PartialOrd NaturalPlus where
   (<=) = (Prelude.<=)
 
 instance Monoid NaturalPlus where
@@ -23,7 +23,7 @@ instance Semigroup NaturalPlus where
 -- | */1
 newtype NaturalTimes = NaturalTimes Int deriving (Show, Eq, Ord)
 
-instance Preorder NaturalTimes where
+instance PartialOrd NaturalTimes where
   (<=) = (Prelude.<=)
 
 instance Monoid NaturalTimes where
@@ -35,8 +35,8 @@ instance Semigroup NaturalTimes where
 -- | */divides
 newtype NaturalDivides = NaturalDivides Int deriving (Show, Eq, Ord)
 
-instance Preorder NaturalDivides where
-  (NaturalDivides m) <= (NaturalDivides n) = m == 0 || n `mod` m == 0
+instance PartialOrd NaturalDivides where
+  (NaturalDivides m) <= (NaturalDivides n) = m Prelude.== 0 || n `mod` m Prelude.== 0
 
 instance Monoid NaturalDivides where
   mempty = NaturalDivides 1
@@ -47,8 +47,8 @@ instance Semigroup NaturalDivides where
 -- | +/divides
 newtype NaturalPlusDivides = NaturalPlusDivides Int deriving (Show, Eq, Ord)
 
-instance Preorder NaturalPlusDivides where
-  (NaturalPlusDivides m) <= (NaturalPlusDivides n) = m == 0 || n `mod` m == 0
+instance PartialOrd NaturalPlusDivides where
+  (NaturalPlusDivides m) <= (NaturalPlusDivides n) = m Prelude.== 0 || n `mod` m Prelude.== 0
 
 instance Monoid NaturalPlusDivides where
   mempty = NaturalPlusDivides 0

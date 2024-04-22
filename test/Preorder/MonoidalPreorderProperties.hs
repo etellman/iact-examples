@@ -6,12 +6,12 @@ module Preorder.MonoidalPreorderProperties
 where
 
 import Hedgehog as H
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
-prop_monotonicity :: (Show a, Monoid a, Preorder a) => Gen a -> Property
+prop_monotonicity :: (Show a, Monoid a, PartialOrd a) => Gen a -> Property
 prop_monotonicity gen = property $ do
   -- set up
   x1 <- forAll gen

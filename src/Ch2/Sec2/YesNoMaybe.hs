@@ -5,13 +5,13 @@ module Ch2.Sec2.YesNoMaybe
   )
 where
 
-import Preorder.Preorder
+import Data.PartialOrd
 
 data YesNoMaybe = No | Maybe | Yes deriving (Eq, Ord, Show)
 
 newtype YnmMin = YnmMin YesNoMaybe deriving (Eq, Ord, Show)
 
-instance Preorder YnmMin where
+instance PartialOrd YnmMin where
   (<=) = (Prelude.<=)
 
 instance Monoid YnmMin where
@@ -22,7 +22,7 @@ instance Semigroup YnmMin where
 
 newtype YnmMax = YnmMax YesNoMaybe deriving (Eq, Ord, Show)
 
-instance Preorder YnmMax where
+instance PartialOrd YnmMax where
   (<=) = (Prelude.<=)
 
 instance Monoid YnmMax where

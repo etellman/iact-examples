@@ -2,19 +2,19 @@
 
 module Ch1.Sec3.Exercise85Test (tests) where
 
+import Data.PartialOrd
 import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder (Preorder (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 newtype DividesPO = DividesPO Int deriving (Show, Eq, Ord)
 
-instance Preorder DividesPO where
-  (DividesPO m) <= (DividesPO n) = n `rem` m == 0
+instance PartialOrd DividesPO where
+  (DividesPO m) <= (DividesPO n) = n `rem` m Prelude.== 0
 
 prop_exercise85 ::
   (Int -> Int -> Int) ->
@@ -33,8 +33,8 @@ prop_exercise85 f verify = property $ do
 
   -- exercise
   let actual = case xs' of
-                 [] -> error "empty xs'"
-                 (y:ys) -> foldr f' y ys
+        [] -> error "empty xs'"
+        (y : ys) -> foldr f' y ys
 
   -- verify
   verify xs xs' actual

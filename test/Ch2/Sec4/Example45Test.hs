@@ -5,7 +5,7 @@ import Properties.VCategoryProperties (vCategoryTests)
 import Ch2.Sec4.Example45
 import Gen.Cost (genCostPreorder)
 import Hedgehog as H
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 

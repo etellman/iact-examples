@@ -12,7 +12,7 @@ where
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
 import Graph.Arrow
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 
 data City = V | W | X | Y | Z deriving (Eq, Show)
 
@@ -51,7 +51,7 @@ newtype Transports = Transports [Transport] deriving (Eq, Show)
 instance Ord Transports where
   (Transports xs) <= (Transports ys) = xs `isSubsetOf` ys
 
-instance Preorder Transports where
+instance PartialOrd Transports where
   (<=) = (Prelude.<=)
 
 instance Monoid Transports where

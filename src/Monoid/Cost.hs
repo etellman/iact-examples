@@ -10,7 +10,7 @@ module Monoid.Cost
 where
 
 import Data.Eq.Approximate
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import TypeLevel.NaturalNumber
 
 type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
@@ -32,12 +32,12 @@ instance Semigroup Cost where
 
 newtype CostPreorder = CostPreorder Cost deriving (Show, Eq, Ord, Monoid, Semigroup)
 
-instance Preorder CostPreorder where
+instance PartialOrd CostPreorder where
   (<=) = (Prelude.>=)
 
 newtype CostOpPreorder = CostOpPreorder Cost deriving (Show, Eq, Ord, Monoid, Semigroup)
 
-instance Preorder CostOpPreorder where
+instance PartialOrd CostOpPreorder where
   (<=) = (Prelude.<=)
 
 -- | hom-element - see definition 2.57

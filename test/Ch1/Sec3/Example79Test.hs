@@ -1,6 +1,6 @@
 module Ch1.Sec3.Example79Test (tests) where
 
-import Preorder.Preorder (Preorder (..))
+import Data.PartialOrd
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Test.Tasty
@@ -9,14 +9,14 @@ import TestLib.Assertions
 
 data Ex79 = A | B | C | D deriving (Show, Eq, Ord)
 
-instance Preorder Ex79 where
+instance PartialOrd Ex79 where
   C <= A = True
   C <= B = True
   C <= D = True
   D <= A = True
   D <= B = True
   D <= C = True
-  x <= y = x == y
+  x <= y = x Prelude.== y
 
 prop_example79 :: Property
 prop_example79 = property $ do

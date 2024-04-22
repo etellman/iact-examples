@@ -1,12 +1,12 @@
 module Properties.VCategoryProperties (vCategoryTests) where
 
 import Hedgehog as H
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
 prop_identity ::
-  (Show p, Preorder q, Monoid q) =>
+  (Show p, PartialOrd q, Monoid q) =>
   Gen p ->
   -- | hom
   (p -> p -> q) ->
@@ -19,7 +19,7 @@ prop_identity gen h = property $ do
   H.assert $ h x x PO.<= mempty
 
 prop_composition ::
-  (Show p, Monoid q, Preorder q) =>
+  (Show p, Monoid q, PartialOrd q) =>
   Gen p ->
   -- | hom
   (p -> p -> q) ->
@@ -34,7 +34,7 @@ prop_composition gen h = property $ do
   H.assert $ (h x y <> h y z) PO.<= h x z
 
 vCategoryTests ::
-  (Show p, Monoid q, Preorder q) =>
+  (Show p, Monoid q, PartialOrd q) =>
   String ->
   Gen p ->
   -- | hom

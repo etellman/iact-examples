@@ -7,32 +7,32 @@ import Data.Set (toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder
+import Data.PartialOrd
 import Test.Tasty
 import Test.Tasty.Hedgehog
 import TestLib.Assertions
 
 newtype P = P Int deriving (Show, Eq, Ord)
 
-instance Preorder P where
+instance PartialOrd P where
   (<=) = (Prelude.<=)
 
 newtype Q = Q Int deriving (Show, Eq, Ord)
 
-instance Preorder Q where
+instance PartialOrd Q where
   (<=) = (Prelude.<=)
 
 fstar1 :: (P -> Q) -> [P] -> [Q] -> [P]
 fstar1 f ps qs = do
   q <- qs
   p <- ps
-  guard $ f p == q
+  guard $ f p Prelude.== q
   return p
 
 fstar2 :: (P -> Q) -> [P] -> [Q] -> [P]
 fstar2 f ps qs = do
   p <- ps
-  let u = flip elem qs
+  let u = flip Prelude.elem qs
   guard $ (u . f) p
   return p
 

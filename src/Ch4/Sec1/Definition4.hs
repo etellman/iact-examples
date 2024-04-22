@@ -7,11 +7,11 @@ where
 
 import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (BooleanAnd (..))
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 
 newtype X = X Int deriving (Show, Eq, Ord)
 
-instance Preorder X where
+instance PartialOrd X where
   X x <= X x' = x Prelude.<= x'
 
 instance VCategory X BooleanAnd where
@@ -19,7 +19,7 @@ instance VCategory X BooleanAnd where
 
 newtype Y = Y Int deriving (Show, Eq, Ord)
 
-instance Preorder Y where
+instance PartialOrd Y where
   Y y <= Y y' = y Prelude.<= y'
 
 instance VCategory Y BooleanAnd where

@@ -7,7 +7,7 @@ module Preorder.MonoidalMapProperties
 where
 
 import Hedgehog as H
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.Hedgehog
@@ -41,14 +41,14 @@ monoidalMap name gen f cmp =
     ]
 
 laxMonotoneMap ::
-  (Show p, Monoid p, Monoid q, Preorder q) =>
+  (Show p, Monoid p, Monoid q, PartialOrd q) =>
   Gen p ->
   (p -> q) ->
   TestTree
 laxMonotoneMap = namedLaxMonotoneMap "lax"
 
 namedLaxMonotoneMap ::
-  (Show p, Monoid p, Monoid q, Preorder q) =>
+  (Show p, Monoid p, Monoid q, PartialOrd q) =>
   String ->
   Gen p ->
   (p -> q) ->
@@ -56,15 +56,15 @@ namedLaxMonotoneMap ::
 namedLaxMonotoneMap name gen f = monoidalMap name gen f (PO.<=)
 
 strongMonotoneMap ::
-  (Show p, Monoid p, Monoid q, Preorder q) =>
+  (Show p, Monoid p, Monoid q, PartialOrd q) =>
   Gen p ->
   (p -> q) ->
   TestTree
-strongMonotoneMap gen f = monoidalMap "strong" gen f (=~)
+strongMonotoneMap gen f = monoidalMap "strong" gen f (PO.==)
 
 strictMonotoneMap ::
   (Show p, Monoid p, Monoid q, Eq q) =>
   Gen p ->
   (p -> q) ->
   TestTree
-strictMonotoneMap gen f = monoidalMap "strict" gen f (==)
+strictMonotoneMap gen f = monoidalMap "strict" gen f (Prelude.==)

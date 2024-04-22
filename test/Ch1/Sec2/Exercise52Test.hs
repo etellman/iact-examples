@@ -3,7 +3,7 @@ module Ch1.Sec2.Exercise52Test (tests) where
 import Ch1.Set (cartesianProduct)
 import Ch1.UpperSet
 import Data.List (sort)
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.HUnit
 
@@ -11,13 +11,13 @@ data Ex52 = A | B | C deriving (Eq, Show, Ord)
 
 newtype ProductPO = ProductPO (Ex52, Int) deriving (Eq, Show, Ord)
 
-instance Preorder ProductPO where
+instance PartialOrd ProductPO where
   (ProductPO (a, b)) <= (ProductPO (c, d)) = a Prelude.<= c && b Prelude.<= d
 
-instance Preorder Ex52 where
+instance PartialOrd Ex52 where
   A <= C = True
   A <= B = True
-  x <= y = x == y
+  x <= y = x Prelude.== y
 
 tests :: TestTree
 tests = testCase "Ch1.Sec2.Exercise52Test" $ do

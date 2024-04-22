@@ -6,12 +6,12 @@ module Monoid.RealMonoids
 where
 
 import Lib.ApproximateDouble
-import Preorder.Preorder
+import Data.PartialOrd
 
 -- | +/1
 newtype RealPlus = RealPlus ApproximateDouble deriving (Show, Eq, Ord)
 
-instance Preorder RealPlus where
+instance PartialOrd RealPlus where
   (<=) = (Prelude.<=)
 
 instance Monoid RealPlus where
@@ -23,7 +23,7 @@ instance Semigroup RealPlus where
 -- | */0
 newtype RealTimes = RealTimes ApproximateDouble deriving (Show, Eq, Ord)
 
-instance Preorder RealTimes where
+instance PartialOrd RealTimes where
   (<=) = (Prelude.<=)
 
 instance Monoid RealTimes where
@@ -35,8 +35,8 @@ instance Semigroup RealTimes where
 -- | discrete preorder
 newtype RealDiscrete = RealDiscrete ApproximateDouble deriving (Show, Eq, Ord)
 
-instance Preorder RealDiscrete where
-  (<=) = (==)
+instance PartialOrd RealDiscrete where
+  (<=) = (Prelude.==)
 
 instance Monoid RealDiscrete where
   mempty = RealDiscrete 0

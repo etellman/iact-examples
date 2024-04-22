@@ -1,27 +1,27 @@
 module Preorder.MonoidalClosedProperties (testClosed) where
 
 import Data.Containers.ListUtils (nubOrd)
+import Data.PartialOrd as PO
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Preorder.MonoidalMapProperties
-import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
 -- | Determines whether the two ways of finding the join are isomporphic
 joinMatches ::
-  (Monoid m, PO.Preorder m, MonadTest a) =>
+  (Monoid m, PO.PartialOrd m, MonadTest a) =>
   m ->
   Maybe m ->
   m ->
   a ()
 joinMatches v j2 j1 =
-  let checkJoin = assert . ((v <> j1) =~)
+  let checkJoin = assert . ((v <> j1) PO.==)
    in maybe failure checkJoin j2
 
 prop64b ::
-  (Monoid m, Ord m, Show m, PO.Preorder m) =>
+  (Monoid m, Ord m, Show m, PO.PartialOrd m) =>
   Gen m ->
   ([m] -> Maybe m) ->
   Property
@@ -38,7 +38,7 @@ prop64b genElement preorderJoin = property $ do
   maybe failure (joinMatches v j2) j1
 
 prop64c ::
-  (Monoid m, Show m, PO.Preorder m) =>
+  (Monoid m, Show m, PO.PartialOrd m) =>
   Gen m ->
   (m -> m -> m) ->
   Property
@@ -51,7 +51,7 @@ prop64c gen (-*) = property $ do
   H.assert $ (v <> (v -* w)) PO.<= w
 
 prop64d ::
-  (Monoid m, Show m, PO.Preorder m) =>
+  (Monoid m, Show m, PO.PartialOrd m) =>
   Gen m ->
   (m -> m -> m) ->
   Property
@@ -60,10 +60,10 @@ prop64d gen (-*) = property $ do
   v <- forAll gen
 
   -- exercise and verify
-  H.assert $ v PO.=~ (mempty -* v)
+  H.assert $ v PO.== (mempty -* v)
 
 prop64e ::
-  (Monoid m, Show m, PO.Preorder m) =>
+  (Monoid m, Show m, PO.PartialOrd m) =>
   Gen m ->
   (m -> m -> m) ->
   Property
@@ -77,7 +77,7 @@ prop64e gen (-*) = property $ do
   H.assert $ ((u -* v) <> (v -* w)) PO.<= (u -* w)
 
 testClosed ::
-  (Monoid m, Ord m, Show m, PO.Preorder m) =>
+  (Monoid m, Ord m, Show m, PO.PartialOrd m) =>
   String ->
   Gen m ->
   (m -> m -> m) ->

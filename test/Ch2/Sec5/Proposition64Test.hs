@@ -7,7 +7,7 @@ import Hedgehog
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import qualified Monoid.Cost as C
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
@@ -43,7 +43,7 @@ partB = property $ do
   -- exercise and verify
   case (j1, j2) of
     (Nothing, Nothing) -> success
-    (Just j1', Just j2') -> assert $ v <> j1' =~ j2'
+    (Just j1', Just j2') -> assert $ (v <> j1') PO.== j2'
     (_, _) -> failure
 
 partC :: Property
@@ -61,7 +61,7 @@ partD = property $ do
   v <- forAll genCostPreorder
 
   -- exercise and verify
-  assert $ v =~ mempty <> v
+  assert $ v PO.== (mempty <> v)
 
 partE :: Property
 partE = property $ do

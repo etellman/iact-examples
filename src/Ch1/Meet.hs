@@ -4,7 +4,7 @@ module Ch1.Meet
   )
 where
 
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 
 meet' :: (a -> a -> Bool) -> [a] -> [a] -> Maybe a
 meet' f xs as =
@@ -15,7 +15,7 @@ meet' f xs as =
 
 -- | finds the meet of a set within a preorder
 meet ::
-  Preorder a =>
+  PartialOrd a =>
   -- | all the elements in the preorder
   [a] ->
   -- | the subset for the meet
@@ -26,7 +26,7 @@ meet = meet' (PO.<=)
 
 -- | finds the join of a set within a preorder
 join ::
-  Preorder a =>
+  PartialOrd a =>
   -- | all the elements in the preorder
   [a] ->
   -- | the subset for the join

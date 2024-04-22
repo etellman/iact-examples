@@ -4,11 +4,11 @@ module Ch1.MonotoneMap
   )
 where
 
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 
 -- from exercise 61
-arrow :: Preorder a => a -> [a] -> [a]
+arrow :: PartialOrd a => a -> [a] -> [a]
 arrow p = filter (p PO.<=)
 
-arrowMonotoneMap :: Preorder a => [a] -> [[a]]
+arrowMonotoneMap :: PartialOrd a => [a] -> [[a]]
 arrowMonotoneMap xs = fmap (`arrow` xs) xs

@@ -1,25 +1,12 @@
-module Preorder.Preorder
-  ( Preorder (..),
-    (=~),
-    connections,
-  )
-where
+module Preorder.Preorder (connections) where
 
 import Control.Monad (guard)
-
-class Preorder a where
-  (<=) :: a -> a -> Bool
-
--- | determines whether elements are isomorphic
-(=~) :: Preorder a => a -> a -> Bool
-x =~ y = x Preorder.Preorder.<= y && y Preorder.Preorder.<= x
-
-infix 5 =~
+import Data.PartialOrd as PO
 
 -- | connections between pairs of elements
-connections :: Preorder a => [a] -> [(a, a)]
+connections :: PartialOrd a => [a] -> [(a, a)]
 connections xs = do
   x <- xs
   y <- xs
-  guard $ x Preorder.Preorder.<= y
+  guard $ x PO.<= y
   return (x, y)

@@ -6,7 +6,7 @@ import Data.Set (fromList, toList)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
-import Preorder.Preorder
+import Data.PartialOrd as PO
 import Preorder.Preorders (CharPO (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog
@@ -14,7 +14,7 @@ import TestLib.Assertions
 
 newtype CharSetPO = CharSetPO [CharPO] deriving (Show, Eq, Ord)
 
-instance Preorder CharSetPO where
+instance PartialOrd CharSetPO where
   (CharSetPO x) <= (CharSetPO y) = x `isSubsetOf` y
 
 prop_powerSet ::

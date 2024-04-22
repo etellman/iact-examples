@@ -4,12 +4,12 @@ module Monoid.BooleanMonoids
   )
 where
 
-import Preorder.Preorder as PO
+import Data.PartialOrd as PO
 
 -- and
 newtype BooleanAnd = BooleanAnd Bool deriving (Show, Eq, Ord)
 
-instance Preorder BooleanAnd where
+instance PartialOrd BooleanAnd where
   (<=) = (Prelude.<=)
 
 instance Monoid BooleanAnd where
@@ -21,7 +21,7 @@ instance Semigroup BooleanAnd where
 -- or
 newtype BooleanOr = BooleanOr Bool deriving (Show, Eq, Ord)
 
-instance Preorder BooleanOr where
+instance PartialOrd BooleanOr where
   (<=) = (Prelude.<=)
 
 instance Monoid BooleanOr where

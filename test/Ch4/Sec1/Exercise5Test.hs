@@ -1,12 +1,12 @@
 module Ch4.Sec1.Exercise5Test (tests) where
 
 import Ch4.Sec1.Definition4
+import Data.PartialOrd as PO
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (BooleanAnd (..))
-import Preorder.Preorder as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog (testProperty)
 
