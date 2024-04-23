@@ -1,12 +1,13 @@
 module Ch4.Sec1.Exercise5Test (tests) where
 
 import Ch4.Sec1.Definition4
+import Data.Monoid (All (..))
 import Data.PartialOrd as PO
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Lib.VCategory (VCategory (..))
-import Monoid.BooleanMonoids (BooleanAnd (..))
+import Monoid.BooleanMonoids (PartialOrdAll (..))
 import Test.Tasty
 import Test.Tasty.Hedgehog (testProperty)
 
@@ -26,8 +27,9 @@ phi ::
   X ->
   -- | the actual Y available
   Y ->
-  BooleanAnd
-phi maxX minY x y = BooleanAnd (x PO.<= maxX) <> BooleanAnd (minY PO.<= y)
+  PartialOrdAll
+phi maxX minY x y =
+  PartialOrdAll (All (x PO.<= maxX)) <> PartialOrdAll (All (minY PO.<= y))
 
 prop_exercise5 :: Property
 prop_exercise5 = property $ do

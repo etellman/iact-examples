@@ -1,18 +1,19 @@
 module Ch2.Sec2.Exercise28Test (tests) where
 
-import Preorder.MonoidalMapProperties
+import Data.Monoid (All (All))
+import Gen.Cost
 import Monoid.BooleanMonoids
 import Monoid.Cost
-import Gen.Cost
+import Preorder.MonoidalMapProperties
 import Test.Tasty
 
-d :: CostPreorder -> BooleanAnd
-d (CostPreorder (Cost 0)) = BooleanAnd True
-d _ = BooleanAnd False
+d :: CostPreorder -> PartialOrdAll
+d (CostPreorder (Cost 0)) = PartialOrdAll $ All True
+d _ = PartialOrdAll $ All False
 
-u :: CostPreorder -> BooleanAnd
-u (CostPreorder Infinity) = BooleanAnd False
-u _ = BooleanAnd True
+u :: CostPreorder -> PartialOrdAll
+u (CostPreorder Infinity) = PartialOrdAll $ All False
+u _ = PartialOrdAll $ All True
 
 tests :: TestTree
 tests =

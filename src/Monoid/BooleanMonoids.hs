@@ -1,31 +1,22 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module Monoid.BooleanMonoids
-  ( BooleanAnd (..),
-    BooleanOr (..),
+  ( PartialOrdAll (..),
+    PartialOrdAny (..),
   )
 where
 
+import Data.Monoid (All, Any)
 import Data.PartialOrd as PO
 
--- and
-newtype BooleanAnd = BooleanAnd Bool deriving (Show, Eq, Ord)
+-- All which is also an instance of PartialOrd
+newtype PartialOrdAll = PartialOrdAll All deriving (Show, Eq, Ord, Monoid, Semigroup)
 
-instance PartialOrd BooleanAnd where
+instance PartialOrd PartialOrdAll where
   (<=) = (Prelude.<=)
 
-instance Monoid BooleanAnd where
-  mempty = BooleanAnd True
+-- Any which is also an instance of PartialOrd
+newtype PartialOrdAny = PartialOrdAny Any deriving (Show, Eq, Ord, Monoid, Semigroup)
 
-instance Semigroup BooleanAnd where
-  (BooleanAnd x) <> (BooleanAnd y) = BooleanAnd (x && y)
-
--- or
-newtype BooleanOr = BooleanOr Bool deriving (Show, Eq, Ord)
-
-instance PartialOrd BooleanOr where
+instance PartialOrd PartialOrdAny where
   (<=) = (Prelude.<=)
-
-instance Monoid BooleanOr where
-  mempty = BooleanOr False
-
-instance Semigroup BooleanOr where
-  (BooleanOr x) <> (BooleanOr y) = BooleanOr (x || y)

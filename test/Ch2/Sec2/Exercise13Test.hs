@@ -1,14 +1,15 @@
 module Ch2.Sec2.Exercise13Test (tests) where
 
-import Preorder.MonoidalPreorderProperties
-import Monoid.BooleanMonoids
+import Data.Monoid (Any (Any))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Monoid.BooleanMonoids (PartialOrdAny (..))
+import Preorder.MonoidalPreorderProperties
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
-genBool :: Gen BooleanOr
-genBool = BooleanOr <$> Gen.bool
+genBool :: Gen PartialOrdAny
+genBool = PartialOrdAny . Any <$> Gen.bool
 
 tests :: TestTree
 tests =

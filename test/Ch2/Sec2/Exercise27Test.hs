@@ -1,18 +1,18 @@
 module Ch2.Sec2.Exercise27Test (tests) where
 
-import Preorder.MonoidalMapProperties
-import Monoid.BooleanMonoids
-import Monoid.Cost
+import Data.Monoid (All (All))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
+import Monoid.Cost
+import Preorder.MonoidalMapProperties
 import Test.Tasty
 
-genBool :: Gen BooleanAnd
-genBool = BooleanAnd <$> Gen.bool
+genBool :: Gen All
+genBool = All <$> Gen.bool
 
-boolToCost :: BooleanAnd -> CostPreorder
-boolToCost (BooleanAnd False) = CostPreorder Infinity
-boolToCost (BooleanAnd True) = CostPreorder $ Cost 0
+boolToCost :: All -> CostPreorder
+boolToCost (All False) = CostPreorder Infinity
+boolToCost (All True) = CostPreorder $ Cost 0
 
 tests :: TestTree
 tests =

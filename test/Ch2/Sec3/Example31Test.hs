@@ -4,19 +4,20 @@ import Ch2.Sec3.Example31
 import Graph.Path (isPath)
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import Monoid.BooleanMonoids (BooleanAnd (..))
+import Monoid.BooleanMonoids (PartialOrdAll (PartialOrdAll))
 import qualified Properties.VCategoryProperties as VC
 import Test.Tasty
+import Data.Monoid (All(All))
 
 genVertex :: Gen Vertex
 genVertex = Gen.element vertices
 
-toBooleanAnd :: Vertex -> Vertex -> BooleanAnd
-toBooleanAnd x y = BooleanAnd $ isPath arrowsFrom x y
+toPartialOrdAll :: Vertex -> Vertex -> PartialOrdAll
+toPartialOrdAll x y = PartialOrdAll . All $ isPath arrowsFrom x y
 
 tests :: TestTree
 tests =
   VC.vCategoryTests
     "Ch2.Sec3.Example31Test"
     genVertex
-    toBooleanAnd
+    toPartialOrdAll
