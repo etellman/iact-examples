@@ -29,4 +29,4 @@ instance VCategory Y PartialOrdAll where
 data XY = XY !X !Y deriving (Show, Eq, Ord)
 
 instance VCategory XY PartialOrdAll where
-  hom (XY x y) (XY x' y') = hom x x' <> hom y y'
+  hom (XY x y) (XY x' y') = hom x' x <> hom y y'
