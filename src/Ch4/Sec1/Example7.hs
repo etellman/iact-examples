@@ -51,4 +51,4 @@ connected _ _ = PartialOrdAll . All $ False
 
 -- | is there a path from x' -> x -> y' -> y?
 reachable :: X -> X -> Y -> Y  -> PartialOrdAll
-reachable x x' y' y = hom x' x <> connected x' y' <> hom y y'
+reachable x x' y' y = hom x x' <> connected x' y' <> hom y' y

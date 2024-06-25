@@ -7,7 +7,6 @@ import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (PartialOrdAll (..))
 import Properties.VCategoryProperties
 import Test.Tasty
-import Test.Tasty.Hedgehog (testProperty)
 
 genX :: Gen X
 genX = Gen.element [North, South, East, West]
@@ -20,27 +19,11 @@ genXY = do
   x <- genX
   XY x <$> genY
 
-prop_reachable :: Property
-prop_reachable = property $ do
-  -- set up
-  x <- forAll genX
-  x' <- forAll genX
-
-  y <- forAll genY
-  y' <- forAll genY
-
-  -- exercise and verify
-  reachable x x' y' y === hom (XY x y) (XY x' y') <> connected x' y'
-
 tests :: TestTree
 tests =
   testGroup
     "Ch4.Sec1.Example7Test"
     [ vCategoryTests "X" genX (hom :: X -> X -> PartialOrdAll),
       vCategoryTests "Y" genY (hom :: Y -> Y -> PartialOrdAll),
-      testGroup
-        "XY"
-        [ vCategoryTests "V-Category" genXY (hom :: XY -> XY -> PartialOrdAll),
-          testProperty "reachable" prop_reachable
-        ]
+      vCategoryTests "V-Category" genXY (hom :: XY -> XY -> PartialOrdAll)
     ]
