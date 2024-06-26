@@ -52,5 +52,30 @@ tests =
               testCase "d" $ reachable South East B D @?= PartialOrdAll (All True),
               testCase "e" $ reachable South North E E @?= PartialOrdAll (All True)
             ]
+        ],
+      testGroup
+        "East"
+        [ testGroup
+            "reachable"
+            [ testCase "a" $ reachable East East B A @?= PartialOrdAll (All True),
+              testCase "b" $ connected East B @?= PartialOrdAll (All True),
+              testCase "c" $ reachable East North C C @?= PartialOrdAll (All True),
+              testCase "d" $ reachable East East B D @?= PartialOrdAll (All True),
+              testCase "e" $ reachable East North E E @?= PartialOrdAll (All True)
+            ]
+        ],
+      testGroup
+        "West"
+        [ testGroup
+            "reachable"
+            [ testCase "a" $ reachable West North C A @?= PartialOrdAll (All True),
+              testCase "c" $ reachable West North C C @?= PartialOrdAll (All True),
+              testCase "e" $ reachable West North E E @?= PartialOrdAll (All True)
+            ],
+          testGroup
+            "unreachable"
+            [ testProperty "b" $ prop_unReachable West B,
+              testProperty "d" $ prop_unReachable West D
+            ]
         ]
     ]
