@@ -9,8 +9,8 @@
 # to be used for project dependencies. For example:
 #
 # resolver: lts-21.13
-# resolver: nightly-2023-09-24
-resolver: lts-22.7
+# resolver: lts-22.7
+resolver: nightly-2023-12-27
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -42,7 +42,7 @@ packages:
 
 # Control whether we use the GHC we find on the path
 # system-ghc: true
-#
+
 # Require a specific version of Stack, using version ranges
 # require-stack-version: -any # Default
 # require-stack-version: ">=2.13"
