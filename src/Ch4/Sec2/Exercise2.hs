@@ -1,4 +1,4 @@
-module Ch4.Sec1.Exercise2
+module Ch4.Sec2.Exercise2
   ( X (..),
     Y (..),
     XY (..),

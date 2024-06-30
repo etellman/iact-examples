@@ -62,7 +62,7 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - iact-examples
-    - hedgehog >= 1.1.2
+    - hedgehog >= 1.4
     - tasty >= 1.4.3
-    - tasty-hedgehog >= 0.2.0.0
+    - tasty-hedgehog >= 1.4
     - tasty-hunit >= 0.10

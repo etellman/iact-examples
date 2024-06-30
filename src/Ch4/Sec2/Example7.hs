@@ -1,4 +1,4 @@
-module Ch4.Sec1.Example7
+module Ch4.Sec2.Example7
   ( X (..),
     Y (..),
     XY (..),

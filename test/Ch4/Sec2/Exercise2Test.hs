@@ -1,6 +1,6 @@
-module Ch4.Sec1.Exercise2Test (tests) where
+module Ch4.Sec2.Exercise2Test (tests) where
 
-import Ch4.Sec1.Exercise2
+import Ch4.Sec2.Exercise2
 import Hedgehog as H
 import Hedgehog.Gen as Gen
 import Data.PartialOrd as PO
@@ -43,7 +43,7 @@ prop_phi = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Exercise2Test"
+    "Ch4.Sec2.Exercise2Test"
     [ testProperty "Product" prop_product,
       testProperty "Phi" prop_phi
     ]

@@ -1,19 +1,18 @@
-module Ch4.Sec1.Definition4Test (tests) where
+module Ch4.Sec2.Example9Test (tests) where
 
-import Ch4.Sec1.Definition4
+import Ch4.Sec2.Example7
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
 import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (PartialOrdAll (..))
 import Properties.VCategoryProperties
 import Test.Tasty
 
 genX :: Gen X
-genX = X <$> Gen.int (Range.constant 1 1000)
+genX = Gen.element [North, South, East, West]
 
 genY :: Gen Y
-genY = Y <$> Gen.int (Range.constant 1 1000)
+genY = Gen.element [A, B, C, D, E]
 
 genXY :: Gen XY
 genXY = do
@@ -23,8 +22,9 @@ genXY = do
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Definition4Test"
+    "Ch4.Sec2.Example9Test"
     [ vCategoryTests "X" genX (hom :: X -> X -> PartialOrdAll),
       vCategoryTests "Y" genY (hom :: Y -> Y -> PartialOrdAll),
-      vCategoryTests "XY" genXY (hom :: XY -> XY -> PartialOrdAll)
+      vCategoryTests "V-Category" genXY (hom :: XY -> XY -> PartialOrdAll)
     ]
+

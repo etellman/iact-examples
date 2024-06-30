@@ -27,7 +27,10 @@ packages:
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
 #
-# extra-deps:
+extra-deps:
+  - hedgehog-1.4@sha256:9860ab34ab3951d9515c71b777d8c9c47610aae7339933e17d26ad9a4afa5618
+  - tasty-hedgehog-1.4.0.2@sha256:a9bd22863d919b1871c62652ee17773dc22a42b44d48e68e150cb80179c72be2
+
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a

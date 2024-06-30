@@ -1,6 +1,6 @@
-module Ch4.Sec1.Example9Test (tests) where
+module Ch4.Sec2.Example7Test (tests) where
 
-import Ch4.Sec1.Example7
+import Ch4.Sec2.Example7
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
 import Lib.VCategory (VCategory (..))
@@ -22,9 +22,8 @@ genXY = do
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Example9Test"
+    "Ch4.Sec2.Example7Test"
     [ vCategoryTests "X" genX (hom :: X -> X -> PartialOrdAll),
       vCategoryTests "Y" genY (hom :: Y -> Y -> PartialOrdAll),
       vCategoryTests "V-Category" genXY (hom :: XY -> XY -> PartialOrdAll)
     ]
-

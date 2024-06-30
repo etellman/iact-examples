@@ -1,4 +1,4 @@
-module Ch4.Sec1.Definition4
+module Ch4.Sec2.Definition4
   ( X (..),
     Y (..),
     XY (..),

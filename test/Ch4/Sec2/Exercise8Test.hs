@@ -1,6 +1,6 @@
-module Ch4.Sec1.Exercise8Test (tests) where
+module Ch4.Sec2.Exercise8Test (tests) where
 
-import Ch4.Sec1.Example7
+import Ch4.Sec2.Example7
 import Data.Monoid (All (All))
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -27,7 +27,7 @@ prop_unReachable x y = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Exercise8Test"
+    "Ch4.Sec2.Exercise8Test"
     [ testGroup
         "North"
         [ testGroup

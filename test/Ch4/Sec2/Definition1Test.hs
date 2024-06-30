@@ -1,4 +1,4 @@
-module Ch4.Sec1.Definition1Test (tests) where
+module Ch4.Sec2.Definition1Test (tests) where
 
 import Hedgehog as H
 import Hedgehog.Gen as Gen
@@ -32,6 +32,6 @@ prop_phi = property $ do
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Definition1Test"
+    "Ch4.Sec2.Definition1Test"
     [ testProperty "Phi" prop_phi
     ]

@@ -1,6 +1,6 @@
-module Ch4.Sec1.Exercise10Test (tests) where
+module Ch4.Sec2.Exercise10Test (tests) where
 
-import Ch4.Sec1.Example9
+import Ch4.Sec2.Example9
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
@@ -8,7 +8,7 @@ import Test.Tasty.HUnit as HU
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec1.Exercise10Test"
+    "Ch4.Sec2.Exercise10Test"
     [ testGroup
         "A"
         [ testCase "x" $ cost A B X X @?= Cost 17,

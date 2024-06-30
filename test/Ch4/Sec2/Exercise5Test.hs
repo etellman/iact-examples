@@ -1,6 +1,6 @@
-module Ch4.Sec1.Exercise5Test (tests) where
+module Ch4.Sec2.Exercise5Test (tests) where
 
-import Ch4.Sec1.Definition4
+import Ch4.Sec2.Definition4
 import Data.Monoid (All (..))
 import Data.PartialOrd as PO
 import Hedgehog as H
@@ -49,4 +49,4 @@ prop_exercise5 = property $ do
   H.assert $ (hom x' x <> phi' x y <> hom y y') PO.<= phi' x' y'
 
 tests :: TestTree
-tests = testProperty "Ch4.Sec1.Exercise5Test" prop_exercise5
+tests = testProperty "Ch4.Sec2.Exercise5Test" prop_exercise5
