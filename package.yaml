@@ -30,6 +30,7 @@ dependencies:
   - monoid-subclasses >= 1.2.4.1
   - adjunctions >= 4.4.2
   - distributive >= 0.6.2.1
+  - matrix >= 0.3.6.1
 
 ghc-options:
   - -Wall
