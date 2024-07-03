@@ -40,6 +40,18 @@ newtype CostOpPreorder = CostOpPreorder Cost deriving (Show, Eq, Ord, Monoid, Se
 instance PartialOrd CostOpPreorder where
   (<=) = (Prelude.<=)
 
+instance Num Cost where
+  (*) (Cost x) (Cost y) = Cost (x * y)
+  (*) _ _ = Infinity
+
+  (+) (Cost x) (Cost y) = Cost (x + y)
+  (+) _ _ = Infinity
+
+  abs = id
+  signum _ = 1
+  negate = id
+  fromInteger x = Cost (fromInteger x)
+
 -- | hom-element - see definition 2.57
 (-*) :: Cost -> Cost -> Cost
 (-*) (Cost x) (Cost y) = Cost $ max 0 (y - x)
