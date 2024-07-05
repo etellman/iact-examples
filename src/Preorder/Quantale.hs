@@ -22,5 +22,5 @@ instance Num EdgeCost where
 
   abs = id
   signum _ = 1
-  negate = error "negate not supported"
+  negate (EdgeCost x) = EdgeCost $ negate x
   fromInteger x = EdgeCost $ fromInteger x
