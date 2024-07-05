@@ -5,7 +5,7 @@ import qualified Monoid.Cost as C
 import Preorder.MonoidalClosedProperties (testClosed)
 import Test.Tasty
 
-testCostClosed :: String -> C.Cost -> TestTree
+testCostClosed :: String -> C.Cost C.ApproximateDouble -> TestTree
 testCostClosed name c =
   let (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
       monoidJoin xs = Just $ foldr max (C.CostPreorder C.Infinity) xs

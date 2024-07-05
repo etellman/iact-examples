@@ -1,17 +1,20 @@
 module Ch2.Sec5.Proposition64Test (tests) where
 
 import Ch1.Meet as M
+import Data.PartialOrd as PO
 import Data.Set (toList)
 import Gen.Cost (genCostPreorder)
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import qualified Monoid.Cost as C
-import Data.PartialOrd as PO
 import Test.Tasty
 import Test.Tasty.Hedgehog
 
-(-*) :: C.CostPreorder -> C.CostPreorder -> C.CostPreorder
+(-*) ::
+  C.CostPreorder C.ApproximateDouble ->
+  C.CostPreorder C.ApproximateDouble ->
+  C.CostPreorder C.ApproximateDouble
 (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
 
 infix 6 -*

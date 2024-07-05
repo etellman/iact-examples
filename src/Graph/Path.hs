@@ -25,11 +25,11 @@ isPath arrowsFrom v1 v2 = isJust $ pathWith headMay arrowsFrom v1 v2
 -- find the minimum cost path
 costPath ::
   (Eq v, Arrow a v w, Monoid w, Ord w) =>
-  (w -> Cost) ->
+  (w -> Cost b) ->
   (v -> [a]) ->
   v ->
   v ->
-  Cost
+  Cost b
 costPath toCost arrowsFrom v1 v2 =
   maybe Infinity toCost (minPath arrowsFrom v1 v2)
 

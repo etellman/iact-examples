@@ -23,5 +23,5 @@ toIntWeight x = IntWeight $ Sum x
 unitWeight :: IntWeight
 unitWeight = toIntWeight 1
 
-toCost :: IntWeight -> Cost
-toCost (IntWeight (Sum x)) = Cost $ fromIntegral x
+toCost :: IntWeight -> Cost Int
+toCost (IntWeight (Sum x)) = Cost x

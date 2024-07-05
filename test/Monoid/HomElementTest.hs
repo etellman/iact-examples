@@ -49,5 +49,5 @@ tests =
       testProperty "right infinity" prop_rightInfinity,
       testProperty "y >= x" prop_leftGte,
       testProperty "x >= y" prop_rightGte,
-      testCase "Infinity -* Infinity" $ Infinity -* Infinity @=? Cost 0
+      testCase "Infinity -* Infinity" $ Infinity -* Infinity @=? Cost (0 :: Int)
     ]

@@ -10,7 +10,7 @@ import Test.Tasty
 genBool :: Gen All
 genBool = All <$> Gen.bool
 
-boolToCost :: All -> CostPreorder
+boolToCost :: All -> CostPreorder Int
 boolToCost (All False) = CostPreorder Infinity
 boolToCost (All True) = CostPreorder $ Cost 0
 
