@@ -8,7 +8,10 @@ multPower :: Num a => Matrix a -> Natural -> Matrix a
 multPower x 1 = x
 multPower x n = multPower (multStd x x) (n - 1)
 
-data EdgeCost = EdgeCost (Cost Int) deriving (Eq, Show, Ord)
+data EdgeCost = EdgeCost (Cost Int) deriving (Eq, Ord)
+
+instance Show EdgeCost where
+  show (EdgeCost x) = show x
 
 instance Num EdgeCost where
   (EdgeCost x) * (EdgeCost y) = EdgeCost (x + y)

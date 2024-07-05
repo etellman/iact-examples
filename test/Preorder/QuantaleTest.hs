@@ -9,7 +9,7 @@ import Preorder.Quantale
 tests :: TestTree
 tests =
   testGroup
-    "Preorder.MatrixTest"
+    "Preorder.QuantaleTest"
     [ testCase "multiply" $
         do
           let x =

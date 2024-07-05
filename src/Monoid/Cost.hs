@@ -17,7 +17,11 @@ import TypeLevel.NaturalNumber
 
 type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
 
-data Num a => Cost a = Infinity | Cost !a deriving (Show, Eq)
+data Num a => Cost a = Infinity | Cost !a deriving Eq
+
+instance (Show a, Num a) => Show (Cost a) where
+  show (Cost x) = show x
+  show Infinity = "∞"
 
 newtype IntCost = IntCost (Cost Int) deriving (Show, Eq)
 -- type DoubleCost = Cost ApproximateDouble deriving (Show, Eq)
