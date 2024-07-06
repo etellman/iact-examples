@@ -24,7 +24,6 @@ instance (Show a, Num a) => Show (Cost a) where
   show Infinity = "∞"
 
 newtype IntCost = IntCost (Cost Int) deriving (Show, Eq)
--- type DoubleCost = Cost ApproximateDouble deriving (Show, Eq)
 
 instance Semigroup IntCost where
   IntCost Infinity <> _ = IntCost Infinity
