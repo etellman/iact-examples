@@ -19,8 +19,8 @@ prop_lessThanInfinity = property $ do
 prop_lessThanFinite :: Property
 prop_lessThanFinite = property $ do
   -- set up
-  v1 <- forAll $ Gen.realFloat $ Range.exponentialFloat 0 (1e6 :: Double)
-  v2 <- forAll $ Gen.realFloat $ Range.exponentialFloat (v1 + 1) 1e6
+  v1 <- forAll $ Gen.int $ Range.linear 0 100
+  v2 <- forAll $ Gen.int $ Range.linear (v1 + 1) 200
 
   -- exercise and verify
   H.assert $ Cost v1 <= Cost v2
