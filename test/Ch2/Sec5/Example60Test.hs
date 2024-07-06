@@ -2,6 +2,7 @@ module Ch2.Sec5.Example60Test (tests) where
 
 import Gen.Cost (genCost)
 import Hedgehog as H
+import qualified Hedgehog.Range as Range
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.Hedgehog
@@ -9,9 +10,10 @@ import Test.Tasty.Hedgehog
 prop_monoidalClosed :: Property
 prop_monoidalClosed = property $ do
   -- set up
-  v <- forAll genCost
-  w <- forAll genCost
-  a <- forAll genCost
+  let range = Range.linear 0 1000
+  v <- forAll $ genCost range
+  w <- forAll $ genCost range
+  a <- forAll $ genCost range
 
   cover 10 "a <> v >= w" $ a <> v >= w
   cover 10 "a <> v < w" $ a <> v < w
@@ -23,4 +25,4 @@ prop_monoidalClosed = property $ do
   (a <> v >= w) === (a >= v -* w)
 
 tests :: TestTree
-tests = testGroup "Ch2.Sec5.Example60Test" [ testProperty "monoidal closed" prop_monoidalClosed ]
+tests = testGroup "Ch2.Sec5.Example60Test" [testProperty "monoidal closed" prop_monoidalClosed]
