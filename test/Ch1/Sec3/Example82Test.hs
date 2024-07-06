@@ -25,10 +25,13 @@ prop_powerSet combine assertion = property $ do
   -- set up
   xs <- forAll $ Gen.set (Range.constant 4 10) Gen.alpha
   let xss = filter (not . null) $ powerSet $ CharPO <$> toList xs
+
+  -- make sure the list is not empty
+  y <- forAll $ Gen.element xss
   xss' <- forAll $ toList <$> Gen.subset (fromList xss)
 
   -- exercise
-  let x = foldr combine [] xss'
+  let x = foldr combine [] (y : xss')
 
   assertion (fmap CharSetPO xss) (fmap CharSetPO xss') (CharSetPO x)
 
