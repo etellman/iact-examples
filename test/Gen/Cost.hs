@@ -11,21 +11,19 @@ import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Monoid.Cost
 
-genCost :: Gen (Cost ApproximateDouble)
+genCost :: Gen (Cost Int)
 genCost = do
-  cs <-
-    fmap Cost
-      <$> Gen.list
+  cs <- Gen.list
         (Range.singleton 5)
-        (Gen.realFloat (Range.exponentialFloat 0 1e6))
+        (genFiniteCost $ Range.linear 0 1000)
   Gen.element (Infinity : cs)
 
-genFiniteCost :: ApproximateDouble -> Gen (Cost ApproximateDouble)
-genFiniteCost from = do
-  fmap Cost (Gen.realFloat $ Range.exponentialFloat from 1e6)
+genFiniteCost :: Range Int -> Gen (Cost Int)
+genFiniteCost range = do
+  fmap Cost (Gen.int range)
 
-genCostPreorder :: Gen (CostPreorder ApproximateDouble)
+genCostPreorder :: Gen (CostPreorder Int)
 genCostPreorder = fmap CostPreorder genCost
 
-genCostOpposite :: Gen (CostOpPreorder ApproximateDouble)
+genCostOpposite :: Gen (CostOpPreorder Int)
 genCostOpposite = fmap CostOpPreorder genCost

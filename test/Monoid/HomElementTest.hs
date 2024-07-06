@@ -2,6 +2,7 @@ module Monoid.HomElementTest (tests) where
 
 import Gen.Cost (genFiniteCost)
 import Hedgehog as H
+import qualified Hedgehog.Range as Range
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -10,7 +11,7 @@ import Test.Tasty.Hedgehog
 prop_leftInfinity :: Property
 prop_leftInfinity = property $ do
   -- set up
-  x <- forAll $ genFiniteCost 0
+  x <- forAll $ genFiniteCost (Range.linear 0 1000)
 
   -- exercise and verify
   Cost 0 === Infinity -* x
@@ -18,7 +19,7 @@ prop_leftInfinity = property $ do
 prop_rightInfinity :: Property
 prop_rightInfinity = property $ do
   -- set up
-  x <- forAll $ genFiniteCost 0
+  x <- forAll $ genFiniteCost (Range.linear 0 1000)
 
   -- exercise and verify
   Infinity === x -* Infinity
@@ -26,8 +27,8 @@ prop_rightInfinity = property $ do
 prop_leftGte :: Property
 prop_leftGte = property $ do
   -- set up
-  c1@(Cost x) <- forAll $ genFiniteCost 0
-  c2@(Cost y) <- forAll $ genFiniteCost x
+  c1@(Cost x) <- forAll $ genFiniteCost (Range.linear 0 1000)
+  c2@(Cost y) <- forAll $ genFiniteCost (Range.linear x 2000)
 
   -- exercise and verify
   Cost (y - x) === c1 -* c2
@@ -35,8 +36,8 @@ prop_leftGte = property $ do
 prop_rightGte :: Property
 prop_rightGte = property $ do
   -- set up
-  c1@(Cost x) <- forAll $ genFiniteCost 0
-  c2 <- forAll $ genFiniteCost x
+  c1@(Cost x) <- forAll $ genFiniteCost (Range.linear 0 1000)
+  c2 <- forAll $ genFiniteCost (Range.linear x 2000)
 
   -- exercise and verify
   Cost 0 === c2 -* c1

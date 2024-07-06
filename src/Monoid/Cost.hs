@@ -1,21 +1,15 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Monoid.Cost
-  ( ApproximateDouble,
-    Cost (..),
+  ( Cost (..),
     CostPreorder (..),
     CostOpPreorder (..),
     (-*),
     IntCost (..),
-    -- DoubleCost,
   )
 where
 
-import Data.Eq.Approximate
 import Data.PartialOrd as PO
-import TypeLevel.NaturalNumber
-
-type ApproximateDouble = AbsolutelyApproximateValue (Digits Five) Double
 
 data Num a => Cost a = Infinity | Cost !a deriving Eq
 

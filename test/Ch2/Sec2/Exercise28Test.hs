@@ -7,11 +7,11 @@ import Monoid.Cost
 import Preorder.MonoidalMapProperties
 import Test.Tasty
 
-d :: CostPreorder ApproximateDouble -> PartialOrdAll
+d :: CostPreorder Int -> PartialOrdAll
 d (CostPreorder (Cost 0)) = PartialOrdAll $ All True
 d _ = PartialOrdAll $ All False
 
-u :: CostPreorder ApproximateDouble -> PartialOrdAll
+u :: CostPreorder Int -> PartialOrdAll
 u (CostPreorder Infinity) = PartialOrdAll $ All False
 u _ = PartialOrdAll $ All True
 

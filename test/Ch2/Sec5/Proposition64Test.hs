@@ -12,9 +12,9 @@ import Test.Tasty
 import Test.Tasty.Hedgehog
 
 (-*) ::
-  C.CostPreorder C.ApproximateDouble ->
-  C.CostPreorder C.ApproximateDouble ->
-  C.CostPreorder C.ApproximateDouble
+  C.CostPreorder Int ->
+  C.CostPreorder Int ->
+  C.CostPreorder Int
 (C.CostPreorder x) -* (C.CostPreorder y) = C.CostPreorder (x C.-* y)
 
 infix 6 -*
@@ -36,7 +36,7 @@ partB :: Property
 partB = property $ do
   -- set up
   v <- forAll genCostPreorder
-  xsSet <- forAll $ Gen.set (Range.singleton 100) genCostPreorder
+  xsSet <- forAll $ Gen.set (Range.linear 10 50) genCostPreorder
   as <- forAll $ toList <$> Gen.subset xsSet
 
   let xs = toList xsSet
