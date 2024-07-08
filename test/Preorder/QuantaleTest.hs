@@ -30,6 +30,7 @@ tests =
                     [2, 2, 2]
                   ]
           quantMult x y @?= z,
+      --
       testCase "Equation 2.18" $
         do
           let x =
@@ -44,5 +45,32 @@ tests =
                     [3, 0, 6],
                     [7, 4, 0]
                   ]
-          distances x @?= z
+          distances x @?= z,
+      --
+      testCase "power" $
+        do
+          let x =
+                fromLists $
+                  [ [0,        Infinity,    3,        Infinity],
+                    [3,        0,           Infinity, 2],
+                    [Infinity, 4,           0,        Infinity],
+                    [Infinity, 4,           1,        0]
+                  ] ::
+                  Matrix (Cost Int)
+              x2 =
+                fromLists $
+                [ [0, 7, 3, Infinity],
+                  [3, 0, 3, 2],
+                  [7, 4, 0, 6],
+                  [7, 4, 1, 0]
+                ]
+              x3 =
+                fromLists $
+                [ [0, 7, 3, 9],
+                  [3, 0, 3, 2],
+                  [7, 4, 0, 6],
+                  [7, 4, 1, 0]
+                ]
+          quantPower x 2 @?= x2
+          quantPower x 3 @?= x3
     ]
