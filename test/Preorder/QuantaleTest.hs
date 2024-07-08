@@ -29,7 +29,7 @@ tests =
                     [2, Infinity, 2],
                     [2, 2, 2]
                   ]
-          multStd3 x y @?= z,
+          quantMult x y @?= z,
       testCase "Equation 2.18" $
         do
           let x =

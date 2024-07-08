@@ -1,6 +1,6 @@
 module Preorder.Quantale
   ( distances,
-    multStd3,
+    quantMult,
   )
 where
 
@@ -9,7 +9,7 @@ import Data.Vector as V
 
 multPower :: (Semigroup a, Ord a) => Matrix a -> Int -> Matrix a
 multPower x 1 = x
-multPower x n = multPower (multStd3 x x) (n - 1)
+multPower x n = multPower (quantMult x x) (n - 1)
 
 distances :: (Semigroup a, Ord a) => Matrix a -> Matrix a
 distances x = multPower x (nrows x)
@@ -19,8 +19,8 @@ combine xs ys =
   let zipped = V.zipWith (<>) xs ys
    in V.foldr1 min zipped
 
-multStd3 :: (Semigroup a, Ord a) => Matrix a -> Matrix a -> Matrix a
-multStd3 x y =
+quantMult :: (Semigroup a, Ord a) => Matrix a -> Matrix a -> Matrix a
+quantMult x y =
   let rows = Prelude.map (flip getRow x) [1 .. nrows x]
       cols = Prelude.map (flip getCol y) [1 .. ncols y]
       zipped = do
