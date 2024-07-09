@@ -11,8 +11,7 @@ import Data.Vector as V
 
 -- power with repeated multiplication
 quantPower :: (Semigroup a, Ord a) => Matrix a -> Int -> Matrix a
-quantPower x 1 = x
-quantPower x n = quantPower (quantMult x x) (n - 1)
+quantPower x n = Prelude.foldr quantMult x (Prelude.take (n - 1) (repeat x))
 
 -- the shortest distances between any two vertices
 distances :: (Semigroup a, Ord a) => Matrix a -> Matrix a
