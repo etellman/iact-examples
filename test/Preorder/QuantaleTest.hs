@@ -40,7 +40,8 @@ tests =
       --
       testGroup
         "Equation 2.18"
-        [ testCase "all" $ do
+        [
+        testCase "all" $ do
             let expected =
                   fromLists $
                     [ [0, 4, 3],
