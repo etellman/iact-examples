@@ -1,7 +1,5 @@
 module Ch2.Sec3.Exercise41
-  ( Probability (..),
-    ProbabilityArrow (..),
-    probArrowsFrom,
+  ( ProbabilityWeight (..),
     ynmArrowsFrom,
   )
 where
@@ -9,34 +7,15 @@ where
 import Ch2.Sec2.YesNoMaybe
 import Ch2.Sec3.Figure18
 import Graph.Arrow
-import Lib.ApproximateDouble (ApproximateDouble)
 
-newtype Probability = Probability ApproximateDouble deriving (Eq, Ord, Show)
+newtype ProbabilityWeight = ProbabilityWeight Rational deriving (Eq, Show)
 
-instance Semigroup Probability where
-  Probability x <> Probability y = Probability $ x * y
+instance Semigroup ProbabilityWeight where
+  ProbabilityWeight x <> ProbabilityWeight y = ProbabilityWeight $ x * y
 
-instance Monoid Probability where
-  mempty = Probability 1.0
-
-data ProbabilityArrow = ProbabilityArrow
-  { paFrom :: !Vertex,
-    paTo :: !Vertex,
-    paWeight :: !Probability
-  }
-
-instance Arrow ProbabilityArrow Vertex Probability where
-  source = paFrom
-  target = paTo
-  weight = paWeight
-
-fromRatio :: Int -> Int -> Probability
-fromRatio m n = Probability $ fromIntegral m / fromIntegral n
-
-probArrowsFrom :: Vertex -> [ProbabilityArrow]
-probArrowsFrom v =
-  let arrows = arrowsFrom v
-   in fmap (\(Fig18Arrow v1 v2 w) -> ProbabilityArrow v1 v2 (fromRatio w 6)) arrows
+-- the best probability is the largest probability
+instance Ord ProbabilityWeight where
+  ProbabilityWeight x <= ProbabilityWeight y = y <= x
 
 categorizeYnm :: Int -> YesNoMaybe
 categorizeYnm d
