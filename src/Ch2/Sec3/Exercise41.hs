@@ -4,9 +4,6 @@ module Ch2.Sec3.Exercise41
   )
 where
 
-import Ch2.Sec3.Figure18
-import Graph.Arrow
-
 newtype ProbabilityWeight = ProbabilityWeight Rational deriving (Eq, Show)
 
 instance Semigroup ProbabilityWeight where
