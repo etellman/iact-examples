@@ -1,61 +1,25 @@
 module Ch2.Sec3.Exercise42
   ( City (..),
     Transport (..),
-    Transports (..),
-    Route (..),
-    cities,
-    transports,
-    arrowsFrom,
+    TransportSet (..),
   )
 where
 
 import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
-import Graph.Arrow
 import Data.PartialOrd as PO
+import Graph.Arrow
 
 data City = V | W | X | Y | Z deriving (Eq, Show)
-
-cities :: [City]
-cities = [V, W, X, Y, Z]
-
 data Transport = A | B | C deriving (Eq, Show)
 
-transports :: [Transport]
-transports = [A, B, C]
+data TransportSet = TransportSet [Transport] deriving Eq
 
-data Route = Route
-  { from :: !City,
-    to :: !City,
-    routeTransports :: !Transports
-  }
+instance Show TransportSet where
+  show (TransportSet xs) = show xs
 
-instance Arrow Route City Transports where
-  source = from
-  target = to
-  weight = routeTransports
+instance Semigroup TransportSet where
+  (TransportSet xs) <> (TransportSet ys) = TransportSet (xs `intersect` ys)
 
-arrowsFrom :: City -> [Route]
-arrowsFrom V = [Route V X (Transports [A, C])]
-arrowsFrom W = [Route W Z (Transports [C, B])]
-arrowsFrom X = [Route X Y (Transports [A])]
-arrowsFrom Y = [Route Y Z (Transports [A, C])]
-arrowsFrom Z =
-  [ Route Z V (Transports [A, B]),
-    Route Z X (Transports [B]),
-    Route Z Y (Transports [C])
-  ]
-
-newtype Transports = Transports [Transport] deriving (Eq, Show)
-
-instance Ord Transports where
-  (Transports xs) <= (Transports ys) = xs `isSubsetOf` ys
-
-instance PartialOrd Transports where
-  (<=) = (Prelude.<=)
-
-instance Monoid Transports where
-  mempty = Transports transports
-
-instance Semigroup Transports where
-  (Transports xs) <> (Transports ys) = Transports (xs `intersect` ys)
+instance Ord TransportSet where
+  (TransportSet xs) <= (TransportSet ys) = length xs Prelude.>= length ys
