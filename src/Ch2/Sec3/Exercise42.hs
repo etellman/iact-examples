@@ -5,15 +5,13 @@ module Ch2.Sec3.Exercise42
   )
 where
 
-import Ch1.Set (isSubsetOf)
 import Data.List (intersect)
-import Data.PartialOrd as PO
-import Graph.Arrow
 
 data City = V | W | X | Y | Z deriving (Eq, Show)
+
 data Transport = A | B | C deriving (Eq, Show)
 
-data TransportSet = TransportSet [Transport] deriving Eq
+data TransportSet = TransportSet [Transport] deriving (Eq)
 
 instance Show TransportSet where
   show (TransportSet xs) = show xs
