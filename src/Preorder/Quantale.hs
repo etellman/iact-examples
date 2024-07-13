@@ -3,11 +3,23 @@ module Preorder.Quantale
     quantMult,
     quantPower,
     distanceFunc,
+    BoolWeight (..),
   )
 where
 
 import Data.Matrix
 import Data.Vector as V
+
+newtype BoolWeight = BoolWeight Bool deriving (Eq)
+
+instance Semigroup BoolWeight where
+  BoolWeight x <> BoolWeight y = BoolWeight $ x && y
+
+instance Ord BoolWeight where
+  BoolWeight x <= BoolWeight y = y <= x
+
+instance Show BoolWeight where
+  show (BoolWeight x) = show x
 
 -- power with repeated multiplication
 quantPower :: (Semigroup a, Ord a) => Matrix a -> Int -> Matrix a
