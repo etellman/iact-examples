@@ -18,6 +18,12 @@ genVertex = Gen.element vertices
 toPartialOrdAll :: Vertex -> Vertex -> PartialOrdAll
 toPartialOrdAll x y = PartialOrdAll . All $ isPath arrowsFrom x y
 
+genEx31 :: Gen Ex31
+genEx31 = Gen.element $ fmap Ex31 ['p', 'q', 'r', 's', 't']
+
+ex31hom :: Ex31 -> Ex31 -> PartialOrdAll
+ex31hom x y = PartialOrdAll . All $ x <= y
+
 tests :: TestTree
 tests =
   testGroup
@@ -39,6 +45,7 @@ tests =
             distances ex31 @?= expected,
           testCase "p <= q" $ assertBool "<=" $ 'p' `lte31` 'q',
           testCase "p <= t" $ assertBool "<=" $ 'p' `lte31` 't',
-          testCase "q > p" $ assertBool "<=" $ not ('q' `lte31` 'p')
+          testCase "q > p" $ assertBool "<=" $ not ('q' `lte31` 'p'),
+          VC.vCategoryTests "V-Category" genEx31 ex31hom
         ]
     ]
