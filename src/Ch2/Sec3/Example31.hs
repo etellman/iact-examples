@@ -1,8 +1,5 @@
 module Ch2.Sec3.Example31
-  ( Vertex (..),
-    vertices,
-    arrowsFrom,
-    ex31,
+  ( ex31,
     lte31,
     Ex31 (..),
   )
@@ -10,28 +7,7 @@ where
 
 import Data.Char (ord)
 import Data.Matrix
-import Graph.Arrow
-import Graph.IntWeight
 import Preorder.Quantale
-
-data Vertex = P | Q | R | S | T deriving (Eq, Show)
-
-newtype Ex31Arrow = Ex31Arrow (Vertex, Vertex)
-
-instance Arrow Ex31Arrow Vertex IntWeight where
-  source (Ex31Arrow (v, _)) = v
-  target (Ex31Arrow (_, v)) = v
-  weight = const unitWeight
-
-vertices :: [Vertex]
-vertices = [P, Q, R, S, T]
-
-arrowsFrom :: Vertex -> [Ex31Arrow]
-arrowsFrom P = fmap Ex31Arrow [(P, Q), (P, R)]
-arrowsFrom Q = fmap Ex31Arrow [(Q, S)]
-arrowsFrom R = fmap Ex31Arrow [(R, S)]
-arrowsFrom S = fmap Ex31Arrow [(S, T)]
-arrowsFrom _ = []
 
 ex31 :: Matrix BoolWeight
 ex31 =
@@ -51,7 +27,7 @@ lte31 x y =
       BoolWeight w = f x y
    in w
 
-newtype Ex31 = Ex31 Char deriving Eq
+newtype Ex31 = Ex31 Char deriving (Eq)
 
 instance Show Ex31 where
   show (Ex31 v) = show v
