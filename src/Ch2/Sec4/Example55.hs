@@ -1,99 +1,47 @@
 module Ch2.Sec4.Example55
-  ( XVertex (..),
-    XArrow (..),
-    xarrows,
-    xvertices,
-    YVertex (..),
-    YArrow (..),
-    yarrows,
-    yvertices,
-    XYVertex (..),
-    XYArrow (..),
-    xyarrows,
-    xyvertices,
+  ( X (..),
+    Y (..),
+    xDistance,
+    yDistance,
+    xyDistance,
   )
 where
 
-import Graph.Arrow
-import Graph.IntWeight
+import Data.Matrix
+import Monoid.Cost
+import Preorder.Quantale
 
-data XVertex = A | B | C deriving (Eq, Show)
+data X = A | B | C deriving (Eq, Show)
 
-data XArrow = XArrow
-  { xsource :: !XVertex,
-    xtarget :: !XVertex,
-    xweight :: !Int
-  }
+xOrd :: X -> Int
+xOrd A = 1
+xOrd B = 2
+xOrd C = 3
 
-instance Arrow XArrow XVertex IntWeight where
-  source = xsource
-  target = xtarget
-  weight = toIntWeight . xweight
+xDistance :: X -> X -> Cost Int
+xDistance =
+  let xCosts =
+        fromLists
+          [ [0, 2, Infinity],
+            [Infinity, 0, 3],
+            [Infinity, Infinity, Infinity]
+          ]
+   in distanceFunc xCosts xOrd
 
-xvertices :: [XVertex]
-xvertices = [A, B, C]
+data Y = P | Q deriving (Eq, Show)
 
-xarrows :: XVertex -> [XArrow]
-xarrows A = [XArrow A B 2]
-xarrows B = [XArrow B C 3]
-xarrows C = []
+yOrd :: Y -> Int
+yOrd P = 1
+yOrd Q = 2
 
-data YVertex = P | Q deriving (Eq, Show)
+yDistance :: Y -> Y -> Cost Int
+yDistance =
+  let yCosts =
+        fromLists
+          [ [0, 5],
+            [8, 0]
+          ]
+   in distanceFunc yCosts yOrd
 
-data YArrow = YArrow
-  { ysource :: !YVertex,
-    ytarget :: !YVertex,
-    yweight :: !Int
-  }
-
-instance Arrow YArrow YVertex IntWeight where
-  source = ysource
-  target = ytarget
-  weight = toIntWeight . yweight
-
-yvertices :: [YVertex]
-yvertices = [P, Q]
-
-yarrows :: YVertex -> [YArrow]
-yarrows P = [YArrow P Q 5]
-yarrows Q = [YArrow Q P 8]
-
-newtype XYVertex = XYVertex (XVertex, YVertex) deriving (Eq, Show)
-
-data XYArrow = XYArrow
-  { xysource :: !XYVertex,
-    xytarget :: !XYVertex,
-    xyweight :: !Int
-  }
-  deriving (Eq, Show)
-
-xyvertices :: [XYVertex]
-xyvertices =
-  do
-    x <- xvertices
-    y <- yvertices
-
-    return $ XYVertex (x, y)
-
-xyarrows :: XYVertex -> [XYArrow]
-xyarrows (XYVertex (x, y)) =
-  let fromx =
-        do
-          xa <- xarrows x
-          return $ XYArrow
-              (XYVertex (xsource xa, y))
-              (XYVertex (xtarget xa, y))
-              (xweight xa)
-      fromy =
-        do
-          ya <- yarrows y
-          return $ XYArrow
-              (XYVertex (x, ysource ya))
-              (XYVertex (x, ytarget ya))
-              (yweight ya)
-   in fromx ++ fromy
-
-instance Arrow XYArrow XYVertex IntWeight where
-  source = xysource
-  target = xytarget
-  weight = toIntWeight . xyweight
+xyDistance :: (X, Y) -> (X, Y) -> Cost Int
+xyDistance (x, y) (x', y') = xDistance x x' <> yDistance y y'
