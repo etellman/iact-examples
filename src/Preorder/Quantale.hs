@@ -10,7 +10,7 @@ where
 import Data.Matrix
 import Data.Vector as V
 
-newtype BoolWeight = BoolWeight Bool deriving (Eq)
+newtype BoolWeight = BoolWeight Bool deriving Eq
 
 instance Semigroup BoolWeight where
   BoolWeight x <> BoolWeight y = BoolWeight $ x && y

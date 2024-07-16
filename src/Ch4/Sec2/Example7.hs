@@ -7,31 +7,70 @@ module Ch4.Sec2.Example7
   )
 where
 
+import Data.Matrix
 import Data.Monoid (All (..))
 import Data.PartialOrd as PO
 import Lib.VCategory (VCategory (..))
 import Monoid.BooleanMonoids (PartialOrdAll (..))
+import Preorder.Quantale
 
 data X = North | South | East | West deriving (Show, Eq)
 
+xOrd :: X -> Int
+xOrd North = 1
+xOrd South = 2
+xOrd East = 3
+xOrd West = 4
+
+xDistance :: X -> X -> BoolWeight
+xDistance =
+  let costs =
+        fromLists $
+          (fmap . fmap)
+            BoolWeight
+            -- N S E W
+            [ [True, False, False, False],
+              [False, True, True, True],
+              [True, False, True, False],
+              [True, False, False, True]
+            ]
+   in distanceFunc costs xOrd
+
 instance PartialOrd X where
-  South <= East = True
-  South <= West = True
-  West <= North = True
-  East <= North = True
-  South <= North = True
-  x <= x' = x Prelude.== x'
+  x <= y =
+    let BoolWeight w = xDistance x y
+     in w
 
 instance VCategory X PartialOrdAll where
   hom x x' = PartialOrdAll $ All (x PO.<= x')
 
 data Y = A | B | C | D | E deriving (Show, Eq)
 
+yOrd :: Y -> Int
+yOrd A = 1
+yOrd B = 2
+yOrd C = 3
+yOrd D = 4
+yOrd E = 5
+
+yDistance :: Y -> Y -> BoolWeight
+yDistance =
+  let costs =
+        fromLists $
+          (fmap . fmap)
+            BoolWeight
+            [ [True, True, True, False, False],
+              [True, True, False, True, False],
+              [True, False, True, False, False],
+              [False, False, False, True, False],
+              [False, False, False, False, True]
+            ]
+   in distanceFunc costs yOrd
+
 instance PartialOrd Y where
-  B <= D = True
-  B <= A = True
-  C <= A = True
-  y <= y' = y Prelude.== y'
+  x <= y =
+    let BoolWeight w = yDistance x y
+     in w
 
 -- | Y opposite
 instance VCategory Y PartialOrdAll where
@@ -43,12 +82,14 @@ instance VCategory XY PartialOrdAll where
   hom (XY x y) (XY x' y') = hom x' x <> hom y y'
 
 connected :: X -> Y -> PartialOrdAll
-connected South A = PartialOrdAll . All $ True
-connected East B = PartialOrdAll . All $ True
-connected North C = PartialOrdAll . All $ True
-connected North E = PartialOrdAll . All $ True
-connected _ _ = PartialOrdAll . All $ False
+connected x y =
+  let c South A = True
+      c East B = True
+      c North C = True
+      c North E = True
+      c _ _ = False
+   in (PartialOrdAll . All) $ c x y
 
 -- | is there a path from x' -> x -> y' -> y?
-reachable :: X -> X -> Y -> Y  -> PartialOrdAll
+reachable :: X -> X -> Y -> Y -> PartialOrdAll
 reachable x x' y' y = hom x x' <> connected x' y' <> hom y' y
