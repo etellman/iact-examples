@@ -1,81 +1,43 @@
 module Ch4.Sec2.Exercise8Test (tests) where
 
 import Ch4.Sec2.Example7
-import Data.Monoid (All (All))
-import Hedgehog as H
-import qualified Hedgehog.Gen as Gen
-import Monoid.BooleanMonoids (PartialOrdAll (..))
 import Test.Tasty
 import Test.Tasty.HUnit as HU
-import Test.Tasty.Hedgehog (testProperty)
-
-genX :: Gen X
-genX = Gen.element [North, South, East, West]
-
-genY :: Gen Y
-genY = Gen.element [A, B, C, D, E]
-
-prop_unReachable :: X -> Y -> Property
-prop_unReachable x y = property $ do
-  -- set up
-  x' <- forAll genX
-  y' <- forAll genY
-
-  -- exercise and verify
-  PartialOrdAll (All False) === reachable x x' y' y
 
 tests :: TestTree
 tests =
   testGroup
     "Ch4.Sec2.Exercise8Test"
     [ testGroup
-        "North"
-        [ testGroup
-            "reachable"
-            [ testCase "a" $ reachable North North C A @?= PartialOrdAll (All True),
-              testCase "c" $ connected North C @?= PartialOrdAll (All True),
-              testCase "e" $ connected North E @?= PartialOrdAll (All True)
-            ],
-          testGroup
-            "unreachable"
-            [ testProperty "b" $ prop_unReachable North B,
-              testProperty "d" $ prop_unReachable North D
-            ]
-        ],
-      testGroup
         "South"
-        [ testGroup
-            "reachable"
-            [ testCase "a" $ connected South A @?= PartialOrdAll (All True),
-              testCase "b" $ reachable South East B B @?= PartialOrdAll (All True),
-              testCase "c" $ reachable South North C C @?= PartialOrdAll (All True),
-              testCase "d" $ reachable South East B D @?= PartialOrdAll (All True),
-              testCase "e" $ reachable South North E E @?= PartialOrdAll (All True)
-            ]
+        [ testCase "A" $ assertBool "reachable" $ reachable South A,
+          testCase "B" $ assertBool "reachable" $ reachable South B,
+          testCase "C" $ assertBool "reachable" $ reachable South C,
+          testCase "D" $ assertBool "reachable" $ reachable South D,
+          testCase "E" $ assertBool "reachable" $ reachable South E
         ],
       testGroup
         "East"
-        [ testGroup
-            "reachable"
-            [ testCase "a" $ reachable East East B A @?= PartialOrdAll (All True),
-              testCase "b" $ connected East B @?= PartialOrdAll (All True),
-              testCase "c" $ reachable East North C C @?= PartialOrdAll (All True),
-              testCase "d" $ reachable East East B D @?= PartialOrdAll (All True),
-              testCase "e" $ reachable East North E E @?= PartialOrdAll (All True)
-            ]
+        [ testCase "A" $ assertBool "reachable" $ reachable East A,
+          testCase "B" $ assertBool "reachable" $ reachable East B,
+          testCase "C" $ assertBool "reachable" $ reachable East C,
+          testCase "D" $ assertBool "reachable" $ reachable East D,
+          testCase "E" $ assertBool "reachable" $ reachable East E
+        ],
+      testGroup
+        "North"
+        [ testCase "A" $ assertBool "reachable" $ reachable North A,
+          testCase "not B" $ assertBool "not reachable" $ not $ reachable North B,
+          testCase "C" $ assertBool "reachable" $ reachable North C,
+          testCase "not D" $ assertBool "not reachable" $ not $ reachable North D,
+          testCase "E" $ assertBool "reachable" $ reachable North E
         ],
       testGroup
         "West"
-        [ testGroup
-            "reachable"
-            [ testCase "a" $ reachable West North C A @?= PartialOrdAll (All True),
-              testCase "c" $ reachable West North C C @?= PartialOrdAll (All True),
-              testCase "e" $ reachable West North E E @?= PartialOrdAll (All True)
-            ],
-          testGroup
-            "unreachable"
-            [ testProperty "b" $ prop_unReachable West B,
-              testProperty "d" $ prop_unReachable West D
-            ]
+        [ testCase "A" $ assertBool "reachable" $ reachable West A,
+          testCase "not B" $ assertBool "not reachable" $ not $ reachable West B,
+          testCase "C" $ assertBool "reachable" $ reachable West C,
+          testCase "not D" $ assertBool "not reachable" $ not $ reachable West D,
+          testCase "E" $ assertBool "reachable" $ reachable West E
         ]
     ]

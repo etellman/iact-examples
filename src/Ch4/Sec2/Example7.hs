@@ -4,6 +4,8 @@ module Ch4.Sec2.Example7
     XY (..),
     reachable,
     connected,
+    xDistance,
+    yDistance,
   )
 where
 
@@ -59,7 +61,7 @@ yDistance =
         fromLists $
           (fmap . fmap)
             BoolWeight
-            [ [True, True, True, False, False],
+            [ [True, False, False, False, False],
               [True, True, False, True, False],
               [True, False, True, False, False],
               [False, False, False, True, False],
@@ -90,6 +92,14 @@ connected x y =
       c _ _ = False
    in (PartialOrdAll . All) $ c x y
 
--- | is there a path from x' -> x -> y' -> y?
-reachable :: X -> X -> Y -> Y -> PartialOrdAll
-reachable x x' y' y = hom x x' <> connected x' y' <> hom y' y
+-- go from x to y through x' and y'
+reachable' :: X -> Y -> X -> Y -> Bool
+reachable' x y x' y' =
+  let (PartialOrdAll (All z)) = hom x x' <> connected x' y' <> hom y' y
+   in z
+
+-- | is there a path from x -> y?
+reachable :: X -> Y -> Bool
+reachable x y =
+  let r = reachable' x y
+   in r South A || r East B || r North C || r North E
