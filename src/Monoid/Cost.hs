@@ -17,7 +17,7 @@ instance (Show a, Num a) => Show (Cost a) where
   show (Cost x) = show x
   show Infinity = "∞"
 
-newtype IntCost = IntCost (Cost Int) deriving (Show, Eq)
+newtype IntCost = IntCost (Cost Int) deriving (Show, Eq, Ord)
 
 instance Semigroup IntCost where
   IntCost Infinity <> _ = IntCost Infinity

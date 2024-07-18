@@ -3,41 +3,59 @@ module Ch4.Sec2.Example9
     Y (..),
     XY (..),
     cost,
-    bridge,
   )
 where
 
--- import Data.Monoid (Sum (..))
+import Data.Matrix
 import Lib.VCategory (VCategory (..))
 import Monoid.Cost
+import Preorder.Quantale
 
 data X = A | B | C | D deriving (Show, Eq)
 
+xOrd :: X -> Int
+xOrd A = 1
+xOrd B = 2
+xOrd C = 3
+xOrd D = 4
+
+xDistance :: X -> X -> IntCost
+xDistance =
+  let costs =
+        fromLists $
+          (fmap . fmap)
+            IntCost
+            [ [Cost 0, Infinity, Cost 3, Infinity],
+              [Cost 2, Cost 0, Infinity, Cost 5],
+              [Infinity, Cost 3, Cost 0, Infinity],
+              [Infinity, Infinity, Cost 4, Cost 0]
+            ]
+   in distanceFunc costs xOrd
+
 instance VCategory X IntCost where
-  hom A B = IntCost $ Cost 6
-  hom A C = IntCost $ Cost 3
-  hom A D = IntCost $ Cost 11
-  hom B A = IntCost $ Cost 2
-  hom B C = IntCost $ Cost 5
-  hom B D = IntCost $ Cost 5
-  hom C A = IntCost $ Cost 5
-  hom C B = IntCost $ Cost 3
-  hom C D = IntCost $ Cost 8
-  hom D A = IntCost $ Cost 9
-  hom D B = IntCost $ Cost 7
-  hom D C = IntCost $ Cost 4
-  hom _ _ = IntCost $ Cost 0
+  hom = xDistance
 
 data Y = X | Y | Z deriving (Show, Eq)
 
+yOrd :: Y -> Int
+yOrd X = 1
+yOrd Y = 2
+yOrd Z = 3
+
+yDistance :: Y -> Y -> IntCost
+yDistance =
+  let costs =
+        fromLists $
+          (fmap . fmap)
+            IntCost
+            [ [Cost 0, Cost 4, Cost 3],
+              [Cost 3, Cost 0, Infinity],
+              [Infinity, Cost 3, Cost 0]
+            ]
+   in distanceFunc costs yOrd
+
 instance VCategory Y IntCost where
-  hom X Y = IntCost $ Cost 4
-  hom X Z = IntCost $ Cost 3
-  hom Y X = IntCost $ Cost 3
-  hom Y Z = IntCost $ Cost 6
-  hom Z X = IntCost $ Cost 7
-  hom Z Y = IntCost $ Cost 4
-  hom _ _ = IntCost $ Cost 0
+  hom = yDistance
 
 data XY = XY !X !Y deriving (Show, Eq)
 
@@ -49,6 +67,14 @@ bridge B X = IntCost $ Cost 11
 bridge D Y = IntCost $ Cost 9
 bridge _ _ = IntCost $ Infinity
 
--- | what is the cost to go from x -> x' -> y' -> y?
-cost :: X -> X -> Y -> Y -> IntCost
-cost x x' y' y = hom x x' <> bridge x' y' <> hom y' y
+-- | what is the cost to go from x to y via x' and y'
+cost' :: X -> Y -> X -> Y -> Cost Int
+cost' x y x' y' =
+  let (IntCost c) = hom x x' <> bridge x' y' <> hom y' y
+   in c
+
+-- | what is the minimum cost to go from to y?
+cost :: X -> Y -> Cost Int
+cost x y =
+  let c = cost' x y
+   in min (c B X) (c D Y)
