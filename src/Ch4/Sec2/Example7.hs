@@ -3,7 +3,6 @@ module Ch4.Sec2.Example7
     Y (..),
     XY (..),
     reachable,
-    connected,
     xDistance,
     yDistance,
   )
@@ -24,19 +23,20 @@ xOrd South = 2
 xOrd East = 3
 xOrd West = 4
 
+xEdges :: Matrix BoolWeight
+xEdges =
+  fromLists $
+    (fmap . fmap)
+      BoolWeight
+      -- N S E W
+      [ [True, False, False, False],
+        [False, True, True, True],
+        [True, False, True, False],
+        [True, False, False, True]
+      ]
+
 xDistance :: X -> X -> BoolWeight
-xDistance =
-  let costs =
-        fromLists $
-          (fmap . fmap)
-            BoolWeight
-            -- N S E W
-            [ [True, False, False, False],
-              [False, True, True, True],
-              [True, False, True, False],
-              [True, False, False, True]
-            ]
-   in distanceFunc costs xOrd xOrd
+xDistance = distanceFunc xEdges xOrd xOrd
 
 instance PartialOrd X where
   x <= y =
@@ -55,19 +55,20 @@ yOrd C = 3
 yOrd D = 4
 yOrd E = 5
 
+yEdges :: Matrix BoolWeight
+yEdges =
+  fromLists $
+    (fmap . fmap)
+      BoolWeight
+      [ [True, False, False, False, False],
+        [True, True, False, True, False],
+        [True, False, True, False, False],
+        [False, False, False, True, False],
+        [False, False, False, False, True]
+      ]
+
 yDistance :: Y -> Y -> BoolWeight
-yDistance =
-  let costs =
-        fromLists $
-          (fmap . fmap)
-            BoolWeight
-            [ [True, False, False, False, False],
-              [True, True, False, True, False],
-              [True, False, True, False, False],
-              [False, False, False, True, False],
-              [False, False, False, False, True]
-            ]
-   in distanceFunc costs yOrd yOrd
+yDistance = distanceFunc yEdges yOrd yOrd
 
 instance PartialOrd Y where
   x <= y =
@@ -83,23 +84,19 @@ data XY = XY !X !Y deriving (Show, Eq)
 instance VCategory XY PartialOrdAll where
   hom (XY x y) (XY x' y') = hom x' x <> hom y y'
 
-connected :: X -> Y -> PartialOrdAll
-connected x y =
-  let c South A = True
-      c East B = True
-      c North C = True
-      c North E = True
-      c _ _ = False
-   in (PartialOrdAll . All) $ c x y
-
--- go from x to y through x' and y'
-reachable' :: X -> Y -> X -> Y -> Bool
-reachable' x y x' y' =
-  let (PartialOrdAll (All z)) = hom x x' <> connected x' y' <> hom y' y
-   in z
-
--- | is there a path from x -> y?
+-- | is y reachable from x
 reachable :: X -> Y -> Bool
 reachable x y =
-  let r = reachable' x y
-   in r South A || r East B || r North C || r North E
+  let bridges =
+        fromLists $
+          (fmap . fmap)
+            BoolWeight
+            -- N S E W
+            [ [False, False, True, False, True],
+              [True, False, False, False, True],
+              [False, True, False, False, True],
+              [False, False, False, False, False]
+            ]
+      xyDstances = (distances xEdges) `quantMult` bridges `quantMult` (distances yEdges)
+      (BoolWeight d) = getElem (xOrd x) (yOrd y) xyDstances
+   in d
