@@ -10,7 +10,7 @@ where
 import Data.Matrix
 import Data.Vector as V
 
-newtype BoolWeight = BoolWeight Bool deriving Eq
+newtype BoolWeight = BoolWeight Bool deriving (Eq)
 
 instance Semigroup BoolWeight where
   BoolWeight x <> BoolWeight y = BoolWeight $ x && y
@@ -30,9 +30,9 @@ distances :: (Semigroup a, Ord a) => Matrix a -> Matrix a
 distances x = quantPower x (nrows x)
 
 -- creates a function that returns the distance between two vertices
-distanceFunc :: (Semigroup a, Ord a) => Matrix a -> (v -> Int) -> (v -> v -> a)
-distanceFunc ws indexOf =
-  let f x y = getElem (indexOf x) (indexOf y) (distances ws)
+distanceFunc :: (Semigroup a, Ord a) => Matrix a -> (v -> Int) -> (v -> Int) -> (v -> v -> a)
+distanceFunc ws rowIndex columnIndex =
+  let f x y = getElem (rowIndex x) (columnIndex y) (distances ws)
    in f
 
 combine :: (Semigroup a, Ord a) => Vector a -> Vector a -> a

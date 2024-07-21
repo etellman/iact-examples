@@ -18,5 +18,8 @@ xWeights =
       [Infinity, Infinity, 6, 0]
     ]
 
+indexOf :: Char -> Int
+indexOf v = ord v - ord 'A' + 1
+
 distanceX :: Char -> Char -> Cost Int
-distanceX = distanceFunc xWeights (\v -> ord v - ord 'A' + 1)
+distanceX = distanceFunc xWeights indexOf indexOf

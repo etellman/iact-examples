@@ -30,7 +30,7 @@ xDistance =
               [Infinity, Cost 3, Cost 0, Infinity],
               [Infinity, Infinity, Cost 4, Cost 0]
             ]
-   in distanceFunc costs xOrd
+   in distanceFunc costs xOrd xOrd
 
 instance VCategory X IntCost where
   hom = xDistance
@@ -52,7 +52,7 @@ yDistance =
               [Cost 3, Cost 0, Infinity],
               [Infinity, Cost 3, Cost 0]
             ]
-   in distanceFunc costs yOrd
+   in distanceFunc costs yOrd yOrd
 
 instance VCategory Y IntCost where
   hom = yDistance

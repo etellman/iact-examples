@@ -36,7 +36,7 @@ xDistance =
               [True, False, True, False],
               [True, False, False, True]
             ]
-   in distanceFunc costs xOrd
+   in distanceFunc costs xOrd xOrd
 
 instance PartialOrd X where
   x <= y =
@@ -67,7 +67,7 @@ yDistance =
               [False, False, False, True, False],
               [False, False, False, False, True]
             ]
-   in distanceFunc costs yOrd
+   in distanceFunc costs yOrd yOrd
 
 instance PartialOrd Y where
   x <= y =

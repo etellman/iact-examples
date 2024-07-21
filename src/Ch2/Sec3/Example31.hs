@@ -21,8 +21,11 @@ newtype Ex31 = Ex31 Char deriving (Eq)
 instance Show Ex31 where
   show (Ex31 v) = show v
 
+indexOf :: Char -> Int
+indexOf v = ord v - ord 'p' + 1
+
 ex31Distance :: Char -> Char -> BoolWeight
-ex31Distance = distanceFunc ex31Edges (\v -> ord v - ord 'p' + 1)
+ex31Distance = distanceFunc ex31Edges indexOf indexOf
 
 instance Ord Ex31 where
   Ex31 x <= Ex31 y =

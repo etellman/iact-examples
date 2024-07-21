@@ -26,7 +26,7 @@ xDistance =
             [Infinity, 0, 3],
             [Infinity, Infinity, Infinity]
           ]
-   in distanceFunc xCosts xOrd
+   in distanceFunc xCosts xOrd xOrd
 
 data Y = P | Q deriving (Eq, Show)
 
@@ -41,7 +41,7 @@ yDistance =
           [ [0, 5],
             [8, 0]
           ]
-   in distanceFunc yCosts yOrd
+   in distanceFunc yCosts yOrd yOrd
 
 xyDistance :: (X, Y) -> (X, Y) -> Cost Int
 xyDistance (x, y) (x', y') = xDistance x x' <> yDistance y y'

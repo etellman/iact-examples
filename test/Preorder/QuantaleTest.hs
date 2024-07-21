@@ -10,8 +10,11 @@ import Test.Tasty.HUnit
 eq_2_18 :: Matrix (Cost Int)
 eq_2_18 = fromLists [[0, 4, 3], [3, 0, Infinity], [Infinity, 4, 0]]
 
+indexOf :: Char -> Int
+indexOf v = ord v - ord 'x' + 1
+
 distance_2_18 :: Char -> Char -> Cost Int
-distance_2_18 = distanceFunc eq_2_18 (\v -> ord v - ord 'x' + 1)
+distance_2_18 = distanceFunc eq_2_18 indexOf indexOf
 
 tests :: TestTree
 tests =
@@ -40,8 +43,7 @@ tests =
       --
       testGroup
         "Equation 2.18"
-        [
-        testCase "all" $ do
+        [ testCase "all" $ do
             let expected =
                   fromLists $
                     [ [0, 4, 3],
