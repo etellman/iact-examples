@@ -4,10 +4,11 @@ import Ch4.Sec2.Definition1Test
 import Ch4.Sec2.Definition4Test
 import Ch4.Sec2.Example7Test
 import Ch4.Sec2.Example9Test
+import Ch4.Sec2.Exercise10Test
+import Ch4.Sec2.Exercise13Test
 import Ch4.Sec2.Exercise2Test
 import Ch4.Sec2.Exercise5Test
 import Ch4.Sec2.Exercise8Test
-import Ch4.Sec2.Exercise10Test
 import Test.Tasty
 
 sectionTests :: TestTree
@@ -21,5 +22,6 @@ sectionTests =
       Ch4.Sec2.Example7Test.tests,
       Ch4.Sec2.Exercise8Test.tests,
       Ch4.Sec2.Example9Test.tests,
-      Ch4.Sec2.Exercise10Test.tests
+      Ch4.Sec2.Exercise10Test.tests,
+      Ch4.Sec2.Exercise13Test.tests
     ]

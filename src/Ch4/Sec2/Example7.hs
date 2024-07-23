@@ -75,7 +75,6 @@ instance PartialOrd Y where
     let BoolWeight w = yDistance x y
      in w
 
--- | Y opposite
 instance VCategory Y PartialOrdAll where
   hom y y' = PartialOrdAll $ All (y PO.<= y')
 
