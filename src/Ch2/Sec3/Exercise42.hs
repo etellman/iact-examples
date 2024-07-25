@@ -6,6 +6,7 @@ module Ch2.Sec3.Exercise42
 where
 
 import Data.List (intersect)
+import Slist (slist)
 
 data City = V | W | X | Y | Z deriving (Eq, Show)
 
@@ -20,4 +21,4 @@ instance Semigroup TransportSet where
   (TransportSet xs) <> (TransportSet ys) = TransportSet (xs `intersect` ys)
 
 instance Ord TransportSet where
-  (TransportSet xs) <= (TransportSet ys) = length xs Prelude.>= length ys
+  (TransportSet xs) <= (TransportSet ys) = (length . slist) xs Prelude.>= (length . slist) ys
