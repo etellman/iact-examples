@@ -3,7 +3,7 @@ module Ch4.Sec2.Exercise15
     Y (..),
     Z (..),
     phi,
-    phiRho,
+    phiPsi,
   )
 where
 
@@ -93,8 +93,8 @@ phi x y =
       (IntCost d) = getElem (xIndex x) (yIndex y) ds
    in d
 
-rho :: Matrix IntCost
-rho =
+psi :: Matrix IntCost
+psi =
   fromLists $
     (fmap . fmap)
       IntCost
@@ -103,13 +103,13 @@ rho =
         [Cost 4, Infinity, Cost 4, Infinity]
       ]
 
-phiRho :: X -> Z -> Cost Int
-phiRho x z =
+phiPsi :: X -> Z -> Cost Int
+phiPsi x z =
   let ds =
         (distances xEdges)
           `quantMult` phiEdges
           `quantMult` (distances yEdges)
-          `quantMult` rho
+          `quantMult` psi
           `quantMult` (distances zEdges)
       (IntCost d) = getElem (xIndex x) (zIndex z) ds
    in d

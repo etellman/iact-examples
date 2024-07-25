@@ -11,30 +11,30 @@ tests =
     "Ch4.Sec2.Exercise15.XZTest"
     [ testGroup
         "A"
-        [ testCase "P" $ phiRho A P @?= Cost 22,
-          testCase "Q" $ phiRho A Q @?= Cost 24,
-          testCase "R" $ phiRho A R @?= Cost 20,
-          testCase "S" $ phiRho A S @?= Cost 21
+        [ testCase "P" $ phiPsi A P @?= Cost 22,
+          testCase "Q" $ phiPsi A Q @?= Cost 24,
+          testCase "R" $ phiPsi A R @?= Cost 20,
+          testCase "S" $ phiPsi A S @?= Cost 21
         ],
       testGroup
         "B"
-        [ testCase "P" $ phiRho B P @?= Cost 16,
-          testCase "Q" $ phiRho B Q @?= Cost 18,
-          testCase "R" $ phiRho B R @?= Cost 14,
-          testCase "S" $ phiRho B S @?= Cost 15
+        [ testCase "P" $ phiPsi B P @?= Cost 16,
+          testCase "Q" $ phiPsi B Q @?= Cost 18,
+          testCase "R" $ phiPsi B R @?= Cost 14,
+          testCase "S" $ phiPsi B S @?= Cost 15
         ],
       testGroup
         "C"
-        [ testCase "P" $ phiRho C P @?= Cost 19,
-          testCase "Q" $ phiRho C Q @?= Cost 21,
-          testCase "R" $ phiRho C R @?= Cost 17,
-          testCase "S" $ phiRho C S @?= Cost 18
+        [ testCase "P" $ phiPsi C P @?= Cost 19,
+          testCase "Q" $ phiPsi C Q @?= Cost 21,
+          testCase "R" $ phiPsi C R @?= Cost 17,
+          testCase "S" $ phiPsi C S @?= Cost 18
         ],
       testGroup
         "D"
-        [ testCase "P" $ phiRho D P @?= Cost 11,
-          testCase "Q" $ phiRho D Q @?= Cost 13,
-          testCase "R" $ phiRho D R @?= Cost 9,
-          testCase "S" $ phiRho D S @?= Cost 10
+        [ testCase "P" $ phiPsi D P @?= Cost 11,
+          testCase "Q" $ phiPsi D Q @?= Cost 13,
+          testCase "R" $ phiPsi D R @?= Cost 9,
+          testCase "S" $ phiPsi D S @?= Cost 10
         ]
     ]
