@@ -6,9 +6,6 @@ import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
 
-zDistance :: Z -> Z -> Cost Int
-zDistance z z' = let (IntCost c) = hom z z' in c
-
 tests :: TestTree
 tests =
   testGroup

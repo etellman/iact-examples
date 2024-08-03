@@ -2,6 +2,9 @@ module Ch4.Sec2.Exercise15
   ( X (..),
     Y (..),
     Z (..),
+    xDistance,
+    yDistance,
+    zDistance,
     phi,
     phiPsi,
   )
@@ -34,6 +37,9 @@ xEdges =
 instance VCategory X IntCost where
   hom = distanceFunc xEdges xIndex xIndex
 
+xDistance :: X -> X -> Cost Int
+xDistance x x' = let (IntCost c) = hom x x' in c
+
 data Y = X | Y | Z deriving (Eq, Show)
 
 yIndex :: Y -> Int
@@ -53,6 +59,9 @@ yEdges =
 
 instance VCategory Y IntCost where
   hom = distanceFunc yEdges yIndex yIndex
+
+yDistance :: Y -> Y -> Cost Int
+yDistance y y' = let (IntCost c) = hom y y' in c
 
 data Z = P | Q | R | S deriving (Eq, Show)
 
@@ -75,6 +84,9 @@ zEdges =
 
 instance VCategory Z IntCost where
   hom = distanceFunc zEdges zIndex zIndex
+
+zDistance :: Z -> Z -> Cost Int
+zDistance z z' = let (IntCost c) = hom z z' in c
 
 phiEdges :: Matrix IntCost
 phiEdges =

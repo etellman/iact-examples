@@ -1,7 +1,7 @@
 module Ch4.Sec2.Example32
   ( X (..),
-    xDistance,
     Y (..),
+    xDistance,
     yDistance,
     phi,
     col,

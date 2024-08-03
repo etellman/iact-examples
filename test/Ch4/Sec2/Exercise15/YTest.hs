@@ -1,13 +1,9 @@
 module Ch4.Sec2.Exercise15.YTest (tests) where
 
 import Ch4.Sec2.Exercise15
-import Lib.VCategory (VCategory (..))
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
-
-yDistance :: Y -> Y -> Cost Int
-yDistance y y' = let (IntCost c) = hom y y' in c
 
 tests :: TestTree
 tests =
