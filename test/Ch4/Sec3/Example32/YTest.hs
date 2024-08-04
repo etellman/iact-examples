@@ -1,6 +1,6 @@
-module Ch4.Sec2.Example32.YTest (tests) where
+module Ch4.Sec3.Example32.YTest (tests) where
 
-import Ch4.Sec2.Example32
+import Ch4.Sec3.Example32
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
@@ -8,7 +8,7 @@ import Test.Tasty.HUnit as HU
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec2.Example32.YTest"
+    "Ch4.Sec3.Example32.YTest"
     [ testGroup
         "X"
         [ testCase "X" $ yDistance X X @?= Cost 0,

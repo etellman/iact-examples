@@ -1,6 +1,6 @@
-module Ch4.Sec2.Example32.CollageTest (tests) where
+module Ch4.Sec3.Example32.CollageTest (tests) where
 
-import Ch4.Sec2.Example32
+import Ch4.Sec3.Example32
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
@@ -8,7 +8,7 @@ import Test.Tasty.HUnit as HU
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec2.Example32.CollageTest"
+    "Ch4.Sec3.Example32.CollageTest"
     [ testGroup
         "A"
         [ testCase "A" $ col (Left A) (Left A) @?= Cost 0,

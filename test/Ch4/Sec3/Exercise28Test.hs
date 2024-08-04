@@ -1,4 +1,4 @@
-module Ch4.Sec2.Exercise28Test (tests) where
+module Ch4.Sec3.Exercise28Test (tests) where
 
 import Hedgehog as H
 import qualified Hedgehog.Gen as Gen
@@ -54,7 +54,7 @@ prop_conjoint =
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec2.Exercise28Test"
+    "Ch4.Sec3.Exercise28Test"
     [ testProperty "companion" prop_companion,
       testProperty "conjoint" prop_conjoint
     ]

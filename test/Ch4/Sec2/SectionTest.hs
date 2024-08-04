@@ -6,9 +6,6 @@ import Ch4.Sec2.Example7Test
 import Ch4.Sec2.Example9Test
 import Ch4.Sec2.Exercise10Test
 import Ch4.Sec2.Exercise13Test
-import Ch4.Sec2.Exercise15.Exercise15Test
-import Ch4.Sec2.Example32.Example32Test
-import Ch4.Sec2.Exercise28Test
 import Ch4.Sec2.Exercise2Test
 import Ch4.Sec2.Exercise5Test
 import Ch4.Sec2.Exercise8Test
@@ -26,8 +23,5 @@ sectionTests =
       Ch4.Sec2.Exercise8Test.tests,
       Ch4.Sec2.Example9Test.tests,
       Ch4.Sec2.Exercise10Test.tests,
-      Ch4.Sec2.Exercise13Test.tests,
-      Ch4.Sec2.Exercise15.Exercise15Test.exerciseTests,
-      Ch4.Sec2.Exercise28Test.tests,
-      Ch4.Sec2.Example32.Example32Test.exampleTests
+      Ch4.Sec2.Exercise13Test.tests
     ]

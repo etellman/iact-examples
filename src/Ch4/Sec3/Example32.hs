@@ -1,4 +1,4 @@
-module Ch4.Sec2.Example32
+module Ch4.Sec3.Example32
   ( X (..),
     Y (..),
     xDistance,

@@ -1,6 +1,6 @@
-module Ch4.Sec2.Exercise15.ZTest (tests) where
+module Ch4.Sec3.Exercise15.ZTest (tests) where
 
-import Ch4.Sec2.Exercise15
+import Ch4.Sec3.Exercise15
 import Lib.VCategory (VCategory (..))
 import Monoid.Cost
 import Test.Tasty
@@ -9,7 +9,7 @@ import Test.Tasty.HUnit as HU
 tests :: TestTree
 tests =
   testGroup
-    "Ch4.Sec2.Exercise15.ZTest"
+    "Ch4.Sec3.Exercise15.ZTest"
     [ testGroup
         "P"
         [ testCase "P" $ zDistance P P @?= Cost 0,

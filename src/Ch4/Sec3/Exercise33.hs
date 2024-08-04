@@ -1,6 +1,6 @@
 module Ch4.Sec3.Exercise33 (col, X (..), Y (..)) where
 
-import Ch4.Sec2.Exercise15
+import Ch4.Sec3.Exercise15
 import Monoid.Cost
 
 col :: Either X Y -> Either X Y -> Cost Int
