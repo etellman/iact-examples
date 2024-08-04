@@ -20,4 +20,5 @@ gF :: Int -> Int -> Int
 gF = (-)
 
 h :: Int -> Bool -> Int
-h c e = if e then c else 1 - c
+h c True = c
+h c False = 1 - c
