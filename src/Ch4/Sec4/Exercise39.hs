@@ -1,24 +1,18 @@
-module Ch4.Sec4.Exercise39
-  ( fC,
-    fD,
-    gE,
-    gF,
-    h,
-  )
-where
+module Ch4.Sec4.Exercise39 (f, g, h, q) where
 
-fC :: Int -> Int
-fC = abs
+f :: Int -> (Int, Int)
+f a = (abs a, a * 5)
 
-fD :: Int -> Int
-fD = (* 5)
+g :: (Int, Int) -> (Bool, Int)
+g (b, d) = (d <= b, d - b)
 
-gE :: Int -> Int -> Bool
-gE = (<=)
+h :: (Int, Bool) -> Int
+h (c, True) = c
+h (c, False) = 1 - c
 
-gF :: Int -> Int -> Int
-gF = (-)
-
-h :: Int -> Bool -> Int
-h c True = c
-h c False = 1 - c
+q :: (Int, Int) -> (Int, Int)
+q (a, b) =
+  let (c, d) = f a
+      (e, f') = g (b, d)
+      g' = h (c, e)
+   in (f', g')
