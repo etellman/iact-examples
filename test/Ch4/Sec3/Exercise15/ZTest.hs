@@ -1,7 +1,6 @@
 module Ch4.Sec3.Exercise15.ZTest (tests) where
 
 import Ch4.Sec3.Exercise15
-import Lib.VCategory (VCategory (..))
 import Monoid.Cost
 import Test.Tasty
 import Test.Tasty.HUnit as HU
